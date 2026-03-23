@@ -1,5 +1,5 @@
-umbiRota = 'c/TCC-ETEC-WEBSITE/site de acesso ao sistema clfl/'
+from flask import Flask,render_template
 host = ''
 senha = ''
 porta = ''
-macho = "breno"
+ip = ''
