@@ -12,6 +12,14 @@ body {
 main, .content {
     flex: 1;
     background-color: #ffffff;
+    
+    width: 1300px;
+    min-height: 100vh;
+    margin: 1.5rem auto;
+    padding: 1rem 3rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 footer {
   background: #1f1f1f;

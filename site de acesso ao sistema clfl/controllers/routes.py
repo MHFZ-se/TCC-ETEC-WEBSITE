@@ -9,7 +9,7 @@ def init_app(app):
     
     @app.route('/login')#leva ao centro
     def login():
-        return "Login"
+        return render_template('login.html')
     
     @app.route('/cadastro')#leva ao centro
     def cadastro():
