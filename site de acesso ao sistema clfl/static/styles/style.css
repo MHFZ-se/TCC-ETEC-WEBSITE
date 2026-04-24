@@ -55,22 +55,37 @@ footer {
   border-color: #1b5e20 !important;
   background-color: #1b5e20 !important;
 }
-h1 {
-  font-size: 48px;
-  font-weight: bold;
-  color: #1b5e20;
-  margin-left: 40px;
-  margin-top: 70px;
+.secao {
+  padding: 20px 10px 30px;
 }
 
-p {
-  color: #717171;
+.div1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: center;
+  margin-bottom: 38px;
 }
-info {
-    font-size: 12px;
+
+.info h2 {
+  font-size: 34px;
+  font-weight: 700;
+  color: #1f1f1f;
+  margin: 0 0 18px;
+  line-height: 1.15;
 }
-div {
-    width: 450px;
-    height: 80%;
-    margin-left: 40px;
+
+.info p {
+  margin: 0;
+  color: #2f2f2f;
+  font-size: 28px;
+  line-height: 1.28;
 }
+
+.info.right p {
+  max-width: 560px;
+}
+
+
+
+
