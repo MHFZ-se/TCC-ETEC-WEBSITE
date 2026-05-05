@@ -1,4 +1,4 @@
-from config import *
+
 from flask import render_template
 
 def init_app(app):

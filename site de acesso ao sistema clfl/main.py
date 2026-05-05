@@ -1,14 +1,38 @@
 #configurando oque será usado/recursos essenciais
 from flask import Flask
-from config import *  #chama os atributos do config.py
 app = Flask(__name__, template_folder = 'views')
 from controllers import routes
 
-#conecta com lista de paginas
+import pymysql
+
+from models.database import db, Usuario
+#from models.database import db
+
+
+DB_NAME = 'planetHealth'
+app.config['DATABASE_NAME'] = DB_NAME
+app.config['SQLALCHEMY_DATABASE_URI']= f'mysql://root@localhost/{DB_NAME}'
 routes.init_app(app)
 
-#print(home, macho)
-
-#print("Hello world")
 if __name__ == '__main__':
-     app.run(debug=True)
+    connection = pymysql.connect(host='localhost',
+                                 user='root',
+                                 password='',
+                                 charset='utf8mb4',
+                                 cursorclass = pymysql.cursors.DictCursor)
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {DB_NAME}")
+            print("O Banco de Dados foi criado com sucesso!")
+    except Exception as error:
+        print(f"Erro ao criar o Banco de Dados: {error}")
+    finally:
+        connection.close()
+        
+    db.init_app(app=app)
+    with app.test_request_context():
+        db.create_all()
+        
+    app.run(debug=True)
+    
