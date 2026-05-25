@@ -5,7 +5,7 @@ from controllers import routes
 
 import pymysql
 
-from models.database import db, Usuario
+from models.database import db, Usuario, Sensor, Coleta
 #from models.database import db
 
 

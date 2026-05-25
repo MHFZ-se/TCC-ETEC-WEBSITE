@@ -7,7 +7,7 @@ class Usuario(db.Model):
     telefone = db.Column(db.String(15))
     senha = db.Column(db.String(50))
     email =  db.Column(db.String(40))
-    numero_de_serie = db.Column(db.Integer)
+    numero_de_serie = db.Column(db.Integer , nullable=True)
     
 def __init__(self, nome, telefone, senha, email, numero_de_serie):
     self.id = id
@@ -21,7 +21,7 @@ class Sensor(db.Model):
     numero_de_serie = db.Column(db.Integer, primary_key = True)
     id = db.Column(db.String(150))
 
-def __init__(self, id):
+def __init__(self, id, numero_de_serie):
     self.numero_de_serie = numero_de_serie
     self.id = id
     

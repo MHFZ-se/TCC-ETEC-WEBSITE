@@ -4,18 +4,18 @@
     <main>
         <h1>Login codigo ou e-mail </h1>
         <h2>Faça o Login</h2>
-    <hr>
+            <hr>
 
-    <form action="{{url_for('login')}}" method="post">
-  <label for="name">Email:</label>
-  <input type="text" name="email" placeholder="Insira o email" class="form-control" required>
-  <label for="name">Senha:</label>
-  <input type="text" name="senha" placeholder="Insira a senha" class="form-control" required>
-  <label for="name">IP:</label>
-  <input type="text" name="ip" placeholder="Insira o IP do dispositivo" class="form-control" required>
-  <br>
-  <input type="submit" value="Cadastrar" class="btn btn-success">
-  <input type="reset" value="Limpar" class="btn btn-outline-danger">
-</form>
+        <form action="{{url_for('login')}}" method="post">
+            <label for="name">Email:</label>
+            <input type="text" name="email" placeholder="Insira o email" class="form-control" required>
+            <label for="name">Senha:</label>
+            <input type="text" name="senha" placeholder="Insira a senha" class="form-control" required>
+            <!-- <label for="name">IP:</label>
+            <input type="text" name="ip" placeholder="Insira o IP do dispositivo" class="form-control" required> -->
+            <br>
+            <input type="submit" value="Cadastrar" class="btn btn-success">
+            <!-- <input type="reset" value="Limpar" class="btn btn-outline-danger"> -->
+        </form>
     </main>
 {% endblock content %}
