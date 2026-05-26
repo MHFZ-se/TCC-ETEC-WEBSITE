@@ -44,16 +44,19 @@ footer {
   color: #c8facc !important;
 }
 
-.btn-outline-success {
-  color: #ffffff !important;
-  border-color: #ffffff !important;
-  background-color: #2e7d32 !important;
+.navbar-auth {
+  gap: 0.75rem;
+  margin-top: -4px; /* puxa a área de logar/cadastrar um pouco para cima */
 }
 
-.btn-outline-success:hover {
-  color: #ffffff !important;
-  border-color: #1b5e20 !important;
-  background-color: #1b5e20 !important;
+.navbar-auth .nav-link {
+  padding: 0.35rem 0.5rem;
+  font-weight: 500;
+}
+
+.navbar-auth-sep {
+  color: rgba(255, 255, 255, 0.45);
+  user-select: none;
 }
 .secao {
   padding: 20px 10px 30px;
@@ -66,24 +69,96 @@ footer {
   align-items: center;
   margin-bottom: 38px;
 }
-
-.info h2 {
-  font-size: 34px;
-  font-weight: 700;
-  color: #1f1f1f;
-  margin: 0 0 18px;
-  line-height: 1.15;
+.inp{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: 0.3s;
 }
 
-.info p {
-  margin: 0;
-  color: #2f2f2f;
-  font-size: 28px;
-  line-height: 1.28;
+.inp:focus{
+    border-color: #2e7d32;
+    box-shadow: 0px 0px 5px rgba(46,125,50,0.5);
+}
+.button{
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #2e7d32;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.info.right p {
-  max-width: 560px;
+.button:hover{
+    background: #1b5e20;
+}
+.col-md-4{
+   width: 400px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    margin-top: -10px;
+}
+.abel{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.titulo{
+    text-align: center;
+}
+.subTitulo{
+    text-align: center;
+}
+
+/* Home (card com imagem à esquerda) */
+.home-hero {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+}
+
+.home-image-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-image {
+    width: 400px;
+    max-width: 520px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.home-card {
+    background: #9dff94;
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+.home-card h2 {
+    margin: 0 0 0.9rem 0;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.home-card p {
+    margin: 0 0 1.5rem 0;
+    font-size: 16px;
+    line-height: 1.5;
+    opacity: 0.95;
 }
 
 

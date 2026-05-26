@@ -41,14 +41,11 @@
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
-      <form class="d-flex" role="search">
-        <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/> -->
-        <!-- <button class="btn btn-outline-success" type="submit">Log in</button>
-        <a href="{{url_for('cadastro')}}"><button class="btn btn-outline-success" type="submit">Cadastrar</button></a> -->
-        <a class="nav-link active" aria-current="page" href="{{url_for('login')}}">Logar</a>
-        <a class="nav-link active" aria-current="page" href="{{url_for('cadastro')}}">Cadastrar</a>
-        
-      </form>
+      <div class="d-flex align-items-center navbar-auth">
+        <a class="nav-link" href="{{url_for('login')}}">Logar</a>
+        <span class="navbar-auth-sep" aria-hidden="true">|</span>
+        <a class="nav-link" href="{{url_for('cadastro')}}">Cadastrar</a>
+      </div>
     </div>
   </div>
 </nav>

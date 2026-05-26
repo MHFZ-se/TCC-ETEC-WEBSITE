@@ -2,10 +2,10 @@
 
 {% block content %} <!--isto indica o uso de um codigo .py-->
     <main>
-        <h1>Login codigo ou e-mail </h1>
-        <h2>Faça o Login</h2>
+        <h1 class="titulo">Login codigo ou e-mail </h1>
+        <h2 class="subTitulo">Faça o Login</h2>
             <hr>
-
+        <div class="col-md-4">
         <form action="{{url_for('login')}}" method="post">
             <label for="name">Email:</label>
             <input type="text" name="email" placeholder="Insira o email" class="form-control" required>
@@ -17,5 +17,6 @@
             <input type="submit" value="Cadastrar" class="btn btn-success">
             <!-- <input type="reset" value="Limpar" class="btn btn-outline-danger"> -->
         </form>
+        </div>
     </main>
 {% endblock content %}

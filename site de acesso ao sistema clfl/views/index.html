@@ -3,8 +3,16 @@
 {% block content %}
     <main>
         <section class="secao">
-            <div class="div1">
-                <article class="info">
+            <div class="div1 home-hero">
+                <div class="home-image-wrap">
+                    <img
+                        src="{{ url_for('static', filename='img/grafico.png') }}"
+                        alt="Plantas"
+                        class="home-image"
+                    />
+                </div>
+
+                <article class="home-card">
                     <h2>Monitoramento da saude das plantas com um sensor de cor.</h2>
                     <p>
                         Voce tem um jardim ou plantas em casa? E se voce mora em uma fazenda ou perto dela?
@@ -14,12 +22,7 @@
                         tonalidades nas folhas, ajudando a detectar pragas, doencas ou deficiencia de nutrientes.
                     </p>
                 </article>
-
-                 <img src="{{url_for('static', filename='/img/grafico.png')}}" alt="" width="300px">
-                    </div>
-                </article>
             </div>
         </section>
-
     </main>
 {% endblock content %}
