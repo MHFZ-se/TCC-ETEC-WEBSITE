@@ -2,12 +2,12 @@
 
 {% block content %}
     <main>
-        <section class="secao">
+        <section class="secao secao-home">
             <div class="div1 home-hero">
                 <div class="home-image-wrap">
                     <img
                         src="{{ url_for('static', filename='img/grafico.png') }}"
-                        alt="Plantas"
+                        alt="Gráfico do projeto"
                         class="home-image"
                     />
                 </div>
@@ -17,9 +17,30 @@
                     <p>
                         Voce tem um jardim ou plantas em casa? E se voce mora em uma fazenda ou perto dela?
                         Com que frequencia voce verifica as folhas das suas plantas para detectar descoloracao?
+                    </p>
+                    <p>
                         E se voce tivesse um equipamento que faz essa verificacao e o avisa, caso suas plantas
                         estejam ficando doentes? Nosso projeto usa um sensor de cor para identificar diferentes
                         tonalidades nas folhas, ajudando a detectar pragas, doencas ou deficiencia de nutrientes.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="secao secao-home secao-invertida">
+            <div class="div1 home-hero">
+                <div class="home-image-wrap">
+                    <img
+                        src="{{ url_for('static', filename='img/arduino.png') }}"
+                        alt="Gráfico do projeto"
+                        class="home-image"
+                    />
+                </div>
+
+                <article class="home-card">
+                    <h2>Sensor TCS3200</h2>
+                    <p>
+                        O sensor de cor TCS3200 (ou TCS230) é um módulo programável que converte intensidade de luz em frequência, permitindo identificar cores RGB. Ele possui 64 fotodiodos com filtros para vermelho, verde, azul e sem filtro, sendo ideal para robótica (seguidores de linha, triagem) e automação com Arduino, ESP32 ou Raspberry Pi.
                     </p>
                 </article>
             </div>
