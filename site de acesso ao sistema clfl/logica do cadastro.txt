@@ -37,3 +37,15 @@ o sistema verifica se o email existe na tabela
 se existente 
 verifica se a senha codiz com a na tabela, se sim 
 o usuario é redirecionado para a pagina centro
+
+08/06
+vamos la meus pimpolhos repolhos bobolhos eu vô ta criando a mecanica(feature) principal 
+do site
+
+reciocinio:
+usuario faz login ou cadastro(e depois loga)
+    intermição
+        de alguma forma milagrosa a analise feita pela maquininha será passada para a maquina(web ou desckop)
+    fim da intermição
+usuario abre a pagina analises: dois caminhos
+    usuario vai a pagina de "Ultima analise"
