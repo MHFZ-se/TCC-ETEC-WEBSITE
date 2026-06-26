@@ -47,17 +47,17 @@ def init_app(app):
             return redirect(url_for('home'))
         return render_template('cadastro.html')
         
-    @app.route('/centro')#
-    def centro():
-        return render_template('centro.html')
+    @app.route('/interface')#
+    def interface():
+        return render_template('interface.html')
     
     @app.route('/centro/informacoes')#leva a ultima analise e anteriores
     def centroInfo():
-        return 'falso'
+        return 'falso(placeholder)'
     
-    @app.route('/centro/informacoes/ultima')#leva a consulta da ultima
-    def ultima():
-        return 'falso'
+    # @app.route('/centro/informacoes/ultima')#leva a consulta da ultima
+    # def ultima():
+    #     return 'falso'
     
     @app.route('/centro/informacoes/anteriores')#leva a consulta da que for clicada
     def anteriores():
@@ -65,6 +65,6 @@ def init_app(app):
     
     @app.route('/centro/informacoes/consulta')
     def consulta():
-        return 'Verdadeiros'
+        return 'Verdadeiros(placeholder)'
     
     
