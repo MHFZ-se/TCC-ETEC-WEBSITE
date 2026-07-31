@@ -12,6 +12,9 @@ from models.database import db, Usuario, Sensor, Coleta
 DB_NAME = 'planetHealth'
 app.config['DATABASE_NAME'] = DB_NAME
 app.config['SQLALCHEMY_DATABASE_URI']= f'mysql://root@localhost/{DB_NAME}'
+app.config['SECRET_KEY'] = 'meusagrado'
+app.config['PERMANENT_SESSION_LIFETIME'] = 11800 
+
 routes.init_app(app)
 
 if __name__ == '__main__':
