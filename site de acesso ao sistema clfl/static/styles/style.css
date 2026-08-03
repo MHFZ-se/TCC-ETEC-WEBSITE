@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     background-color: #d6e0d1;
     font-family:'Inter',sans-serif;
+    background-image: url('image.png');
     
 }
 
@@ -10,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-image: url('image.png');
 }
 
 main, .content {
@@ -52,7 +54,7 @@ footer {
 }
 
  .navbar a {
-  color: black !important;
+  color: rgba(8, 2, 83, 0.87) !important;
   content:"";
   position:relative; 
 } 
@@ -340,4 +342,120 @@ footer {
 .status-card {
     width: 60%;
     margin-left: 10%;
+}
+.vantagens{
+
+    width:1000px;
+
+    margin:100px auto;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+}
+.vantagem-card{
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:28px;
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    transition:.3s;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.vantagem-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+.vantagem-icon{
+
+    width:64px;
+
+    height:64px;
+
+    border-radius:50%;
+
+    background:#E8F5E9;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-shrink:0;
+}
+.vantagem-icon i{
+
+    font-size:30px;
+
+    color:#2E7D32;
+}
+.vantagem-texto h3{
+
+    margin:0;
+
+    color:#163A24;
+
+    font-size:18px;
+
+    font-weight:700;
+}
+.vantagem-texto p{
+
+    margin-top:10px;
+
+    color:#666;
+
+    line-height:1.7;
+
+    font-size:15px;
+}
+.sensor-info{
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+    margin-top:30px;
+}
+.info-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px 18px;
+
+    background:#EAF6EC;
+
+    border-radius:12px;
+
+    color:#2E7D32;
+
+    font-weight:600;
+
+    font-size:15px;
+}
+.info-item i{
+
+    font-size:20px;
 }
