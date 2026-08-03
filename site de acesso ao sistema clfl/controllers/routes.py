@@ -22,7 +22,7 @@ def init_app(app):
 
                 if compararSenha(comparar(email, listaEmails), senha):
                     nome = db.session.query(Usuario.nome).filter_by(id=comparar(email, listaEmails)).scalar()
-                    return redirect(url_for('centro',id=comparar(email, listaEmails),nome=nome))
+                    return redirect(url_for('interface',id=comparar(email, listaEmails),nome=nome))
                 else: return "A senha não é compativel com o email informado, por favor tente de novo"
 
             else: return "O email informado não existe no banco ou foi digitado errado, por favor tente de novo"
