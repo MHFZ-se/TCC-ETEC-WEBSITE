@@ -438,24 +438,78 @@ footer {
 .info-item{
 
     display:flex;
-
     align-items:center;
-
     gap:10px;
-
     padding:12px 18px;
-
     background:#EAF6EC;
-
     border-radius:12px;
-
     color:#2E7D32;
-
     font-weight:600;
-
     font-size:15px;
+    margin-bottom: 10%;
+    margin-left: 3%;
+    margin-top: -5%;
+
 }
 .info-item i{
 
     font-size:20px;
+}
+@property --progresso{
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
+}
+
+.grafico{
+
+    --valor:95;
+    --progresso:0;
+
+    width:320px;
+    height:320px;
+
+    border-radius:50%;
+
+    background:
+        conic-gradient(
+            #43f54f calc(var(--progresso) * 1%),
+            #ECECEC 0
+        );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    animation: preencher 2s ease forwards;
+}
+
+@keyframes preencher{
+
+    from{
+        --progresso:0;
+    }
+
+    to{
+        --progresso:var(--valor);
+    }
+
+}
+.grafico-centro{
+    width:270px;
+    height:270px;
+    background:white;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.grafico-centro span{
+    font-size:72px;
+    font-weight:800;
+    color:#111;
+}
+.tax{
+    margin-left: 10%;
+    font-family: Arial, Helvetica, sans-serif;
 }
