@@ -1,3 +1,4 @@
+#arquivo principal da aplicação
 #configurando oque será usado/recursos essenciais
 from flask import Flask
 app = Flask(__name__, template_folder = 'views')
@@ -8,13 +9,19 @@ import pymysql
 from models.database import db, Usuario, Sensor, Coleta
 #from models.database import db
 
-
+#informa o nome do database
 DB_NAME = 'planetHealth'
+
 app.config['DATABASE_NAME'] = DB_NAME
+
 app.config['SQLALCHEMY_DATABASE_URI']= f'mysql://root@localhost/{DB_NAME}'
+#chave de encriptação de senha
 app.config['SECRET_KEY'] = 'meusagrado'
+#define tempo de sessao
 app.config['PERMANENT_SESSION_LIFETIME'] = 11800 
 
+#chama as rotas do site
+#costumava ficar aq mas cresceu dms daí deixamo em outro lugar
 routes.init_app(app)
 
 if __name__ == '__main__':

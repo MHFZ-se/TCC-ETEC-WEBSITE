@@ -10,13 +10,15 @@
             <label for="name">Email:</label>
             <input type="text" name="email" placeholder="Insira o email" class="form-control" required>
             <label for="name">Senha:</label>
-            <input type="text" name="senha" placeholder="Insira a senha" class="form-control" required>
+            <input type="password" name="senha" placeholder="Insira a senha" class="form-control" required>
+            <h6>Não possui conta? <a href="{{url_for('cadastro')}}">Cadastre-se!!!</a></h6>
             <!-- <label for="name">IP:</label>
             <input type="text" name="ip" placeholder="Insira o IP do dispositivo" class="form-control" required> -->
             <br>
             <input type="submit" value="Cadastrar" class="button">
             <!-- <input type="reset" value="Limpar" class="btn btn-outline-danger"> -->
         </form>
+        
         </div>
     </main>
 {% endblock content %}

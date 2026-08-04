@@ -13,6 +13,11 @@ def init_app(app):
     def home(): 
         return render_template("index.html")# leva ao login e cadastro
     
+    
+    
+    
+    
+    #login com senha e email
     @app.route('/login', methods=['GET','POST'])
     def login():
         if request.method == "POST":
@@ -33,27 +38,70 @@ def init_app(app):
 
         return render_template('login.html')
     
+    
+    
+    
+    
+    
+    
+    
+    
     @app.route('/cadastro', methods=['GET','POST'])
     def cadastro():
         #if id:
             
         if request.method == "POST":
-            dados_form = request.form.to_dict()
+            dadosPreenchidos = request.form.to_dict()
+            email=dadosPreenchidos['email']
+            usuario = Usuario.query.filter_by(email=email).first()
+            
+            if usuario:#verificando se o usuario ja existe no banco
+                msg = Markup("")
+                flash(msg,'danger')
+                return redirect(url_for('cadastro'))
+            
+            #Se não existir ele é criado
+            senha = dadosPreenchidos['senha']
+            senhaCriptografada = generate_password_hash(senha,method='scrypt')
+            
             novoUsuario = Usuario(
-                nome=dados_form['nome'],
-                telefone=dados_form['telefone'],
-                senha=dados_form['senha'],
-                email=dados_form['email']
-            )
+                email = email,
+                senha = senhaCriptografada,
+                nome = dadosPreenchidos['nome'],
+                telefone = dadosPreenchidos['telefone'])
+            
+            
             db.session.add(novoUsuario)
             # Confirmando a operação no banco
             db.session.commit()
+            
             return redirect(url_for('home'))
         return render_template('cadastro.html')
+        
+        
+        
+    @app.route('/sobrenos')#
+    def sobrenos():
+            return render_template('sobrenos.html')
+        
+        
+        
+        
+        
         
     @app.route('/interface')#
     def interface():
         return render_template('interface.html')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     @app.route('/centro/informacoes')#leva a ultima analise e anteriores
     def centroInfo():
@@ -63,9 +111,33 @@ def init_app(app):
     # def ultima():
     #     return 'falso'
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @app.route('/centro/informacoes/anteriores')#leva a consulta da que for clicada
     def anteriores():
         return 'falso'
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     @app.route('/centro/informacoes/consulta')
     def consulta():
