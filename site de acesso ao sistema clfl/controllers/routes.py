@@ -1,7 +1,7 @@
 
-from flask import render_template, request, redirect, url_for, flash,session 
+from flask import render_template, request, redirect, url_for, flash, session 
 from models.database import Usuario,db
-from controllers.funcoes import comparar, compararSenha
+from controllers.funcoes import *
 from markupsafe import Markup
 
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -20,18 +20,24 @@ def init_app(app):
     #login com senha e email
     @app.route('/login', methods=['GET','POST'])
     def login():
+        
         if request.method == "POST":
 
-            dados_login = request.form.to_dict()
-            email = dados_login['email']
-            senha = dados_login['senha']
-            listaEmails = Usuario.query.with_entities(Usuario.email).all()#cria uma lista com todos os emails do banco, a longo prazo isso pode dar o maior BO cara...
+            
+            email = request.form['email']
+            senha = request.form['senha']
+            usuario = Usuario.query.filter_by(email=email).first()#cria uma lista com todos os emails do banco, a longo prazo isso pode dar o maior BO cara...
 
-            if comparar(email, listaEmails):#verifica se o email existe na lisara, o retorno da função é o id do usuario q porta o email
+            if usuario:#checa se o usuario existe no banco
 
-                if compararSenha(comparar(email, listaEmails), senha):
-                    nome = db.session.query(Usuario.nome).filter_by(id=comparar(email, listaEmails)).scalar()
-                    return redirect(url_for('interface',id=comparar(email, listaEmails),nome=nome))
+                if check_password_hash(usuario.senha,senha):# o primeiro parametro é a senha hashada e o segundo a senha do form
+                    
+                    session['idLogado'] = usuario.id
+                    session['nomeLogado'] = usuario.nome
+                    session['emailLogado'] = usuario.email
+                    
+                    return redirect(url_for('interface'))
+                
                 else: return "A senha não é compativel com o email informado, por favor tente de novo"
 
             else: return "O email informado não existe no banco ou foi digitado errado, por favor tente de novo"
@@ -52,31 +58,38 @@ def init_app(app):
             
         if request.method == "POST":
             dadosPreenchidos = request.form.to_dict()
-            email=dadosPreenchidos['email']
+            
+            email = dadosPreenchidos['email']
             usuario = Usuario.query.filter_by(email=email).first()
             
             if usuario:#verificando se o usuario ja existe no banco
                 msg = Markup("")
                 flash(msg,'danger')
-                return redirect(url_for('cadastro'))
+                return redirect(url_for('cadastro'))#caso ja tenha uma conta com o mesmo email
             
             #Se não existir ele é criado
             senha = dadosPreenchidos['senha']
-            senhaCriptografada = generate_password_hash(senha,method='scrypt')
+            senhaCodificada = generate_password_hash(senha,method='scrypt')
             
             novoUsuario = Usuario(
+                
                 email = email,
-                senha = senhaCriptografada,
+                senha = senhaCodificada,
                 nome = dadosPreenchidos['nome'],
-                telefone = dadosPreenchidos['telefone'])
+                telefone = dadosPreenchidos['telefone']
+            )
             
             
             db.session.add(novoUsuario)
             # Confirmando a operação no banco
             db.session.commit()
             
-            return redirect(url_for('home'))
-        return render_template('cadastro.html')
+            msg = Markup("")
+            flash(msg,'danger')#conta criada
+            return redirect(url_for('home'))#caso de tudo certo
+        
+        
+        return render_template('cadastro.html')#se o metodo não for post
         
         
         

@@ -5,7 +5,7 @@ class Usuario(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     nome = db.Column(db.String(150))
     telefone = db.Column(db.String(15))
-    senha = db.Column(db.String(50))
+    senha = db.Column(db.String(255))
     email =  db.Column(db.String(40))
     numero_de_serie = db.Column(db.Integer , nullable=True)
     
