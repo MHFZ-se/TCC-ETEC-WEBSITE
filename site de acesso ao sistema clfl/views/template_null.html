@@ -24,11 +24,20 @@
           <a class="nav-link active" aria-current="page" href="{{url_for('sobrenos')}}">Sobre nos</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Tutorial de Usuario</a>
+        </li>
+        
+        
+        {% if session["idLogado"] %}
+        <li class="nav-item">
           <a class="nav-link" href="{{url_for('interface')}}">interface</a>
           <!-- lugar principal que o usuario vai utilizar, -->
         </li>
+
+        {% endif %}
+
         <!-- isso é temporario e será retirado depois -->
-        <li class="nav-item dropdown">
+        <!--<li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Opções de debug
           </a>
@@ -36,19 +45,41 @@
             <li><a class="dropdown-item " class="textoDropdown" href="{{url_for('home')}}">Sensores</a></li>
             <li><a class="dropdown-item textoDropdown" href="{{url_for('centroInfo')}}">Analises</a></li>
             <li><a class="dropdown-item textoDropdown" href="{{url_for('consulta')}}">Analise</a></li>
-            <!-- <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+             <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li> 
           </ul>
-        </li>
+        </li>-->
         <!-- <li class="nav-item">
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li> -->
       </ul>
+
+      {% if session["idLogado"] %}
+      <div>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{session['idLogado']}}
+            <img src="" alt="">
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item " class="textoDropdown" href="{{url_for('sair')}}">Sair</a></li>
+            <li><a class="dropdown-item textoDropdown" href="{{url_for('centroInfo')}}">Dados pessoais</a></li>
+            <li><a class="dropdown-item textoDropdown" href="{{url_for('consulta')}}">Analise</a></li>
+            <!-- <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+          </ul>
+          </li>
+      </div>
+
+      {% else %}
       <div class="d-flex align-items-center navbar-auth">
         <a class="nav-link" href="{{url_for('login')}}">Logar</a>
         <span class="navbar-auth-sep" aria-hidden="true">|</span>
         <a class="nav-link" href="{{url_for('cadastro')}}">Cadastrar</a>
       </div>
+
+      {% endif %}
+
     </div>
   </div>
 </nav>

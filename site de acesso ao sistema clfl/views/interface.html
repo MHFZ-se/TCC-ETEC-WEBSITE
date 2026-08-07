@@ -2,7 +2,11 @@
 
 {% block content %}
     <main>
-        <h3>Seja muito Bem vindo! {{ session.nomeLogado }}</h3>
+        <h3>Seja muito Bem vindo! {{ session['nomeLogado'] }}</h3>
+        <a href="">Acessar informações de sensor</a>
+        <a href="">Adicionar um novo sensor</a>
+        <a href="">Desvincular um sensor</a>
+        <a href="">Questionario de diagnostico</a>
         
     </main>
 {% endblock content %}

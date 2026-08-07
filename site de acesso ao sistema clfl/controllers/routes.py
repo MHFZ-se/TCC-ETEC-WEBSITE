@@ -157,3 +157,7 @@ def init_app(app):
         return 'Verdadeiros(placeholder)'
     
     
+    @app.route('/sair')
+    def sair():
+        session.clear()
+        return redirect(url_for('home')) 
