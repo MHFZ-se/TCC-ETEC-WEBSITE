@@ -1,6 +1,6 @@
 
 from flask import render_template, request, redirect, url_for, flash, session 
-from models.database import Usuario,db
+from models.database import Usuario,Sensor,db
 from controllers.funcoes import *
 from markupsafe import Markup
 
@@ -67,8 +67,14 @@ def init_app(app):
                 flash(msg,'danger')
                 return redirect(url_for('cadastro'))#caso ja tenha uma conta com o mesmo email
             
+            
             #Se não existir ele é criado
             senha = dadosPreenchidos['senha']
+            senha2 = dadosPreenchidos['senha2']
+            
+            if senha != senha2:
+                return "Ambas as senhas devem ser iguais"
+
             senhaCodificada = generate_password_hash(senha,method='scrypt')
             
             novoUsuario = Usuario(
@@ -161,3 +167,42 @@ def init_app(app):
     def sair():
         session.clear()
         return redirect(url_for('home')) 
+    
+      
+    @app.route('/interface/adicionarSensor', methods=['GET', 'POST'])
+    def adicionarSensor():
+
+        if request.method == "POST":
+
+            dados_form = request.form.to_dict()
+            numero_de_serie = dados_form['numero_de_serie']
+
+
+            sensor_existente = Sensor.query.filter_by(
+                numero_de_serie=numero_de_serie
+            ).first()
+
+            if sensor_existente:
+                return "Este sensor já está no nome de outro usuário, entre em contato pelo suporte ou tente de novo"
+            
+            if sensorExisteDvdd: return "não existe nenhum sensor com este codigo"
+
+            novoVinculo = Sensor(
+                numero_de_serie=numero_de_serie,
+                id=session['idLogado'])
+            
+            db.session.add(novoVinculo)
+            db.session.commit()
+
+            return redirect(url_for('interface'))
+
+        return render_template('addSensor.html')
+    
+    @app.route('/interface/verSensores', methods=['GET','POST'])
+    def verSensores():
+
+        return render_template('verSensores.html')
+
+    @app.route('/interface/removerSensor', methods=['GET', 'POST'])
+    def removerSensor():
+        return render_template('removerSensor.html')

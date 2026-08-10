@@ -2,19 +2,22 @@
 
 {% block content %} <!--isto indica o uso de um codigo .py-->
     <main>
-                <h1 class="titulo">Cadastro codigo ou e-mail </h1>
-        <h2 class="subTitulo">Faça o Cadastro</h2>
+                <h1 class="titulo">Realize o se cadastro no Site</h1>
+        <h2 class="subTitulo">Preencha os campos com cuidado</h2>
         <hr>
         <div class="col-md-4">
             <form action="{{url_for('cadastro')}}" method="POST" >
                 <label class="abel">Informe seu nome completo</label><br>
                 <input class="inp" type="text" name="nome" placeholder="Nome"><br>
-                <label class="abel">Informe seu Telefone</label><br>
+                <label class="abel">Informe seu numero de  Telefone</label><br>
                 <input class="inp" type="text" name="telefone" placeholder="ex: 551302154298"><br>
+                <label class="abel">Informe um endereço de email válido </label><br>
+                <input class="inp" type="text" name="email" placeholder="emailexemplo@outlook.com"><br>
                 <label class="abel">Informe uma senha</label><br>
                 <input class="inp" type="text" name="senha" placeholder="Lembre bem"><br>
-                <label class="abel">Passe um email seu </label><br>
-                <input class="inp" type="text" name="email" placeholder="emailexemplo@outlook.com"><br>
+                <label class="abel">Informe a senha novamente</label><br>
+                <input class="inp" type="text" name="senha2" placeholder="Lembre bem"><br>
+                
                 <h6>Ja possui conta? <a href="{{url_for('login')}}">Então logue!!!</a></h6>
 
                 <input class="button" type="submit" value="Registrar novo usuario">

@@ -1,0 +1,18 @@
+{% extends 'template_null.html' %}
+
+{% block content %}
+    <main>
+        <form action="{{url_for('adicionarSensor')}}" method="POST">
+            <label>Nome do dispositivo</label>
+            <input type="text" name = "nome">
+
+            <label>Numero de serie</label>
+            <input type="text" name = "numero_de_serie" placeholder="Inscrito físicamente">
+
+            
+            
+            <button type="submit" class="btn">Vincular</button>
+                
+        </form>
+    </main>
+{% endblock content %}
