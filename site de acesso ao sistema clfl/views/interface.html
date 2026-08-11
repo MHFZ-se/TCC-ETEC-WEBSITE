@@ -1,13 +1,95 @@
 {% extends 'template_null.html' %}
 
 {% block content %}
-    <main>
-        <h3>Seja muito Bem vindo! {{ session['nomeLogado'] }}</h3>
+<main>
+    <section class="dashboard-boasvindas">
+        <h1>Seja bem-vindo, <span>{{ session['nomeLogado'] }}</span> 🌿</h1>
+        <p>O que você deseja fazer hoje?</p>
+    </section>
 
-        <div><a href="{{url_for('verSensores')}}">Acessar informações de sensor</a></div>
-        <div><a href="{{url_for('adicionarSensor')}}">Adicionar um novo sensor</a></div>
-        <div><a href="{{url_for('removerSensor')}}">Desvincular um sensor</a></div>
-        <div><a href="">Questionario de diagnostico</a></div>
-        
-    </main>
+    <section class="dashboard-grid">
+
+        <a href="{{ url_for('verSensores') }}" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-cpu"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Acessar informações de sensor</h3>
+                <p>Veja os dados e leituras dos seus sensores conectados.</p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>
+
+        <a href="{{ url_for('adicionarSensor') }}" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Adicionar um novo sensor</h3>
+                <p>Cadastre e vincule um novo sensor à sua conta.</p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>
+
+        <a href="{{ url_for('removerSensor') }}" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-dash-circle"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Desvincular um sensor</h3>
+                <p>Remova um sensor que não está mais em uso.</p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>
+
+        <a href="" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-clipboard2-pulse"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Questionário de diagnóstico</h3>
+                <p>Responda perguntas para avaliar a saúde da sua planta.</p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>
+
+    </section>
+    <section class="dashboard-resumo">
+
+        <div class="resumo-stats">
+            <div class="resumo-stat">
+                <p class="resumo-label">Sensores ativos</p>
+                <p class="resumo-valor">3</p>
+            </div>
+            <div class="resumo-stat">
+                <p class="resumo-label">Última leitura</p>
+                <p class="resumo-valor">95%</p>
+            </div>
+            <div class="resumo-stat">
+                <p class="resumo-label">Alertas pendentes</p>
+                <p class="resumo-valor resumo-alerta">1</p>
+            </div>
+        </div>
+
+        <div class="resumo-atividade">
+            <h4>Atividade recente</h4>
+            <div class="atividade-item">
+                <i class="bi bi-check-circle atividade-icon-ok"></i>
+                <span>Sensor Estufa 1 registrou leitura normal</span>
+                <small>há 2h</small>
+            </div>
+            <div class="atividade-item">
+                <i class="bi bi-exclamation-triangle atividade-icon-alerta"></i>
+                <span>Sensor Varanda detectou possível deficiência de nutrientes</span>
+                <small>há 5h</small>
+            </div>
+            <div class="atividade-item">
+                <i class="bi bi-plus-circle atividade-icon-info"></i>
+                <span>Novo sensor vinculado: Jardim</span>
+                <small>ontem</small>
+            </div>
+        </div>
+
+    </section>
+</main>
 {% endblock content %}
