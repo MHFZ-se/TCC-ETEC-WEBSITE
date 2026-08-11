@@ -2,17 +2,43 @@
 
 {% block content %}
     <main>
-        <form action="{{url_for('adicionarSensor')}}" method="POST">
-            <label>Nome do dispositivo</label>
-            <input type="text" name = "nome">
+    <section class="secao">
 
-            <label>Numero de serie</label>
-            <input type="text" name = "numero_de_serie" placeholder="Inscrito físicamente">
+        <div class="col-md-4">
 
-            
-            
-            <button type="submit" class="btn">Vincular</button>
-                
-        </form>
-    </main>
+            <h2 class="titulo">Adicionar sensor</h2>
+            <p class="subTitulo">Vincule um novo dispositivo à sua conta</p>
+            <div class="titulo-linha" style="margin-left:auto;margin-right:auto;"></div>
+
+            <form action="{{ url_for('adicionarSensor') }}" method="POST">
+
+                <p class="abel">Nome do dispositivo</p>
+                <input
+                    type="text"
+                    name="nome"
+                    class="inp"
+                    placeholder="Ex: Sensor Estufa 1"
+                    required
+                >
+
+                <p class="abel">Número de série</p>
+                <input
+                    type="text"
+                    name="numero_de_serie"
+                    class="inp"
+                    placeholder="Inscrito fisicamente no dispositivo"
+                    required
+                >
+
+                <button type="submit" class="button">
+                    <i class="bi bi-link-45deg"></i>
+                    Vincular sensor
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+</main>
 {% endblock content %}
