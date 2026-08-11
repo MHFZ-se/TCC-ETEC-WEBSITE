@@ -1,9 +1,66 @@
 {% extends 'template_null.html' %}
 
-{% block content %} <!--isto indica o uso de um codigo .py-->
+{% block content %}
     <main>
         <div>
-            Somos um grupo de 4 estudantes desenvolvendo um TCC( trabalho de conclusã ode curso)
+            <h1>Sobre Nós</h1>
+
+                <p class="subtitulo">
+                Conheça a equipe responsável pelo desenvolvimento do PlantHealth.
+                </p>
+             <section class="sobre-card">
+
+                <h2>Quem somos?</h2>
+
+                <p>
+                    Somos um grupo de quatro estudantes da ETEC que desenvolveu
+                    o PlantHealth como Trabalho de Conclusão de Curso (TCC).
+
+                    Nosso objetivo é utilizar tecnologia para auxiliar no
+                    monitoramento da saúde das plantas por meio de um sensor
+                    de cor TCS3200.
+                </p>
+                <div class="cards-sobre">
+
+                <div class="card-sobre">
+
+                    <i class="bi bi-bullseye"></i>
+
+                    <h3>Missão</h3>
+
+                    <p>
+                        Facilitar o monitoramento da saúde das plantas.
+                    </p>
+
+                </div>
+
+                <div class="card-sobre">
+
+                    <i class="bi bi-tree-fill"></i>
+
+                    <h3>Objetivo</h3>
+
+                    <p>
+                        Detectar alterações nas folhas utilizando um sensor RGB.
+                    </p>
+
+                </div>
+
+                <div class="card-sobre">
+
+                    <i class="bi bi-cpu-fill"></i>
+
+                    <h3>Tecnologia</h3>
+
+                    <p>
+                        Arduino, TCS3200, Flask, HTML, CSS e Banco de Dados.
+                    </p>
+
+                </div>
+
+            </div>
+
+            </section>
         </div>
     </main>
 {% endblock content %}

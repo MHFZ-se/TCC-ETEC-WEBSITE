@@ -1,145 +1,394 @@
 {% extends 'template_null.html' %}
 
 {% block content %}
+    <img src="{{ url_for('static', filename='img/folha-decorativa.png') }}" 
+        alt="" 
+        class="folha-decorativa">
 
     <main class="main-home">
         
-        <section class="secao secao-home">
-            <div class="div1 home-hero">
-                <div class="home-image-wrap">
+       <section class="secao-home">
 
-                    <div class="status-card">
+            <div class="home-hero">
 
-                        <div class="grafico" style="--valor:95;">
-                                <div class="grafico-centro">
-                                    <span>95%</span>
-                                </div>
-                                </div>
-                            <h3 class="tax">Taxa de acerto</h3>
 
-                        
+                <div class="status-card">
 
+                    <div class="grafico" style="--valor:95;">
+                        <div class="grafico-centro">
+                            <span>95%</span>
+                            <small>Precisão do sensor</small>
+                        </div>
+                    </div>
+
+                    <div class="accuracy-change">
+                        ▲ <strong>3,2%</strong> em relação ao<br>
+                        último teste
+                    </div>
+
+                    <div class="accuracy-footer">
+
+                        <div class="accuracy-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+
+                        <div>
+                            <span>Resultado baseado em</span>
+                            <strong>1.542 análises realizadas</strong>
+                        </div>
 
                     </div>
 
                 </div>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 
+
+                <!-- TEXTO -->
                 <article class="home-card">
-                    <h2>Monitoramento da saude das plantas com um sensor de cor.</h2>
+
+                    <h2>
+                        Monitoramento inteligente
+                        da <span>saúde das plantas</span> 🌿
+                    </h2>
+
+                    <div class="titulo-linha"></div>
+
                     <p>
-                        Voce tem um jardim ou plantas em casa? E se voce mora em uma fazenda ou perto dela?
-                        Com que frequencia voce verifica as folhas das suas plantas para detectar descoloracao?
+                        Monitore suas plantas através de um sensor de cor
+                        e receba alertas automáticos sobre possíveis problemas.
                     </p>
+
                     <p>
-                        E se voce tivesse um equipamento que faz essa verificacao e o avisa, caso suas plantas
-                        estejam ficando doentes? Nosso projeto usa um sensor de cor para identificar diferentes
-                        tonalidades nas folhas, ajudando a detectar pragas, doencas ou deficiencia de nutrientes.
+                        O PlantHealth utiliza tecnologia avançada para analisar
+                        as cores das folhas e identificar alterações relacionadas
+                        a pragas, doenças e deficiência de nutrientes.
                     </p>
+
                     <div class="hero-buttons">
 
-                <a href="#" class="btn-home">
-                <i class="bi bi-tree-fill"></i>
-                Saiba mais
-                </a>
+                        <a href="#" class="btn-home">
+                            <i class="bi bi-tree-fill"></i>
+                            Saiba mais
+                        </a>
 
-                <a href="#" class="btn-home-outline">
-                <i class="bi bi-bar-chart-line-fill"></i>
-                 Ver resultados
-                </a>
+                        <a href="#" class="btn-home-outline">
+                            <i class="bi bi-bar-chart-line-fill"></i>
+                            Ver resultados
+                        </a>
 
-            </div>
+                    </div>
+
                 </article>
-                
+
+
+                <!-- IMAGEM DO SENSOR -->
+                <div class="sensor-hero">
+
+                    <img
+                        src="{{ url_for('static', filename='img/sensor-planta.png') }}"
+                        alt="Sensor analisando uma folha"
+                    >
+
+                </div>
+
             </div>
-            
+
         </section>
          </div>
 
-                <div class="vantagem-card">
+                <section class="vantagens-section">
 
-                    <div class="vantagem-icon">
-                        <i class="bi bi-bell"></i>
+                    <div class="vantagens-container">
+
+                        <div class="vantagens-titulo">
+
+                            <span>RECURSOS DO PLANTHEALTH</span>
+
+                            <h2>
+                                Tudo para cuidar das suas plantas
+                            </h2>
+
+                            <p>
+                                Acompanhe informações importantes sobre suas plantas
+                                e receba dados que ajudam na identificação de possíveis problemas.
+                            </p>
+
+                        </div>
+
+
+                        <div class="vantagens">
+
+                            <!-- CARD 1 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-bell"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Alertas e diagnósticos</h3>
+
+                                    <p>
+                                        Receba alertas quando forem detectadas alterações
+                                        que podem indicar possíveis problemas na planta.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 2 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-palette"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Análise de cores</h3>
+
+                                    <p>
+                                        O sensor analisa a coloração das folhas para
+                                        identificar mudanças importantes na planta.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 3 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-graph-up"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Histórico de dados</h3>
+
+                                    <p>
+                                        Consulte os resultados das análises anteriores
+                                        e acompanhe a evolução da planta ao longo do tempo.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 4 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-cpu"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Sensor inteligente</h3>
+
+                                    <p>
+                                        Utilize o TCS3200 conectado ao Arduino para
+                                        realizar medições de forma rápida e automática.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 5 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-clock-history"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Acompanhamento</h3>
+
+                                    <p>
+                                        Acompanhe as alterações da planta durante
+                                        diferentes períodos e compare os resultados.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 6 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-database"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Dados armazenados</h3>
+
+                                    <p>
+                                        As informações coletadas podem ser armazenadas
+                                        para gerar consultas e relatórios.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 7 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-shield-check"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Resultados confiáveis</h3>
+
+                                    <p>
+                                        Utilize os dados coletados pelo sensor para
+                                        auxiliar no acompanhamento da saúde das plantas.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CARD 8 -->
+                            <div class="vantagem-card">
+
+                                <div class="vantagem-icon">
+                                    <i class="bi bi-file-earmark-bar-graph"></i>
+                                </div>
+
+                                <div class="vantagem-texto">
+
+                                    <h3>Relatórios</h3>
+
+                                    <p>
+                                        Organize os resultados das análises para facilitar
+                                        a visualização e interpretação dos dados.
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <div class="vantagem-texto">
+                </section>
+    
 
-                        <h3>Alertas e diagnósticos</h3>
+        <section class="sensor-section">
 
-                        <p>
-                            Receba alertas quando forem detectados possíveis problemas.
-                        </p>
+    <div class="sensor-container">
 
-                    </div>
+        <!-- IMAGEM -->
+        <div class="sensor-visual">
 
+            <div class="sensor-image-card">
+
+                <img
+                    src="{{ url_for('static', filename='img/arduino.png') }}"
+                    alt="Sensor TCS3200"
+                >
+
+                <div class="sensor-image-title">
+                    <i class="bi bi-cpu"></i>
+                    Sensor TCS3200
                 </div>
 
-            </section>
-    
+            </div>
 
-        <section class="secao secao-home secao-invertida">
-            <div class="div1 home-hero">
-                <div class="status-card">
-
-                        <img
-                            src="{{ url_for('static', filename='img/arduino.png') }}"
-                            class="home-image"
-                        >
-
-                        <h3>Sensor TCS3200</h3>
+        </div>
 
 
+        <!-- CONTEÚDO -->
+        <article class="sensor-content">
+
+            <span class="sensor-label">
+                TECNOLOGIA DO PROJETO
+            </span>
+
+            <h2>
+                Sensor <span>TCS3200</span>
+            </h2>
+
+            <div class="sensor-line"></div>
+
+            <p>
+                O sensor de cor TCS3200 (ou TCS230) é um módulo
+                programável que converte a intensidade da luz em
+                frequência, permitindo identificar diferentes cores RGB.
+            </p>
+
+            <p>
+                Ele possui 64 fotodiodos com filtros para vermelho,
+                verde, azul e sem filtro, sendo ideal para aplicações
+                com Arduino, ESP32 e Raspberry Pi.
+            </p>
+
+
+            <!-- CARACTERÍSTICAS -->
+            <div class="sensor-features">
+
+                <div class="sensor-feature">
+                    <i class="bi bi-grid-3x3-gap"></i>
+
+                    <div>
+                        <strong>64</strong>
+                        <span>Fotodiodos</span>
                     </div>
-                
+                </div>
 
-                <article class="home-card">
 
-    <h2 id="sensor">Sensor TCS3200</h2>
+                <div class="sensor-feature">
+                    <i class="bi bi-palette"></i>
 
-    <p>
-        O sensor de cor TCS3200 (ou TCS230) é um módulo programável que converte intensidade de luz em frequência, permitindo identificar cores RGB. Ele possui 64 fotodiodos com filtros para vermelho, verde, azul e sem filtro, sendo ideal para robótica (seguidores de linha, triagem) e automação com Arduino, ESP32 ou Raspberry Pi.
-    </p>
+                    <div>
+                        <strong>RGB</strong>
+                        <span>Filtro de cores</span>
+                    </div>
+                </div>
 
-    <div class="sensor-info">
 
-        <span>✓ RGB</span>
+                <div class="sensor-feature">
+                    <i class="bi bi-brightness-high"></i>
 
-        <span>✓ Arduino</span>
+                    <div>
+                        <strong>Alta</strong>
+                        <span>Sensibilidade</span>
+                    </div>
+                </div>
 
-        <span>✓ ESP32</span>
 
-        <span>✓ Raspberry Pi</span>
+                <div class="sensor-feature">
+                    <i class="bi bi-cpu"></i>
 
-    </div>
-    
-
-</article>
+                    <div>
+                        <strong>Fácil</strong>
+                        <span>Integração</span>
+                    </div>
+                </div>
 
             </div>
-            <div class="sensor-info">
 
-    <div class="info-item">
-        <i class="bi bi-grid-3x3-gap"></i>
-        <span>64 Fotodiodos</span>
+        </article>
+
     </div>
 
-    <div class="info-item">
-        <i class="bi bi-palette"></i>
-        <span>Filtro RGB</span>
-    </div>
-
-    <div class="info-item">
-        <i class="bi bi-brightness-high"></i>
-        <span>Alta sensibilidade</span>
-    </div>
-
-    <div class="info-item">
-        <i class="bi bi-arrows-angle-expand"></i>
-        <span>Fácil integração</span>
-    </div>
-
-</div>
-        </section>
-    </main>
+</section>
     
 {% endblock content %}
