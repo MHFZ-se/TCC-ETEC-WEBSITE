@@ -10,6 +10,7 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: #d6e0d1;
     background-image: url('image.png');
+     overflow-x: hidden;
 }
 
 body {
@@ -96,6 +97,14 @@ main.main-home {
 
 .textoDropdown {
     color: #2e7d32 !important;
+}
+.navbar .dropdown-item {
+    color: #2e7d32 !important;
+}
+
+.navbar .dropdown-item:hover {
+    color: #163a24 !important;
+    background: #e8f5e9;
 }
 
 
@@ -905,6 +914,92 @@ footer {
 .atividade-icon-info { color: #2e7d32; }
 @media (max-width: 700px) {
     .resumo-stats {
+        grid-template-columns: 1fr;
+    }
+}
+/*
+   SOBRE NÓS
+*/
+.sobre-hero {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 50px;
+}
+.sobre-hero h1 {
+    color: #10251a;
+    font-size: 42px;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
+.sobre-hero .subtitulo {
+    color: #68746c;
+    font-size: 16px;
+}
+.sobre-card {
+    max-width: 900px;
+    margin: 0 auto;
+}
+.sobre-card h2 {
+    color: #10251a;
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.sobre-card > p {
+    color: #5f6b63;
+    font-size: 16px;
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: 50px;
+}
+.cards-sobre {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+.card-sobre {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px;
+    background: white;
+    border: 1px solid #e1eee3;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    transition: 0.3s ease;
+}
+.card-sobre:hover {
+    transform: translateY(-7px);
+    border-color: #2e7d32;
+    box-shadow: 0 15px 35px rgba(46, 125, 50, 0.12);
+}
+.card-sobre i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 18px;
+    background: #e8f5e9;
+    border-radius: 14px;
+    color: #2e7d32;
+    font-size: 22px;
+}
+.card-sobre h3 {
+    margin: 0 0 8px;
+    color: #163a24;
+    font-size: 18px;
+    font-weight: 700;
+}
+.card-sobre p {
+    margin: 0;
+    color: #68746c;
+    font-size: 14px;
+    line-height: 1.7;
+}
+@media (max-width: 900px) {
+    .cards-sobre {
         grid-template-columns: 1fr;
     }
 }

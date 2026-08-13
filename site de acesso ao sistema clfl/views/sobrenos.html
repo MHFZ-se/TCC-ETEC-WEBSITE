@@ -1,66 +1,52 @@
 {% extends 'template_null.html' %}
 
 {% block content %}
-    <main>
-        <div>
+<main>
+    <section class="secao">
+
+        <div class="sobre-hero">
             <h1>Sobre Nós</h1>
-
-                <p class="subtitulo">
+            <p class="subtitulo">
                 Conheça a equipe responsável pelo desenvolvimento do PlantHealth.
-                </p>
-             <section class="sobre-card">
+            </p>
+        </div>
 
-                <h2>Quem somos?</h2>
+        <div class="sobre-card">
 
-                <p>
-                    Somos um grupo de quatro estudantes da ETEC que desenvolveu
-                    o PlantHealth como Trabalho de Conclusão de Curso (TCC).
+            <h2>Quem somos?</h2>
 
-                    Nosso objetivo é utilizar tecnologia para auxiliar no
-                    monitoramento da saúde das plantas por meio de um sensor
-                    de cor TCS3200.
-                </p>
-                <div class="cards-sobre">
+            <p>
+                Somos um grupo de quatro estudantes da ETEC que desenvolveu
+                o PlantHealth como Trabalho de Conclusão de Curso (TCC).
+                Nosso objetivo é utilizar tecnologia para auxiliar no
+                monitoramento da saúde das plantas por meio de um sensor
+                de cor TCS3200.
+            </p>
+
+            <div class="cards-sobre">
 
                 <div class="card-sobre">
-
                     <i class="bi bi-bullseye"></i>
-
                     <h3>Missão</h3>
-
-                    <p>
-                        Facilitar o monitoramento da saúde das plantas.
-                    </p>
-
+                    <p>Facilitar o monitoramento da saúde das plantas.</p>
                 </div>
 
                 <div class="card-sobre">
-
                     <i class="bi bi-tree-fill"></i>
-
                     <h3>Objetivo</h3>
-
-                    <p>
-                        Detectar alterações nas folhas utilizando um sensor RGB.
-                    </p>
-
+                    <p>Detectar alterações nas folhas utilizando um sensor RGB.</p>
                 </div>
 
                 <div class="card-sobre">
-
                     <i class="bi bi-cpu-fill"></i>
-
                     <h3>Tecnologia</h3>
-
-                    <p>
-                        Arduino, TCS3200, Flask, HTML, CSS e Banco de Dados.
-                    </p>
-
+                    <p>Arduino, TCS3200, Flask, HTML, CSS e Banco de Dados.</p>
                 </div>
 
             </div>
 
-            </section>
         </div>
-    </main>
+
+    </section>
+</main>
 {% endblock content %}

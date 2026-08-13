@@ -13,72 +13,53 @@
     <header>
             
     </header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{url_for('home')}}">PlantHealth</a>
+    <a class="navbar-brand" href="{{ url_for('home') }}">
+      <i class="bi bi-flower2"></i> PlantHealth
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span> 
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{url_for('sobrenos')}}">Sobre nos</a>
+          <a class="nav-link" href="{{ url_for('sobrenos') }}">Sobre nós</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{{url_for('home')}}">Tutorial de Usuario</a>
+          <a class="nav-link" href="{{ url_for('home') }}">Tutorial de usuário</a>
         </li>
-        
-        
         {% if session["idLogado"] %}
         <li class="nav-item">
-          <a class="nav-link" href="{{url_for('interface')}}">interface</a>
-          <!-- lugar principal que o usuario vai utilizar, -->
+          <a class="nav-link" href="{{ url_for('interface') }}">Interface</a>
         </li>
-
         {% endif %}
-
-        <!-- isso é temporario e será retirado depois -->
-        <!--<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Opções de debug
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item " class="textoDropdown" href="{{url_for('home')}}">Sensores</a></li>
-            <li><a class="dropdown-item textoDropdown" href="{{url_for('centroInfo')}}">Analises</a></li>
-            <li><a class="dropdown-item textoDropdown" href="{{url_for('consulta')}}">Analise</a></li>
-             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li> 
-          </ul>
-        </li>-->
-        <!-- <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li> -->
       </ul>
 
       {% if session["idLogado"] %}
-      <div>
+      <ul class="navbar-nav navbar-auth-logado">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{session['idLogado']}}
-            <img src="" alt="">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="navbar-avatar">
+              <i class="bi bi-person-fill"></i>
+            </span>
+            {{ session['nomeLogado'] }}
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item " class="textoDropdown" href="{{url_for('sair')}}">Sair</a></li>
-            <li><a class="dropdown-item textoDropdown" href="{{url_for('centroInfo')}}">Dados pessoais</a></li>
-            <li><a class="dropdown-item textoDropdown" href="{{url_for('consulta')}}">Analise</a></li>
-            <!-- <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="{{ url_for('centroInfo') }}"><i class="bi bi-person-badge"></i> Dados pessoais</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('consulta') }}"><i class="bi bi-clipboard2-data"></i> Análise</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('sair') }}"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
           </ul>
-          </li>
-      </div>
-
+        </li>
+      </ul>
       {% else %}
       <div class="d-flex align-items-center navbar-auth">
-        <a class="nav-link" href="{{url_for('login')}}">Logar</a>
+        <a class="nav-link" href="{{ url_for('login') }}">Logar</a>
         <span class="navbar-auth-sep" aria-hidden="true">|</span>
-        <a class="nav-link" href="{{url_for('cadastro')}}">Cadastrar</a>
+        <a class="nav-link" href="{{ url_for('cadastro') }}">Cadastrar</a>
       </div>
-
       {% endif %}
 
     </div>
