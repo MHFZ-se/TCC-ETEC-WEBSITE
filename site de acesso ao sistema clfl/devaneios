@@ -1,2 +1,40 @@
 to colocando o sair mas ñ... esquece
 
+Diario do Henri
+    Fazer funcionar o vinculo com sensor    
+    Estruturar como vai funcionar o questionario de diagnostico
+    Pesquisar os estados das plantas
+    Criar valores ficticios a serem auterados
+    Estruturar como vão funcionar as medições
+    Implementar respnsividade flash messages no login
+    Implementar respnsividade flash messages no cadastro
+    Criar a Pagina Analises
+    Criar a Pagina Tutorial de Usuario
+        Colocar um tutorial na pagina de tutorial
+    Criar uma pagina pra configurações de aplicativo
+        Criar uma tabela pra configurações de aplicativo
+            Estruturar um sistema de configurações de aplicativo
+                Implementar configurações de aplicativo
+    Ver como ta o sistema descktop
+        Ter certeza de que ele é compatível com o resto das coisas
+            Provalvelmete fazer um pouco pra não ficar pesado pro breno
+                ficar maluco pq eu não salvei nada de C# e eu esqueci tudo
+    --eu to começando a ficar depressivo fazendo essa lista 
+    criar uma pagina de dados pessoais
+        Implementar a pagina de dados pessoais  
+    Implementar funcionalidade na pagina informações de sensor
+    Implementar funcionalidade na pagina desvincular sensor 
+        Botar requrimento de senha(confirmação), botar confirmação em sair tmb
+
+    Implementar o contador de sensores ativos(/interface)
+    Implementar ultima leitura (/interface)
+    Estruturar um sistema de Atividade recente(/interface)
+        Implementar a tabela nos models
+            Implementar Atividade recente
+
+
+Recados pro Henri
+
+Recados pro caio
+    os botões da interface não parecem ser botões
+    Melhorar as paginas de login e cadastro
