@@ -1,7 +1,7 @@
 to colocando o sair mas ñ... esquece
 
 Diario do Henri
-    Fazer funcionar o vinculo com sensor    
+                feito   Fazer funcionar o vinculo com sensor    
     Estruturar como vai funcionar o questionario de diagnostico
     Pesquisar os estados das plantas
     Criar valores ficticios a serem auterados
@@ -23,6 +23,7 @@ Diario do Henri
     criar uma pagina de dados pessoais
         Implementar a pagina de dados pessoais  
     Implementar funcionalidade na pagina informações de sensor
+    
     Implementar funcionalidade na pagina desvincular sensor 
         Botar requrimento de senha(confirmação), botar confirmação em sair tmb
 

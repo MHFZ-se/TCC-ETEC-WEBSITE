@@ -169,34 +169,43 @@ def init_app(app):
         return redirect(url_for('home')) 
     
       
-    @app.route('/interface/adicionarSensor', methods=['GET', 'POST'])
-    def adicionarSensor():
+    @app.route('/interface/vincularSensor', methods=['GET', 'POST','PUT'])
+    def vincularSensor():
 
         if request.method == "POST":
+            # vamo planejar direito, um usuario tem varios sensores, um sensor só tem um usuario pr motivos de segurança
+            #ja que as consultas são vinculadas ao sensor e não ao usuario(pode mudar)
+            #os sensores ja existem pois são pre fabricados portanto eles podem ja existir no banco
+            #ou seja não da pra cadastrar um sensor que não existe(ainda)
+            #todo sensor produzido consta no banco
+            #petcebi que seria mais adequado chamar de ferramenta 
+            #consegui criar,
+            #o sensor só pode ser vinculado se não tiver nenhum id associao
+            #os sensores vão de 1 a 50 um numero fora disso é falso
 
             dados_form = request.form.to_dict()
-            numero_de_serie = dados_form['numero_de_serie']
+            numero_de_serie = int(dados_form['numero_de_serie'])
 
 
-            sensor_existente = Sensor.query.filter_by(
-                numero_de_serie=numero_de_serie
-            ).first()
+            # sensor_existente = Sensor.query.filter_by(
+            #     numero_de_serie=numero_de_serie
+            # ).first()
 
-            if sensor_existente:
-                return "Este sensor já está no nome de outro usuário, entre em contato pelo suporte ou tente de novo"
+            if numero_de_serie < 1 or numero_de_serie > 51:
+                return "não existe nenhum sensor com este codigo por favor insira um valido"
+
+                
+            sensor = Sensor.query.get(numero_de_serie)
+            if sensor.id is not None: 
+                return "O sensor informado já está no nome de um usuario, entre em contato pelo suporte ou tente de novo"
             
-            if sensorExisteDvdd: return "não existe nenhum sensor com este codigo"
+            sensor.id = str(session['idLogado'])
 
-            novoVinculo = Sensor(
-                numero_de_serie=numero_de_serie,
-                id=session['idLogado'])
-            
-            db.session.add(novoVinculo)
             db.session.commit()
-
+            
             return redirect(url_for('interface'))
 
-        return render_template('addSensor.html')
+        return render_template('vincSensor.html')
     
     @app.route('/interface/verSensores', methods=['GET','POST'])
     def verSensores():
@@ -205,4 +214,5 @@ def init_app(app):
 
     @app.route('/interface/removerSensor', methods=['GET', 'POST'])
     def removerSensor():
+        
         return render_template('removerSensor.html')

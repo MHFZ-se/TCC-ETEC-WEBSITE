@@ -43,6 +43,15 @@ if __name__ == '__main__':
     db.init_app(app=app)
     with app.test_request_context():
         db.create_all()
+
+        for numero in range(1, 51):
+            sensor = Sensor.query.get(numero)
+
+            if sensor is None:
+                sensor = Sensor(numero_de_serie=numero, id=None)
+                db.session.add(sensor)
+
+        db.session.commit()
         
     app.run(debug=True)
     
