@@ -5,8 +5,19 @@
 
         {% for sensor in sensores_do_user%}
         <div>
-            <p>nome:{{sensor.numero_de_serie}}</p>
-            <p>Numero de serie do sensor:{{sensor.numero_de_serie}}</p>
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Numero de serie</th>
+                    <th>Consultas</th>
+                </tr>
+                <tr>
+                    <td><p>{{sensor.numero_de_serie}}</p></td>
+                    <td><p>{{sensor.numero_de_serie}}</p></td>
+                    <td><a href="url_for(analises)">Lista</a></td>
+                </tr>
+            </table>
+            
         </div>
         {% endfor %}
     </main>
