@@ -209,8 +209,25 @@ def init_app(app):
     
     @app.route('/interface/verSensores', methods=['GET','POST'])
     def verSensores():
+        #planejamento
+        #eu vou fazer um objeto, array, dicionario... sei la ja esqueci
+        #que contenha todos os sensores de um usuario
+        #vou fazer isso com um for que ve quais sensores tem o mesmo id da sessão logada e ai eu adciono, seria bem facil com ia
+        #mas eu quero me desafiar
 
-        return render_template('verSensores.html')
+        #salva a lista com todos os sensores
+        sensores = Sensor.query.all()
+
+        sensores_do_user = []
+
+        for sensor in sensores:
+            if sensor.id is not None:
+                if int(sensor.id) == session['idLogado']:
+                    sensores_do_user.append(sensor)
+        
+        print(sensores_do_user)
+
+        return render_template('verSensores.html', sensores_do_user= sensores_do_user)
 
     @app.route('/interface/removerSensor', methods=['GET', 'POST'])
     def removerSensor():

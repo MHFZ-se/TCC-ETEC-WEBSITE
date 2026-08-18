@@ -2,8 +2,12 @@
 
 {% block content %}
     <main>
-        {% for in %}
-        
-        {% end for %}
+
+        {% for sensor in sensores_do_user%}
+        <div>
+            <p>nome:{{sensor.numero_de_serie}}</p>
+            <p>Numero de serie do sensor:{{sensor.numero_de_serie}}</p>
+        </div>
+        {% endfor %}
     </main>
 {% endblock content %}
