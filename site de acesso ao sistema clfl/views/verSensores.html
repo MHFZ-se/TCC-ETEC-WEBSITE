@@ -1,24 +1,58 @@
 {% extends 'template_null.html' %}
 
 {% block content %}
-    <main>
 
-        {% for sensor in sensores_do_user%}
-        <div>
-            <table>
-                <tr>
-                    <th>Nome</th>
-                    <th>Numero de serie</th>
-                    <th>Consultas</th>
-                </tr>
-                <tr>
-                    <td><p>{{sensor.numero_de_serie}}</p></td>
-                    <td><p>{{sensor.numero_de_serie}}</p></td>
-                    <td><a href="url_for(analises)">Lista</a></td>
-                </tr>
+<main class="sensores-page">
+
+    <div class="sensores-container">
+
+        <h1>Meus sensores</h1>
+        <p class="sensores-subtitulo">
+            Consulte seus sensores cadastrados e veja suas análises.
+        </p>
+
+        <div class="tabela-container">
+
+            <table class="tabela-sensores">
+
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Número de série</th>
+                        <th>Consultas</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for sensor in sensores_do_user %}
+
+                    <tr>
+                        <td>
+                            Sensor {{ sensor.numero_de_serie }}
+                        </td>
+
+                        <td>
+                            {{ sensor.numero_de_serie }}
+                        </td>
+
+                        <td>
+                            <a href="{{ url_for('anteriores') }}" class="btn-consultar">
+                                Ver análises
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
             </table>
-            
+
         </div>
-        {% endfor %}
-    </main>
+
+    </div>
+
+</main>
+
 {% endblock content %}

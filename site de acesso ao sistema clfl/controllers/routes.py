@@ -122,9 +122,20 @@ def init_app(app):
     
     
     
-    @app.route('/centro/informacoes')#leva a ultima analise e anteriores
+    @app.route('/centro/informacoes', methods=['GET','POST'])#leva a ultima analise e anteriores
     def centroInfo():
-        return 'falso(placeholder)'
+        usuarios = Usuario.query.all()
+        
+        nome = []
+        
+        for usuario in usuarios:
+            if usuario.id is not None:
+                if int(usuario.id) == session['idLogado']:
+                            nome.append(usuario)
+                
+        print(nome)
+        
+        return render_template('centroInfo.html', nome= nome)
     
     # @app.route('/centro/informacoes/ultima')#leva a consulta da ultima
     # def ultima():
