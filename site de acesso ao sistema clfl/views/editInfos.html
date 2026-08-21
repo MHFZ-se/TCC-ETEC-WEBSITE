@@ -1,0 +1,23 @@
+{% extends 'template_null.html' %}
+
+{% block content %} <!--isto indica o uso de um codigo .py-->
+    <main>
+        <div class="col-md-4">
+            <form action="{{url_for('editarInfos')}}" method="POST" >
+                <label class="abel">Informe seu nome completo</label><br>
+                <input class="inp" type="text" name="nome" value={{usuario.nome}}><br>
+                <label class="abel">Informe seu numero de  Telefone</label><br>
+                <input class="inp" type="text" name="telefone" value={{usuario.telefone}}><br>
+                <label class="abel">Informe um endereço de email válido </label><br>
+                <input class="inp" type="text" name="email" value={{usuario.email}}><br>
+                <label class="abel">Informe uma senha</label><br>
+                <input class="inp" type="password" name="senha" value={{usuario.senha}} onfocus="this.select()"><br>
+                <label class="abel">Informe a senha novamente</label><br>
+                <input class="inp" type="password" name="senha2" value={{usuario.senha}} onfocus="this.select()"><br>
+
+                <input class="button" type="submit" value="Registrar alterações">
+                
+            </form>
+        </div>
+    </main> 
+{% endblock content %}

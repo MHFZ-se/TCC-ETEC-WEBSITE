@@ -236,11 +236,78 @@ def init_app(app):
                 if int(sensor.id) == session['idLogado']:
                     sensores_do_user.append(sensor)
         
-        print(sensores_do_user)
+        #print(sensores_do_user)
 
-        return render_template('verSensores.html', sensores_do_user= sensores_do_user)
+        return render_template('verSensores.html', sensores_do_user = sensores_do_user)
+
+
+
 
     @app.route('/interface/removerSensor', methods=['GET', 'POST'])
-    def removerSensor():
+
+    @app.route('/interface/removerSensor/<int:numero_de_serie>')
+    def removerSensor(numero_de_serie=None):
+
+
+        if numero_de_serie:#depois de clicar no botão deletar
+            
+            sensor = Sensor.query.filter_by(numero_de_serie = numero_de_serie).first()
+            sensor.id = None
+            db.session.commit()
+
+            return redirect(url_for('verSensores'))
+        #primeira entrada    
+
+        sensores = Sensor.query.all()
+        sensores_do_user = []
+
+        for sensor in sensores:
+            if sensor.id is not None:
+
+                if int(sensor.id) == session['idLogado']:
+
+                    sensores_do_user.append(sensor)
         
-        return render_template('removerSensor.html')
+        return render_template('removerSensor.html', sensores_do_user = sensores_do_user)
+
+
+
+
+
+    @app.route('/centro/informacoes/editar', methods=['GET', 'POST'])
+    def editarInfos():
+
+        id = session['idLogado']
+        usuario = Usuario.query.filter_by(id=id).first()
+
+        if request.method == "POST":
+
+            dadosSubtitutos = request.form
+
+            nome = dadosSubtitutos['nome']
+            email = dadosSubtitutos['email']
+            telefone = dadosSubtitutos['telefone']
+            senha = dadosSubtitutos['senha']
+            senha2 = dadosSubtitutos['senha2']
+
+            if  nome == None or email == None or telefone == None or senha == None or senha2 == None:
+                return "Preencha todos os campos!!!"
+            
+
+            if senha != senha2: 
+                return "Informe Duas senhas iguais"
+            
+            usuario.nome = nome
+            usuario.email = email
+            usuario.telefone = telefone
+            
+            if check_password_hash(usuario.senha,senha) and check_password_hash(usuario.senha,senha2):
+                db.session.commit()
+                return redirect(url_for('centroInfo'))
+            
+            usuario.senha = generate_password_hash(senha)
+            db.session.commit()
+            return redirect(url_for('centroInfo'))
+            
+
+        return render_template('editInfos.html', usuario = usuario)

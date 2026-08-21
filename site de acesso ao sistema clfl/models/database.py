@@ -8,14 +8,16 @@ class Usuario(db.Model):
     senha = db.Column(db.String(255))
     email =  db.Column(db.String(40))
     numero_de_serie = db.Column(db.Integer , nullable=True)
+    rota_foto_perfil = db.Column(db.String(60), nullable=True)
     
-def __init__(self, nome, telefone, senha, email, numero_de_serie):
+def __init__(self, nome, telefone, senha, email, numero_de_serie,rota_foto_perfil):
     self.id = id
     self.nome = nome
     self.telefone = telefone
     self.senha = senha
     self.email = email
     self.numero_de_serie = numero_de_serie
+    self.rota_foto_perfil = rota_foto_perfil
     
 class Sensor(db.Model):
     numero_de_serie = db.Column(db.Integer, primary_key = True)

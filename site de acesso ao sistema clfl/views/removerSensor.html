@@ -2,6 +2,36 @@
 
 {% block content %}
     <main>
-        
+        <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Número de série</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for sensor in sensores_do_user %}
+
+                        <tr>
+                            <td>
+                                Sensor {{ sensor.numero_de_serie }}
+                            </td>
+
+                            <td>
+                                {{ sensor.numero_de_serie }}
+                            </td>
+
+                            <td>
+                                <a href="{{ url_for('removerSensor', numero_de_serie = sensor.numero_de_serie) }}" class="btn btn-danger">
+                                    Desvincular sensor de {{session['nomeLogado']}}
+                                </a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                </tbody>    
+        </table>
+
     </main>
 {% endblock content %}
