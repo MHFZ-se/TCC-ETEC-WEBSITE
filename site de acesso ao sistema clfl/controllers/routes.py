@@ -82,7 +82,8 @@ def init_app(app):
                 email = email,
                 senha = senhaCodificada,
                 nome = dadosPreenchidos['nome'],
-                telefone = dadosPreenchidos['telefone']
+                telefone = dadosPreenchidos['telefone'],
+                adm = False
             )
             
             
@@ -111,13 +112,6 @@ def init_app(app):
     @app.route('/interface')#
     def interface():
         return render_template('interface.html')
-    
-    
-    
-    
-    
-    
-    
     
     
     
