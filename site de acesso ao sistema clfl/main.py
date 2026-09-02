@@ -5,6 +5,7 @@ app = Flask(__name__, template_folder = 'views')
 from controllers import routes
 from werkzeug.security import generate_password_hash
 
+
 import pymysql
 
 from models.database import db, Usuario, Sensor, Coleta
