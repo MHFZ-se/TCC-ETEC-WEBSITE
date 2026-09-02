@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, url_for, flash, session
 from models.database import Usuario,Sensor,db
 from controllers.funcoes import *
 from markupsafe import Markup
+from controllers.funcoes import quantidade_de_sensores
 
 from werkzeug.security import generate_password_hash,check_password_hash
 
@@ -111,7 +112,7 @@ def init_app(app):
         
     @app.route('/interface')#
     def interface():
-        return render_template('interface.html')
+        return render_template('interface.html', quantidade_de_sensores = quantidade_de_sensores(session['idLogado']))
     
     
     
