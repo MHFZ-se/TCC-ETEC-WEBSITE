@@ -2053,3 +2053,8 @@ footer {
     background: #e3f2fd;
     color: #1976d2;
 }
+.flash-container {
+    max-width: 900px;
+    margin: 20px auto 0;
+    padding: 0 15px;
+}

@@ -21,65 +21,60 @@ def init_app(app):
     #login com senha e email
     @app.route('/login', methods=['GET','POST'])
     def login():
-        
+    
         if request.method == "POST":
-
-            
             email = request.form['email']
             senha = request.form['senha']
-            usuario = Usuario.query.filter_by(email=email).first()#cria uma lista com todos os emails do banco, a longo prazo isso pode dar o maior BO cara...
+            usuario = Usuario.query.filter_by(email=email).first()
 
-            if usuario:#checa se o usuario existe no banco
-
-                if check_password_hash(usuario.senha,senha):# o primeiro parametro é a senha hashada e o segundo a senha do form
-                    
+            if usuario:
+                if check_password_hash(usuario.senha, senha):
                     session['idLogado'] = usuario.id
                     session['nomeLogado'] = usuario.nome
                     session['emailLogado'] = usuario.email
                     
+                    flash(f"Bem-vindo de volta, {usuario.nome}!", 'success')
                     return redirect(url_for('interface'))
                 
-                else: return "A senha não é compativel com o email informado, por favor tente de novo"
+                else:
+                    flash("A senha informada está incorreta. Tente novamente.", 'danger')
+                    return redirect(url_for('login'))
 
-            else: return "O email informado não existe no banco ou foi digitado errado, por favor tente de novo"
+            else:
+                flash("Não encontramos uma conta com este e-mail.", 'danger')
+                return redirect(url_for('login'))
 
         return render_template('login.html')
     
     
-    
-    
-    
-    
-    
+
     
     
     @app.route('/cadastro', methods=['GET','POST'])
+    @app.route('/cadastro', methods=['GET','POST'])
     def cadastro():
-        #if id:
-            
+        
         if request.method == "POST":
             dadosPreenchidos = request.form.to_dict()
             
             email = dadosPreenchidos['email']
             usuario = Usuario.query.filter_by(email=email).first()
             
-            if usuario:#verificando se o usuario ja existe no banco
-                msg = Markup("")
-                flash(msg,'danger')
-                return redirect(url_for('cadastro'))#caso ja tenha uma conta com o mesmo email
+            if usuario:
+                msg = Markup("Este e-mail já está cadastrado. Faça o <a href='/login'>login</a>.")
+                flash(msg, 'danger')
+                return redirect(url_for('cadastro'))
             
-            
-            #Se não existir ele é criado
             senha = dadosPreenchidos['senha']
             senha2 = dadosPreenchidos['senha2']
             
             if senha != senha2:
-                return "Ambas as senhas devem ser iguais"
+                flash("As senhas informadas não são iguais.", 'danger')
+                return redirect(url_for('cadastro'))
 
-            senhaCodificada = generate_password_hash(senha,method='scrypt')
+            senhaCodificada = generate_password_hash(senha, method='scrypt')
             
             novoUsuario = Usuario(
-                
                 email = email,
                 senha = senhaCodificada,
                 nome = dadosPreenchidos['nome'],
@@ -87,18 +82,13 @@ def init_app(app):
                 adm = False
             )
             
-            
             db.session.add(novoUsuario)
-            # Confirmando a operação no banco
             db.session.commit()
             
-            msg = Markup("")
-            flash(msg,'danger')#conta criada
-            return redirect(url_for('home'))#caso de tudo certo
+            flash("Cadastro realizado com sucesso! Faça login para continuar.", 'success')
+            return redirect(url_for('login'))
         
-        
-        return render_template('cadastro.html')#se o metodo não for post
-        
+        return render_template('cadastro.html')
         
         
     @app.route('/sobrenos')#
@@ -132,9 +122,6 @@ def init_app(app):
         
         return render_template('centroInfo.html', nome= nome)
     
-    # @app.route('/centro/informacoes/ultima')#leva a consulta da ultima
-    # def ultima():
-    #     return 'falso'
     
     
     
@@ -243,16 +230,14 @@ def init_app(app):
     @app.route('/interface/removerSensor/<int:numero_de_serie>')
     def removerSensor(numero_de_serie=None):
 
-
-        if numero_de_serie:#depois de clicar no botão deletar
-            
-            sensor = Sensor.query.filter_by(numero_de_serie = numero_de_serie).first()
+        if numero_de_serie:
+            sensor = Sensor.query.filter_by(numero_de_serie=numero_de_serie).first()
             sensor.id = None
             db.session.commit()
 
+            flash("Sensor desvinculado com sucesso.", 'success')
             return redirect(url_for('verSensores'))
-        #primeira entrada    
-
+        
         sensores = Sensor.query.all()
         sensores_do_user = []
 
