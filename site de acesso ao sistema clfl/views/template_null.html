@@ -35,7 +35,7 @@
           <a class="nav-link" href="{{ url_for('interface') }}">Interface</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('verSensores') }}">Analises</a>
+          <a class="nav-link" href="{{ url_for('analises') }}">Analises</a>
         </li>
         {% endif %}
       </ul>
@@ -51,7 +51,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="{{ url_for('centroInfo') }}"><i class="bi bi-person-badge"></i> Dados pessoais</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('verSensores') }}"><i class="bi bi-clipboard2-data"></i> Análise</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('analises') }}"><i class="bi bi-clipboard2-data"></i> Análise</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{{ url_for('sair') }}"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
           </ul>

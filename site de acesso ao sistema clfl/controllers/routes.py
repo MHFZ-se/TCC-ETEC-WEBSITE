@@ -306,3 +306,30 @@ def init_app(app):
             
 
         return render_template('editInfos.html', usuario = usuario)
+    
+    @app.route('/analises')
+    def analises():
+        
+        # Criando variáveis para simular uma análise do sensor de cor
+        data = "2026-08-01"
+        corA = "Verde saudável"
+        led_vermelho = 45
+        led_verde = 180
+        led_azul = 60
+
+        analise = {
+            "data": data,
+            "corA": corA,
+            "led_vermelho": led_vermelho,
+            "led_verde": led_verde,
+            "led_azul": led_azul
+        }
+
+        lista_analises = [
+            {"data": "2026-08-01", "corA": "Verde saudável", "led_vermelho": 45, "led_verde": 180, "led_azul": 60},
+            {"data": "2026-08-05", "corA": "Verde claro",    "led_vermelho": 70, "led_verde": 190, "led_azul": 80},
+            {"data": "2026-08-10", "corA": "Amarelado",      "led_vermelho": 150, "led_verde": 160, "led_azul": 40},
+            {"data": "2026-08-15", "corA": "Azulada",         "led_vermelho": 30, "led_verde": 80, "led_azul": 120},
+            {"data": "2026-08-20", "corA": "Verde saudável", "led_vermelho": 48, "led_verde": 178, "led_azul": 62},
+        ]
+        return render_template('analises.html', analises=lista_analises)

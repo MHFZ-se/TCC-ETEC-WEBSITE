@@ -1,7 +1,139 @@
 {% extends 'template_null.html' %}
 
-{% block content %} <!--isto indica o uso de um codigo .py-->
-    <main>
-        
-    </main>
+{% block content %}
+
+<main class="analises-page">
+
+    <div class="analises-container">
+        <div class="analises-header">
+
+            <div>
+                <h1>Minhas análises</h1>
+
+                <p>
+                    Consulte os resultados das análises realizadas pelo seu sensor.
+                </p>
+            </div>
+
+            <div class="analises-icon">
+                <i class="bi bi-graph-up"></i>
+            </div>
+
+        </div>
+
+        <div class="analises-list">
+
+            {% for analise in analises %}
+
+            <div class="analise-card">
+
+                <div class="analise-card-header">
+
+                    <div class="analise-titulo">
+
+                        <div class="analise-icon">
+                            <i class="bi bi-clipboard2-pulse"></i>
+                        </div>
+
+                        <div>
+                            <h2>Análise realizada</h2>
+
+                            <span>
+                                {{ analise.data }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <span class="analise-status">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Concluída
+                    </span>
+
+                </div>
+
+
+                <div class="analise-info">
+
+                    <div class="analise-info-item">
+
+                        <div class="info-icon">
+                            <i class="bi bi-palette"></i>
+                        </div>
+
+                        <div>
+                            <span>Cor detectada</span>
+
+                            <strong>
+                                {{ analise.corA }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="analise-info-item">
+
+                        <div class="info-icon vermelho">
+                            <i class="bi bi-circle-fill"></i>
+                        </div>
+
+                        <div>
+                            <span>Vermelho</span>
+
+                            <strong>
+                                {{ analise.led_vermelho }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="analise-info-item">
+
+                        <div class="info-icon verde">
+                            <i class="bi bi-circle-fill"></i>
+                        </div>
+
+                        <div>
+                            <span>Verde</span>
+
+                            <strong>
+                                {{ analise.led_verde }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="analise-info-item">
+
+                        <div class="info-icon azul">
+                            <i class="bi bi-circle-fill"></i>
+                        </div>
+
+                        <div>
+                            <span>Azul</span>
+
+                            <strong>
+                                {{ analise.led_azul }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</main>
+
 {% endblock content %}

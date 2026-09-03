@@ -1,37 +1,49 @@
 {% extends 'template_null.html' %}
 
 {% block content %}
-    <main>
-        <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Número de série</th>
-                    </tr>
-                </thead>
+<main>
+    <section class="secao">
 
-                <tbody>
-                    {% for sensor in sensores_do_user %}
+        <div class="sensores-header">
+            <h1>Meus sensores</h1>
+            <p>Gerencie os dispositivos vinculados à sua conta.</p>
+        </div>
 
-                        <tr>
-                            <td>
-                                Sensor {{ sensor.numero_de_serie }}
-                            </td>
+        {% if sensores_do_user %}
+        <div class="sensores-lista">
 
-                            <td>
-                                {{ sensor.numero_de_serie }}
-                            </td>
+            {% for sensor in sensores_do_user %}
+            <div class="sensor-item">
 
-                            <td>
-                                <a href="{{ url_for('removerSensor', numero_de_serie = sensor.numero_de_serie) }}" class="btn btn-danger">
-                                    Desvincular sensor de {{session['nomeLogado']}}
-                                </a>
-                            </td>
-                        </tr>
+                <div class="sensor-item-icon">
+                    <i class="bi bi-cpu"></i>
+                </div>
 
-                    {% endfor %}
-                </tbody>    
-        </table>
+                <div class="sensor-item-info">
+                    <h3>{{ sensor.nome }}</h3>
+                    <p>Número de série: {{ sensor.numero_de_serie }}</p>
+                </div>
 
-    </main>
+                <a href="{{ url_for('removerSensor', numero_de_serie=sensor.numero_de_serie) }}"
+                   class="sensor-item-remover">
+                    <i class="bi bi-trash3"></i>
+                    Desvincular
+                </a>
+
+            </div>
+            {% endfor %}
+
+        </div>
+        {% else %}
+        <div class="sensores-vazio">
+            <i class="bi bi-cpu"></i>
+            <p>Você ainda não tem sensores vinculados.</p>
+            <a href="{{ url_for('adicionarSensor') }}" class="button" style="max-width:220px;">
+                Adicionar sensor
+            </a>
+        </div>
+        {% endif %}
+
+    </section>
+</main>
 {% endblock content %}
