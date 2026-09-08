@@ -5,118 +5,116 @@
 <main class="analises-page">
 
     <div class="analises-container">
+
         <div class="analises-header">
 
             <div>
+                <span class="analises-label">PLANTHEALTH</span>
+
                 <h1>Minhas análises</h1>
 
                 <p>
-                    Consulte os resultados das análises realizadas pelo seu sensor.
+                    Resultados obtidos pelo sensor.
                 </p>
             </div>
 
-            <div class="analises-icon">
-                <i class="bi bi-graph-up"></i>
+            <div class="total-analises">
+                <strong>{{ analises|length }}</strong>
+                <span>Análises</span>
             </div>
 
         </div>
 
-        <div class="analises-list">
+
+        <div class="analises-grid">
 
             {% for analise in analises %}
 
-            <div class="analise-card">
+            <article class="analise-card">
 
-                <div class="analise-card-header">
+                <div class="card-top">
 
-                    <div class="analise-titulo">
+                    <div>
+                        <span class="card-label">DATA</span>
 
-                        <div class="analise-icon">
-                            <i class="bi bi-clipboard2-pulse"></i>
-                        </div>
-
-                        <div>
-                            <h2>Análise realizada</h2>
-
-                            <span>
-                                {{ analise.data }}
-                            </span>
-                        </div>
-
+                        <h2>
+                            {{ analise.data }}
+                        </h2>
                     </div>
 
-                    <span class="analise-status">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Concluída
-                    </span>
+                    {% if analise.nivel == "Normal" %}
+
+                        <span class="status normal">
+                            ✓ Normal
+                        </span>
+
+                    {% elif analise.nivel == "Atenção" %}
+
+                        <span class="status atencao">
+                            ⚠ Atenção
+                        </span>
+
+                    {% else %}
+
+                        <span class="status inconclusivo">
+                            ? Inconclusivo
+                        </span>
+
+                    {% endif %}
 
                 </div>
 
 
-                <div class="analise-info">
+                <div class="cor-detectada">
 
-                    <div class="analise-info-item">
+                    <div
+                        class="cor-preview"
+                        style="
+                            background: rgb(
+                                {{ analise.led_vermelho }},
+                                {{ analise.led_verde }},
+                                {{ analise.led_azul }}
+                            );
+                        ">
+                    </div>
 
-                        <div class="info-icon">
-                            <i class="bi bi-palette"></i>
-                        </div>
+                    <div>
 
-                        <div>
-                            <span>Cor detectada</span>
+                        <span>Cor detectada</span>
 
-                            <strong>
-                                {{ analise.corA }}
-                            </strong>
-                        </div>
+                        <strong>
+                            {{ analise.corA }}
+                        </strong>
 
                     </div>
 
+                </div>
 
-                    <div class="analise-info-item">
 
-                        <div class="info-icon vermelho">
-                            <i class="bi bi-circle-fill"></i>
-                        </div>
+                <div class="rgb-container">
 
-                        <div>
-                            <span>Vermelho</span>
+                    <span class="rgb-title">
+                        Valores RGB
+                    </span>
 
+                    <div class="rgb-grid">
+
+                        <div class="rgb-item">
+                            <span>R</span>
                             <strong>
                                 {{ analise.led_vermelho }}
                             </strong>
                         </div>
 
-                    </div>
-
-
-
-                    <div class="analise-info-item">
-
-                        <div class="info-icon verde">
-                            <i class="bi bi-circle-fill"></i>
-                        </div>
-
-                        <div>
-                            <span>Verde</span>
-
+                        <div class="rgb-item">
+                            <span>G</span>
                             <strong>
                                 {{ analise.led_verde }}
                             </strong>
                         </div>
 
-                    </div>
-
-
-
-                    <div class="analise-info-item">
-
-                        <div class="info-icon azul">
-                            <i class="bi bi-circle-fill"></i>
-                        </div>
-
-                        <div>
-                            <span>Azul</span>
-
+                        <div class="rgb-item">
+                            <span>B</span>
                             <strong>
                                 {{ analise.led_azul }}
                             </strong>
@@ -126,7 +124,18 @@
 
                 </div>
 
-            </div>
+
+                <a
+                    href="{{ url_for('detalhes_deficiencia', tipo=analise.tipo) }}"
+                    class="btn-detalhes">
+
+                    Ver detalhes
+
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </article>
 
             {% endfor %}
 

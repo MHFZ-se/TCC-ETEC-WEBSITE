@@ -8,6 +8,7 @@ from controllers.funcoes import quantidade_de_sensores
 from werkzeug.security import generate_password_hash,check_password_hash
 
 
+
 def init_app(app):
 
     @app.route('/')
@@ -292,29 +293,203 @@ def init_app(app):
 
         return render_template('editInfos.html', usuario = usuario)
     
+
     @app.route('/analises')
     def analises():
-        
-        # Criando variáveis para simular uma análise do sensor de cor
-        data = "2026-08-01"
-        corA = "Verde saudável"
-        led_vermelho = 45
-        led_verde = 180
-        led_azul = 60
-
-        analise = {
-            "data": data,
-            "corA": corA,
-            "led_vermelho": led_vermelho,
-            "led_verde": led_verde,
-            "led_azul": led_azul
-        }
 
         lista_analises = [
-            {"data": "2026-08-01", "corA": "Verde saudável", "led_vermelho": 45, "led_verde": 180, "led_azul": 60},
-            {"data": "2026-08-05", "corA": "Verde claro",    "led_vermelho": 70, "led_verde": 190, "led_azul": 80},
-            {"data": "2026-08-10", "corA": "Amarelado",      "led_vermelho": 150, "led_verde": 160, "led_azul": 40},
-            {"data": "2026-08-15", "corA": "Azulada",         "led_vermelho": 30, "led_verde": 80, "led_azul": 120},
-            {"data": "2026-08-20", "corA": "Verde saudável", "led_vermelho": 48, "led_verde": 178, "led_azul": 62},
+            {
+                "data": "2026-08-01",
+                "corA": "Verde saudável",
+                "led_vermelho": 45,
+                "led_verde": 180,
+                "led_azul": 60
+            },
+
+            {
+                "data": "2026-08-05",
+                "corA": "Verde claro",
+                "led_vermelho": 70,
+                "led_verde": 190,
+                "led_azul": 80
+            },
+
+            {
+                "data": "2026-08-10",
+                "corA": "Amarelado",
+                "led_vermelho": 150,
+                "led_verde": 160,
+                "led_azul": 40
+            },
+
+            {
+                "data": "2026-08-15",
+                "corA": "Azulada",
+                "led_vermelho": 30,
+                "led_verde": 80,
+                "led_azul": 120
+            },
+
+            {
+                "data": "2026-08-20",
+                "corA": "Verde saudável",
+                "led_vermelho": 48,
+                "led_verde": 178,
+                "led_azul": 62
+            }
         ]
-        return render_template('analises.html', analises=lista_analises)
+        
+
+    for analise in lista_analises:
+
+        resultado = analisar_cor(
+            analise["led_vermelho"],
+            analise["led_verde"],
+            analise["led_azul"]
+        )
+
+        analise["tipo"] = resultado["tipo"]
+
+        analise["deficiencia"] = resultado["deficiencia"]
+
+        analise["nivel"] = resultado["nivel"]
+    
+    def analisar_cor(r, g, b):
+
+    # Possível deficiência de nitrogênio
+        if r > 130 and g > 130 and b < 100:
+            return {
+                "tipo": "nitrogenio",
+                "deficiencia": "Possível deficiência de Nitrogênio (N)",
+                "nivel": "Atenção"
+            }
+
+        # Possível deficiência de fósforo
+        elif r < 80 and g < 120 and b > 80:
+            return {
+                "tipo": "fosforo",
+                "deficiencia": "Possível deficiência de Fósforo (P)",
+                "nivel": "Atenção"
+            }
+
+        # Planta aparentemente saudável
+        elif g > r and g > b:
+            return {
+                "tipo": "normal",
+                "deficiencia": "Nenhuma deficiência aparente",
+                "nivel": "Normal"
+            }
+
+        # Resultado que não conseguimos classificar
+        else:
+            return {
+                "tipo": "inconclusivo",
+                "deficiencia": "Resultado inconclusivo",
+                "nivel": "Inconclusivo"
+            }
+   @app.route('/detalhes-deficiencia/<tipo>')
+def detalhes_deficiencia(tipo):
+
+    informacoes = {
+
+        "nitrogenio": {
+
+            "titulo": "Possível deficiência de Nitrogênio (N)",
+
+            "descricao":
+            "O nitrogênio é um nutriente importante para o crescimento "
+            "das plantas e para a formação de clorofila.",
+
+            "sintomas":
+            "O amarelecimento das folhas, principalmente das folhas mais "
+            "velhas, pode estar associado à deficiência de nitrogênio. "
+            "Também pode ocorrer redução do crescimento.",
+
+            "manejo":
+            "Verifique a disponibilidade de nitrogênio no solo e faça "
+            "a correção da adubação de acordo com a necessidade da planta.",
+
+            "confirmacao":
+            "A cor da folha não confirma sozinha a deficiência. "
+            "Realize uma nova análise e, quando possível, análise do solo."
+        },
+
+
+        "fosforo": {
+
+            "titulo": "Possível deficiência de Fósforo (P)",
+
+            "descricao":
+            "O fósforo participa de processos importantes relacionados "
+            "ao crescimento e ao metabolismo energético da planta.",
+
+            "sintomas":
+            "Algumas plantas podem apresentar folhas verde-escuras "
+            "e coloração arroxeada ou avermelhada quando há deficiência.",
+
+            "manejo":
+            "Verifique a disponibilidade de fósforo no solo e faça "
+            "a correção da adubação de acordo com a necessidade da planta.",
+
+            "confirmacao":
+            "A coloração deve ser considerada uma indicação inicial. "
+            "Uma nova análise e, quando possível, uma análise do solo "
+            "ajudam a confirmar o diagnóstico."
+        },
+
+
+        "normal": {
+
+            "titulo": "Planta aparentemente saudável",
+
+            "descricao":
+            "A coloração identificada pelo sensor está dentro do "
+            "padrão definido para uma planta aparentemente saudável.",
+
+            "sintomas":
+            "Não foram identificadas alterações de cor associadas "
+            "às deficiências analisadas.",
+
+            "manejo":
+            "Continue realizando o monitoramento periódico da planta "
+            "para acompanhar possíveis alterações.",
+
+            "confirmacao":
+            "Continue realizando novas análises para acompanhar "
+            "a evolução da planta."
+        },
+
+
+        "inconclusivo": {
+
+            "titulo": "Resultado inconclusivo",
+
+            "descricao":
+            "A leitura realizada não apresentou características "
+            "suficientes para indicar uma possível deficiência.",
+
+            "sintomas":
+            "A coloração detectada não se enquadrou nos padrões "
+            "utilizados pelo sistema.",
+
+            "manejo":
+            "Realize uma nova leitura, procurando manter condições "
+            "semelhantes de iluminação e posicionamento do sensor.",
+
+            "confirmacao":
+            "O resultado deve ser confirmado com novas medições "
+            "e, quando possível, outros métodos de avaliação."
+        }
+    }
+
+
+    info = informacoes.get(tipo)
+
+    if info is None:
+        return "Resultado não encontrado", 404
+
+
+    return render_template(
+        'detalhes_deficiencia.html',
+        info=info
+    )

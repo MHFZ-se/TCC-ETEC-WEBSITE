@@ -1,0 +1,117 @@
+{% extends 'template_null.html' %}
+
+{% block content %}
+
+<main class="detalhes-page">
+
+    <div class="detalhes-container">
+
+        <a href="{{ url_for('analises') }}" class="voltar">
+            <i class="bi bi-arrow-left"></i>
+            Voltar para análises
+        </a>
+
+
+        <div class="detalhes-header">
+
+            <span class="analises-label">
+                PLANTHEALTH
+            </span>
+
+            <h1>
+                {{ info.titulo }}
+            </h1>
+
+            <p>
+                Informações sobre o resultado da análise.
+            </p>
+
+        </div>
+
+
+        <div class="detalhes-grid">
+
+
+            <!-- O QUE É -->
+
+            <section class="detalhe-card">
+
+                <div class="detalhe-icon">
+                    <i class="bi bi-info-circle"></i>
+                </div>
+
+                <h2>
+                    O que é?
+                </h2>
+
+                <p>
+                    {{ info.descricao }}
+                </p>
+
+            </section>
+
+
+            <!-- SINTOMAS -->
+
+            <section class="detalhe-card">
+
+                <div class="detalhe-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+
+                <h2>
+                    Principais sintomas
+                </h2>
+
+                <p>
+                    {{ info.sintomas }}
+                </p>
+
+            </section>
+
+
+            <!-- MANEJO -->
+
+            <section class="detalhe-card tratamento">
+
+                <div class="detalhe-icon">
+                    <i class="bi bi-flower1"></i>
+                </div>
+
+                <h2>
+                    Manejo recomendado
+                </h2>
+
+                <p>
+                    {{ info.manejo }}
+                </p>
+
+            </section>
+
+
+            <!-- CONFIRMAÇÃO -->
+
+            <section class="detalhe-card confirmacao">
+
+                <div class="detalhe-icon">
+                    <i class="bi bi-check-circle"></i>
+                </div>
+
+                <h2>
+                    Como confirmar?
+                </h2>
+
+                <p>
+                    {{ info.confirmacao }}
+                </p>
+
+            </section>
+
+
+        </div>
+
+    </div>
+
+</main>
+
+{% endblock content %}
