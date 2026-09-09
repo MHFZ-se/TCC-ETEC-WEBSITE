@@ -293,11 +293,47 @@ def init_app(app):
 
         return render_template('editInfos.html', usuario = usuario)
     
+    def analisar_cor(r, g, b):
+
+        # Possível deficiência de Nitrogênio
+        if r > 130 and g > 130 and b < 100:
+            return {
+                "tipo": "nitrogenio",
+                "deficiencia": "Possível deficiência de Nitrogênio (N)",
+                "nivel": "Atenção"
+            }
+
+        # Possível deficiência de Fósforo
+        elif r < 80 and g < 120 and b > 80:
+            return {
+                "tipo": "fosforo",
+                "deficiencia": "Possível deficiência de Fósforo (P)",
+                "nivel": "Atenção"
+            }
+
+        # Planta aparentemente saudável
+        elif g > r and g > b:
+            return {
+                "tipo": "normal",
+                "deficiencia": "Nenhuma deficiência aparente",
+                "nivel": "Normal"
+            }
+
+        # Não foi possível identificar
+        else:
+            return {
+                "tipo": "inconclusivo",
+                "deficiencia": "Resultado inconclusivo",
+                "nivel": "Inconclusivo"
+            }
+        
+
 
     @app.route('/analises')
     def analises():
 
         lista_analises = [
+
             {
                 "data": "2026-08-01",
                 "corA": "Verde saudável",
@@ -336,160 +372,151 @@ def init_app(app):
                 "led_vermelho": 48,
                 "led_verde": 178,
                 "led_azul": 62
+            },
+            
+            {
+                "data": "2026-08-29",
+                "corA": "Verde saudável",
+                "led_vermelho": 30,
+                "led_verde": 110,
+                "led_azul": 50
             }
         ]
-        
 
-    for analise in lista_analises:
 
-        resultado = analisar_cor(
-            analise["led_vermelho"],
-            analise["led_verde"],
-            analise["led_azul"]
+
+        for analise in lista_analises:
+
+            resultado = analisar_cor(
+                analise["led_vermelho"],
+                analise["led_verde"],
+                analise["led_azul"]
+            )
+
+            analise["tipo"] = resultado["tipo"]
+
+            analise["deficiencia"] = resultado["deficiencia"]
+
+            analise["nivel"] = resultado["nivel"]
+
+
+        return render_template(
+            'analises.html',
+            analises=lista_analises
         )
 
-        analise["tipo"] = resultado["tipo"]
 
-        analise["deficiencia"] = resultado["deficiencia"]
 
-        analise["nivel"] = resultado["nivel"]
-    
-    def analisar_cor(r, g, b):
+    @app.route('/detalhes-deficiencia/<tipo>')
+    def detalhes_deficiencia(tipo):
 
-    # Possível deficiência de nitrogênio
-        if r > 130 and g > 130 and b < 100:
-            return {
-                "tipo": "nitrogenio",
-                "deficiencia": "Possível deficiência de Nitrogênio (N)",
-                "nivel": "Atenção"
+        informacoes = {
+
+            "nitrogenio": {
+
+                "titulo": "Possível deficiência de Nitrogênio (N)",
+
+                "descricao":
+                "O nitrogênio é importante para o crescimento "
+                "da planta e para a formação de clorofila.",
+
+                "sintomas":
+                "O amarelecimento das folhas, principalmente "
+                "das folhas mais velhas, pode estar associado "
+                "à deficiência de nitrogênio.",
+
+                "manejo":
+                "Verifique a disponibilidade de nitrogênio no solo "
+                "e faça a correção da adubação de acordo com a "
+                "necessidade da planta.",
+
+                "confirmacao":
+                "A cor da folha não confirma sozinha a deficiência. "
+                "Realize uma nova análise e, quando possível, "
+                "uma análise do solo."
+            },
+
+
+            "fosforo": {
+
+                "titulo": "Possível deficiência de Fósforo (P)",
+
+                "descricao":
+                "O fósforo participa de processos importantes "
+                "relacionados ao crescimento da planta.",
+
+                "sintomas":
+                "Algumas plantas podem apresentar folhas "
+                "verde-escuras e coloração arroxeada ou "
+                "avermelhada.",
+
+                "manejo":
+                "Verifique a disponibilidade de fósforo no solo "
+                "e faça a correção da adubação de acordo com "
+                "a necessidade da planta.",
+
+                "confirmacao":
+                "A coloração é apenas uma indicação inicial. "
+                "Uma nova análise e, quando possível, uma análise "
+                "do solo ajudam a confirmar o problema."
+            },
+
+
+            "normal": {
+
+                "titulo": "Planta aparentemente saudável",
+
+                "descricao":
+                "A coloração identificada pelo sensor está "
+                "dentro do padrão definido para uma planta "
+                "aparentemente saudável.",
+
+                "sintomas":
+                "Não foram identificadas alterações de cor "
+                "associadas às deficiências analisadas.",
+
+                "manejo":
+                "Continue realizando o monitoramento periódico "
+                "da planta.",
+
+                "confirmacao":
+                "Continue realizando novas análises para "
+                "acompanhar a evolução da planta."
+            },
+
+
+            "inconclusivo": {
+
+                "titulo": "Resultado inconclusivo",
+
+                "descricao":
+                "A leitura não apresentou características "
+                "suficientes para indicar uma possível deficiência.",
+
+                "sintomas":
+                "A coloração detectada não se enquadrou "
+                "nos padrões utilizados pelo sistema.",
+
+                "manejo":
+                "Realize uma nova leitura, mantendo condições "
+                "semelhantes de iluminação e posicionamento "
+                "do sensor.",
+
+                "confirmacao":
+                "O resultado deve ser confirmado com novas "
+                "medições e, quando possível, outros métodos "
+                "de avaliação."
             }
-
-        # Possível deficiência de fósforo
-        elif r < 80 and g < 120 and b > 80:
-            return {
-                "tipo": "fosforo",
-                "deficiencia": "Possível deficiência de Fósforo (P)",
-                "nivel": "Atenção"
-            }
-
-        # Planta aparentemente saudável
-        elif g > r and g > b:
-            return {
-                "tipo": "normal",
-                "deficiencia": "Nenhuma deficiência aparente",
-                "nivel": "Normal"
-            }
-
-        # Resultado que não conseguimos classificar
-        else:
-            return {
-                "tipo": "inconclusivo",
-                "deficiencia": "Resultado inconclusivo",
-                "nivel": "Inconclusivo"
-            }
-   @app.route('/detalhes-deficiencia/<tipo>')
-def detalhes_deficiencia(tipo):
-
-    informacoes = {
-
-        "nitrogenio": {
-
-            "titulo": "Possível deficiência de Nitrogênio (N)",
-
-            "descricao":
-            "O nitrogênio é um nutriente importante para o crescimento "
-            "das plantas e para a formação de clorofila.",
-
-            "sintomas":
-            "O amarelecimento das folhas, principalmente das folhas mais "
-            "velhas, pode estar associado à deficiência de nitrogênio. "
-            "Também pode ocorrer redução do crescimento.",
-
-            "manejo":
-            "Verifique a disponibilidade de nitrogênio no solo e faça "
-            "a correção da adubação de acordo com a necessidade da planta.",
-
-            "confirmacao":
-            "A cor da folha não confirma sozinha a deficiência. "
-            "Realize uma nova análise e, quando possível, análise do solo."
-        },
-
-
-        "fosforo": {
-
-            "titulo": "Possível deficiência de Fósforo (P)",
-
-            "descricao":
-            "O fósforo participa de processos importantes relacionados "
-            "ao crescimento e ao metabolismo energético da planta.",
-
-            "sintomas":
-            "Algumas plantas podem apresentar folhas verde-escuras "
-            "e coloração arroxeada ou avermelhada quando há deficiência.",
-
-            "manejo":
-            "Verifique a disponibilidade de fósforo no solo e faça "
-            "a correção da adubação de acordo com a necessidade da planta.",
-
-            "confirmacao":
-            "A coloração deve ser considerada uma indicação inicial. "
-            "Uma nova análise e, quando possível, uma análise do solo "
-            "ajudam a confirmar o diagnóstico."
-        },
-
-
-        "normal": {
-
-            "titulo": "Planta aparentemente saudável",
-
-            "descricao":
-            "A coloração identificada pelo sensor está dentro do "
-            "padrão definido para uma planta aparentemente saudável.",
-
-            "sintomas":
-            "Não foram identificadas alterações de cor associadas "
-            "às deficiências analisadas.",
-
-            "manejo":
-            "Continue realizando o monitoramento periódico da planta "
-            "para acompanhar possíveis alterações.",
-
-            "confirmacao":
-            "Continue realizando novas análises para acompanhar "
-            "a evolução da planta."
-        },
-
-
-        "inconclusivo": {
-
-            "titulo": "Resultado inconclusivo",
-
-            "descricao":
-            "A leitura realizada não apresentou características "
-            "suficientes para indicar uma possível deficiência.",
-
-            "sintomas":
-            "A coloração detectada não se enquadrou nos padrões "
-            "utilizados pelo sistema.",
-
-            "manejo":
-            "Realize uma nova leitura, procurando manter condições "
-            "semelhantes de iluminação e posicionamento do sensor.",
-
-            "confirmacao":
-            "O resultado deve ser confirmado com novas medições "
-            "e, quando possível, outros métodos de avaliação."
         }
-    }
 
 
-    info = informacoes.get(tipo)
+        info = informacoes.get(tipo)
 
-    if info is None:
-        return "Resultado não encontrado", 404
+        if info is None:
+            return "Resultado não encontrado", 404
 
 
-    return render_template(
-        'detalhes_deficiencia.html',
-        info=info
-    )
+        return render_template(
+            'detalhes_deficiencia.html',
+            info=info
+        )
