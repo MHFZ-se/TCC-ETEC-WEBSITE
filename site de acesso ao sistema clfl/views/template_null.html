@@ -14,59 +14,145 @@
             
     </header>
 <nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{{ url_for('home') }}">
-      <i class="bi bi-flower2"></i> PlantHealth
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('sobrenos') }}">Sobre nós</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('home') }}">Tutorial de usuário</a>
-        </li>
-        {% if session["idLogado"] %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('interface') }}">Interface</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('analises') }}">Analises</a>
-        </li>
-        {% endif %}
-      </ul>
+    <div class="container-fluid">
 
-      {% if session["idLogado"] %}
-      <ul class="navbar-nav navbar-auth-logado">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="navbar-avatar">
-              <i class="bi bi-person-fill"></i>
+        <!-- LOGO -->
+        <a class="navbar-brand" href="{{ url_for('home') }}">
+            <span class="logo-icon">
+                <i class="bi bi-flower1"></i>
             </span>
-            {{ session['nomeLogado'] }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="{{ url_for('centroInfo') }}"><i class="bi bi-person-badge"></i> Dados pessoais</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('analises') }}"><i class="bi bi-clipboard2-data"></i> Análise</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ url_for('sair') }}"><i class="bi bi-box-arrow-right"></i> Sair</a></li>
-          </ul>
-        </li>
-      </ul>
-      {% else %}
-      <div class="d-flex align-items-center navbar-auth">
-        <a class="nav-link" href="{{ url_for('login') }}">Logar</a>
-        <span class="navbar-auth-sep" aria-hidden="true">|</span>
-        <a class="nav-link" href="{{ url_for('cadastro') }}">Cadastrar</a>
-      </div>
-      {% endif %}
+            <span>PlantHealth</span>
+        </a>
+
+        <!-- LINKS -->
+        <ul class="navbar-nav ms-4">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('sobrenos') }}">
+                    Sobre nós
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('home') }}">
+                    Tutorial de usuário
+                </a>
+            </li>
+
+            {% if session["idLogado"] %}
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('interface') }}">
+                    Interface
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('analises') }}">
+                    Análises
+                </a>
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+
+        <!-- ÁREA DO USUÁRIO -->
+        {% if session["idLogado"] %}
+
+        <ul class="navbar-nav ms-auto navbar-auth-logado">
+
+            <li class="nav-item dropdown">
+
+                <a
+                    class="nav-link dropdown-toggle user-menu"
+                    href="#"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+
+                    <span class="navbar-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </span>
+
+                    <span class="user-name">
+                        {{ session['nomeLogado'] }}
+                    </span>
+
+                </a>
+
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                    <li>
+                        <a
+                            class="dropdown-item"
+                            href="{{ url_for('centroInfo') }}"
+                        >
+                            <i class="bi bi-person-badge"></i>
+                            Dados pessoais
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            class="dropdown-item"
+                            href="{{ url_for('analises') }}"
+                        >
+                            <i class="bi bi-clipboard2-data"></i>
+                            Análises
+                        </a>
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a
+                            class="dropdown-item sair"
+                            href="{{ url_for('sair') }}"
+                        >
+                            <i class="bi bi-box-arrow-right"></i>
+                            Sair
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
+
+        </ul>
+
+
+        {% else %}
+
+        <!-- USUÁRIO NÃO LOGADO -->
+        <div class="navbar-auth ms-auto">
+
+            <a
+                class="login-link"
+                href="{{ url_for('login') }}"
+            >
+                Entrar
+            </a>
+
+            <a
+                class="cadastro-link"
+                href="{{ url_for('cadastro') }}"
+            >
+                Criar conta
+            </a>
+
+        </div>
+
+        {% endif %}
 
     </div>
-  </div>
+
 </nav>
 
 {% with mensagens = get_flashed_messages(with_categories=true) %}
