@@ -305,14 +305,160 @@ main.main-home {
 /* 
    FOOTER
 */
-
-footer {
-    flex-shrink: 0;
+.footer {
+    width: 100%;
     margin-top: auto;
-    padding: 50px 0;
+
     background: #163a24;
+    color: #d9eadc;
+
+    box-sizing: border-box;
+}
+
+
+/* Área principal */
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    padding: 45px 35px 35px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 50px;
+}
+
+
+.footer-brand {
+    max-width: 330px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: white;
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.footer-logo-icon {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.10);
+
+    font-size: 18px;
+}
+
+.footer-brand p {
+    margin: 14px 0 0;
+
     color: #a5d6a7;
-    text-align: center;
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+
+    gap: 11px;
+}
+
+.footer-links::before {
+    content: "Navegação";
+
+    margin-bottom: 5px;
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.footer-links a {
+    width: fit-content;
+
+    color: #b8d6bc;
+
+    font-size: 14px;
+
+    text-decoration: none;
+
+    transition: 0.2s;
+}
+
+.footer-links a:hover {
+    color: white;
+
+    transform: translateX(4px);
+}
+
+
+.footer-info {
+    display: flex;
+    flex-direction: column;
+
+    gap: 13px;
+
+    color: #b8d6bc;
+
+    font-size: 14px;
+}
+
+.footer-info::before {
+    content: "Sistema";
+
+    margin-bottom: 5px;
+
+    color: white;
+
+    font-weight: 600;
+}
+
+.footer-info span {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.footer-info i {
+    color: #a5d6a7;
+
+    font-size: 16px;
+}
+
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+
+    max-width: 1200px;
+    margin: 0 auto;
+
+    padding: 18px 35px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #8fba96;
+
+    font-size: 12px;
 }
 
 

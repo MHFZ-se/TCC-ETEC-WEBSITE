@@ -58,8 +58,6 @@
 
         </ul>
 
-
-        <!-- ÁREA DO USUÁRIO -->
         {% if session["idLogado"] %}
 
         <ul class="navbar-nav ms-auto navbar-auth-logado">
@@ -129,8 +127,6 @@
 
 
         {% else %}
-
-        <!-- USUÁRIO NÃO LOGADO -->
         <div class="navbar-auth ms-auto">
 
             <a
@@ -172,9 +168,86 @@
 
 {% endblock content %}
 
-    <footer>
-        <p style="text-align: center;">&copy; 2026 - PlantHealth - Todos os diretos reservados.</p>
-    </footer>    
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- IDENTIDADE -->
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+                <span class="footer-logo-icon">
+                    <i class="bi bi-flower1"></i>
+                </span>
+
+                <span>PlantHealth</span>
+            </div>
+
+            <p>
+                Monitoramento inteligente da saúde das plantas.
+            </p>
+
+        </div>
+
+
+        <!-- NAVEGAÇÃO -->
+        <div class="footer-links">
+
+            <a href="{{ url_for('sobrenos') }}">
+                Sobre nós
+            </a>
+
+            <a href="{{ url_for('home') }}">
+                Tutorial
+            </a>
+
+            {% if session["idLogado"] %}
+
+            <a href="{{ url_for('interface') }}">
+                Monitoramento
+            </a>
+
+            <a href="{{ url_for('analises') }}">
+                Análises
+            </a>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- REDES / PROJETO -->
+        <div class="footer-info">
+
+            <span>
+                <i class="bi bi-cpu"></i>
+                Sensor TCS3200
+            </span>
+
+            <span>
+                <i class="bi bi-shield-check"></i>
+                Sistema de monitoramento
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- COPYRIGHT -->
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 PlantHealth
+        </span>
+
+        <span>
+            Projeto acadêmico • TCC ETEC
+        </span>
+
+    </div>
+
+</footer>   
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
