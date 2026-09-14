@@ -65,6 +65,18 @@ if __name__ == '__main__':
 
             if existente is None:
                 db.session.add(usuario)
+        coletas = [#dados mockados que sempre vem junto,
+            Coleta(id_usuario = 3, data = '2026-08-01', corA = "Verde claro saudavel", led_vermelho = 45, led_verde = 180, led_azul = 60),
+            Coleta(id_usuario = 2, data = '2026-08-05', corA = "Verde claro", led_vermelho = 70, led_verde = 190, led_azul = 80),
+            Coleta(id_usuario = 1, data = '2026-08-10', corA = "Amarelado", led_vermelho = 150, led_verde = 160, led_azul = 40),
+            Coleta(id_usuario = 4, data = '2026-08-15', corA = "Azulada", led_vermelho = 30, led_verde = 80, led_azul = 120),
+            Coleta(id_usuario = 1, data = '2026-08-20', corA = "Verde claro saudavel", led_vermelho = 48, led_verde = 178, led_azul = 62),
+            Coleta(id_usuario = 1, data = '2026-08-29', corA = "Verde escuro saudavel", led_vermelho = 30, led_verde = 110, led_azul = 50),
+        ]
+        for coleta in coletas:
+              existente = Coleta.query.filter_by(data=coleta.data).first()
+              if existente is None:
+                  db.session.add(coleta)
         
         db.session.commit()
         

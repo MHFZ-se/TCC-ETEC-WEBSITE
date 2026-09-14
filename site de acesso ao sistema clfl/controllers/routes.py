@@ -1,6 +1,6 @@
 
 from flask import render_template, request, redirect, url_for, flash, session 
-from models.database import Usuario,Sensor,db
+from models.database import Usuario,Sensor,db, Coleta
 from controllers.funcoes import *
 from markupsafe import Markup
 from controllers.funcoes import quantidade_de_sensores
@@ -122,40 +122,6 @@ def init_app(app):
         print(nome)
         
         return render_template('centroInfo.html', nome= nome)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @app.route('/centro/informacoes/anteriores')#leva a consulta da que for clicada
-    def anteriores():
-        return 'falso'
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @app.route('/centro/informacoes/consulta')
-    def consulta():
-        return 'Verdadeiros(placeholder)'
-    
     
     @app.route('/sair')
     def sair():
@@ -292,118 +258,79 @@ def init_app(app):
             
 
         return render_template('editInfos.html', usuario = usuario)
-    
-    def analisar_cor(r, g, b):
-
-        # Possível deficiência de Nitrogênio
-        if r > 130 and g > 130 and b < 100:
-            return {
-                "tipo": "nitrogenio",
-                "deficiencia": "Possível deficiência de Nitrogênio (N)",
-                "nivel": "Atenção"
-            }
-
-        # Possível deficiência de Fósforo
-        elif r < 80 and g < 120 and b > 80:
-            return {
-                "tipo": "fosforo",
-                "deficiencia": "Possível deficiência de Fósforo (P)",
-                "nivel": "Atenção"
-            }
-
-        # Planta aparentemente saudável
-        elif g > r and g > b:
-            return {
-                "tipo": "normal",
-                "deficiencia": "Nenhuma deficiência aparente",
-                "nivel": "Normal"
-            }
-
-        # Não foi possível identificar
-        else:
-            return {
-                "tipo": "inconclusivo",
-                "deficiencia": "Resultado inconclusivo",
-                "nivel": "Inconclusivo"
-            }
-        
-
 
     @app.route('/analises')
     def analises():
+        coletas = Coleta.query.filter_by(id_usuario=session["idLogado"]).all()
+        lista_analises = []
+        for coleta in coletas:
+            lista_analises.append(coleta)
 
-        lista_analises = [
+            # {
+            #     "data": "2026-08-01",
+            #     "corA": "Verde saudável",
+            #     "led_vermelho": 45,
+            #     "led_verde": 180,
+            #     "led_azul": 60
+            # },
 
-            {
-                "data": "2026-08-01",
-                "corA": "Verde saudável",
-                "led_vermelho": 45,
-                "led_verde": 180,
-                "led_azul": 60
-            },
+            # {
+            #     "data": "2026-08-05",
+            #     "corA": "Verde claro",
+            #     "led_vermelho": 70,
+            #     "led_verde": 190,
+            #     "led_azul": 80
+            # },
 
-            {
-                "data": "2026-08-05",
-                "corA": "Verde claro",
-                "led_vermelho": 70,
-                "led_verde": 190,
-                "led_azul": 80
-            },
+            # {
+            #     "data": "2026-08-10",
+            #     "corA": "Amarelado",
+            #     "led_vermelho": 150,
+            #     "led_verde": 160,
+            #     "led_azul": 40
+            # },
 
-            {
-                "data": "2026-08-10",
-                "corA": "Amarelado",
-                "led_vermelho": 150,
-                "led_verde": 160,
-                "led_azul": 40
-            },
+            # {
+            #     "data": "2026-08-15",
+            #     "corA": "Azulada",
+            #     "led_vermelho": 30,
+            #     "led_verde": 80,
+            #     "led_azul": 120
+            # },
 
-            {
-                "data": "2026-08-15",
-                "corA": "Azulada",
-                "led_vermelho": 30,
-                "led_verde": 80,
-                "led_azul": 120
-            },
-
-            {
-                "data": "2026-08-20",
-                "corA": "Verde saudável",
-                "led_vermelho": 48,
-                "led_verde": 178,
-                "led_azul": 62
-            },
+            # {
+            #     "data": "2026-08-20",
+            #     "corA": "Verde saudável",
+            #     "led_vermelho": 48,
+            #     "led_verde": 178,
+            #     "led_azul": 62
+            # },
             
-            {
-                "data": "2026-08-29",
-                "corA": "Verde saudável",
-                "led_vermelho": 30,
-                "led_verde": 110,
-                "led_azul": 50
-            }
-        ]
+            # {
+            #     "data": "2026-08-29",
+            #     "corA": "Verde saudável",
+            #     "led_vermelho": 30,
+            #     "led_verde": 110,
+            #     "led_azul": 50
+            # }
+        
 
 
 
         for analise in lista_analises:
 
             resultado = analisar_cor(
-                analise["led_vermelho"],
-                analise["led_verde"],
-                analise["led_azul"]
+                analise.led_vermelho,
+                analise.led_verde,
+                analise.led_azul
             )
 
-            analise["tipo"] = resultado["tipo"]
-
-            analise["deficiencia"] = resultado["deficiencia"]
-
-            analise["nivel"] = resultado["nivel"]
+            analise.tipo = resultado["tipo"]
+            analise.deficiencia = resultado["deficiencia"]
+            analise.nivel = resultado["nivel"]
 
 
-        return render_template(
-            'analises.html',
-            analises=lista_analises
-        )
+        return render_template( 'analises.html', analises=lista_analises)
 
 
 
