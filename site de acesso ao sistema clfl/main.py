@@ -21,6 +21,10 @@ app.config['SQLALCHEMY_DATABASE_URI']= f'mysql://root@localhost/{DB_NAME}'
 app.config['SECRET_KEY'] = 'meusagrado'
 #define tempo de sessao
 app.config['PERMANENT_SESSION_LIFETIME'] = 11800 
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 
 #chama as rotas do site
 #costumava ficar aq mas cresceu dms daí deixamo em outro lugar

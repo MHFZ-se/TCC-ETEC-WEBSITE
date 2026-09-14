@@ -14,7 +14,6 @@
             
     </header>
 <nav class="navbar navbar-expand-lg">
-
     <div class="container-fluid">
 
         <!-- LOGO -->
@@ -40,7 +39,7 @@
                 </a>
             </li>
 
-            {% if session["idLogado"] %}
+            {% if session.get('idLogado') %}
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('interface') }}">
@@ -58,9 +57,11 @@
 
         </ul>
 
-        {% if session["idLogado"] %}
 
-        <ul class="navbar-nav ms-auto navbar-auth-logado">
+        <!-- ÁREA DO USUÁRIO -->
+        {% if session.get('idLogado') %}
+
+        <ul class="navbar-nav ms-auto">
 
             <li class="nav-item dropdown">
 
@@ -73,11 +74,27 @@
                 >
 
                     <span class="navbar-avatar">
-                        <i class="bi bi-person-fill"></i>
+
+                        {% if usuario_logado and usuario_logado.rota_foto_perfil %}
+
+                            <img
+                                src="{{ url_for(
+                                    'static',
+                                    filename='uploads/' + usuario_logado.rota_foto_perfil
+                                ) }}"
+                                alt="Foto de perfil"
+                            >
+
+                        {% else %}
+
+                            <i class="bi bi-person-fill"></i>
+
+                        {% endif %}
+
                     </span>
 
                     <span class="user-name">
-                        {{ session['nomeLogado'] }}
+                        {{ session.get('nomeLogado', 'Usuário') }}
                     </span>
 
                 </a>
@@ -125,8 +142,9 @@
 
         </ul>
 
-
         {% else %}
+
+        <!-- USUÁRIO NÃO LOGADO -->
         <div class="navbar-auth ms-auto">
 
             <a
@@ -148,7 +166,6 @@
         {% endif %}
 
     </div>
-
 </nav>
 
 {% with mensagens = get_flashed_messages(with_categories=true) %}

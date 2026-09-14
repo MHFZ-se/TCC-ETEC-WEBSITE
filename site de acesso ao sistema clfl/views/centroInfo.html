@@ -5,126 +5,198 @@
 <main class="perfil-page">
 
     <div class="perfil-container">
-
-        <div class="perfil-header">
-
-            <div class="perfil-icon">
-                <i class="bi bi-person-fill"></i>
-            </div>
-
-            <div>
-                <h1>Minhas informações</h1>
-
-                <p>
-                    Visualize suas informações cadastradas no PlantHealth.
-                </p>
-            </div>
-
-        </div>
-
-
         {% if nome %}
+        {% set usuario = nome[0] %}
 
-            {% set usuario = nome[0] %}
+        <!-- CABEÇALHO DO PERFIL -->
+        <section class="perfil-top">
 
-            <section class="perfil-card">
+            {% with massages = get_flashed_messages(with_categories=true) %}
 
-                <div class="perfil-card-header">
-
-                    <i class="bi bi-person-vcard"></i>
-
-                    <div>
-                        <h2>Dados pessoais</h2>
-                        <p>Informações da sua conta</p>
-                    </div>
+            {% for category, message in massages %}
+                <div class="alert alert-{{ category }}">
+                    {{message}}
 
                 </div>
-
-
-                <div class="perfil-grid">
-
-                    <div class="perfil-item">
-
-                        <span class="perfil-label">
-                            <i class="bi bi-person"></i>
-                            Nome
-                        </span>
-
-                        <strong>
-                            {{ usuario.nome }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="perfil-item">
-
-                        <span class="perfil-label">
-                            <i class="bi bi-envelope"></i>
-                            E-mail
-                        </span>
-
-                        <strong>
-                            {{ usuario.email }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="perfil-item">
-
-                        <span class="perfil-label">
-                            <i class="bi bi-telephone"></i>
-                            Telefone
-                        </span>
-
-                        <strong>
-                            {{ usuario.telefone }}
-                        </strong>
-
-                    </div>
-
-
-                    <div class="perfil-item">
-
-                        <span class="perfil-label">
-                            <i class="bi bi-shield-check"></i>
-                            Status da conta
-                        </span>
-
-                        <strong class="status-ativo">
-                            <i class="bi bi-check-circle-fill"></i>
-                            Ativa
-                        </strong>
-
-                    </div>
-
+            {% endfor %}
+            {% endwith %}
+            <div class="row">
+                {% for imagem in imagens %}
+                <div class="col-md-3 m-auto">
+                    <img src="/static/uploads/{{ usuario.rota_foto_perfil }}" class="img-thumbnail">
                 </div>
+                {% endfor %}
+            </div>
 
-            </section>
+            <h2 style="text-align: center;">Galeria</h2>
+            <div class="conteiner col-6">
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <form
+                            action="{{ url_for('galeria') }}"
+                            method="POST"
+                            enctype="multipart/form-data"
+                            id="form-foto"
+                        >
 
+                            <input
+                                type="file"
+                                name="file"
+                                id="input-foto"
+                                accept="image/png,image/jpeg,image/gif,image/webp"
+                                hidden
+                                onchange="document.getElementById('form-foto').submit()"
+                            >
 
-            <section class="perfil-acoes">
+                            <button
+                                class="btn-foto"
+                                type="button"
+                                onclick="document.getElementById('input-foto').click()"
+                            >
+                                <i class="bi bi-camera-fill"></i>
+                            </button>
 
-                <a href="{{url_for('editarInfos')}}" class="perfil-btn">
-                    <i class="bi bi-pencil"></i>
-                    Editar informações
-                </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
+            <div class="perfil-nome">
 
-            </section>
-
-        {% else %}
-
-            <div class="perfil-vazio">
-                <i class="bi bi-person-x"></i>
-
-                <h2>Usuário não encontrado</h2>
+                <h1>{{ usuario.nome }}</h1>
 
                 <p>
-                    Não foi possível encontrar suas informações.
+                    Usuário PlantHealth
                 </p>
+
+                <span class="perfil-status">
+                    <i class="bi bi-check-circle-fill"></i>
+                    Conta ativa
+                </span>
+
             </div>
+
+        </section>
+
+
+        <!-- DADOS -->
+        <section class="perfil-card">
+
+            <div class="perfil-card-header">
+                    <div class="perfil-foto-container">
+                        <div class="perfil-foto">
+
+                            {% if usuario.rota_foto_perfil %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='uploads/' + usuario.rota_foto_perfil
+                                    ) }}"
+                                    alt="Foto de perfil"
+                                >
+
+                            {% else %}
+
+                                <i class="bi bi-person-fill"></i>
+
+                            {% endif %}
+
+                        </div>
+
+                        <button
+                            class="btn-foto"
+                            type="button"
+                            onclick="document.getElementById('input-foto').click()"
+                        >
+                            <i class="bi bi-camera-fill"></i>
+                        </button>
+
+                    </div>
+
+                <div>
+                    <h2>Dados pessoais</h2>
+                    <p>Informações cadastradas na sua conta</p>
+                </div>
+
+            </div>
+
+
+            <div class="perfil-grid">
+
+                <div class="perfil-item">
+
+                    <span class="perfil-label">
+                        <i class="bi bi-person"></i>
+                        Nome
+                    </span>
+
+                    <strong>
+                        {{ usuario.nome }}
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="perfil-label">
+                        <i class="bi bi-envelope"></i>
+                        E-mail
+                    </span>
+
+                    <strong>
+                        {{ usuario.email }}
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="perfil-label">
+                        <i class="bi bi-telephone"></i>
+                        Telefone
+                    </span>
+
+                    <strong>
+                        {{ usuario.telefone }}
+                    </strong>
+
+                </div>
+
+
+                <div class="perfil-item">
+
+                    <span class="perfil-label">
+                        <i class="bi bi-shield-check"></i>
+                        Status da conta
+                    </span>
+
+                    <strong class="status-ativo">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Ativa
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- AÇÕES -->
+        <section class="perfil-acoes">
+
+            <a
+                href="{{ url_for('editarInfos') }}"
+                class="perfil-btn"
+            >
+                <i class="bi bi-pencil"></i>
+                Editar informações
+            </a>
+
+        </section>
 
         {% endif %}
 

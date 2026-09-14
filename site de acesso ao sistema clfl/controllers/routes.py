@@ -6,6 +6,10 @@ from markupsafe import Markup
 from controllers.funcoes import quantidade_de_sensores
 
 from werkzeug.security import generate_password_hash,check_password_hash
+from werkzeug.utils import secure_filename
+
+import os
+import uuid
 
 
 
@@ -447,3 +451,82 @@ def init_app(app):
             'detalhes_deficiencia.html',
             info=info
         )
+    
+    @app.route('/galeria', methods=['POST'])
+    def galeria():
+
+        FILE_TYPES = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'avif'}
+
+        usuario = db.session.get(
+            Usuario,
+            session['idLogado']
+        )
+
+        if usuario is None:
+            flash("Usuário não encontrado.", "danger")
+            return redirect(url_for('login'))
+
+        # Pega a imagem enviada pelo formulário
+        file = request.files.get('file')
+
+        if file is None or file.filename == '':
+            flash("Selecione uma imagem.", "danger")
+            return redirect(url_for('centroInfo'))
+
+        # Verifica a extensão
+        extensao = file.filename.rsplit('.', 1)[-1].lower()
+
+        if extensao not in FILE_TYPES:
+            flash(
+                "Arquivo não permitido! "
+                "Envie PNG, JPG, JPEG, GIF ou WEBP.",
+                "danger"
+            )
+            return redirect(url_for('centroInfo'))
+
+        if usuario.rota_foto_perfil:
+
+            foto_antiga = os.path.join(
+                app.config['UPLOAD_FOLDER'],
+                usuario.rota_foto_perfil
+            )
+
+            if os.path.exists(foto_antiga):
+                os.remove(foto_antiga)
+
+        novo_nome = secure_filename(
+            f"{uuid.uuid4().hex}.{extensao}"
+        )
+
+        caminho = os.path.join(
+            app.config['UPLOAD_FOLDER'],
+            novo_nome
+        )
+
+        # Salva a nova imagem
+        file.save(caminho)
+
+
+        usuario.rota_foto_perfil = novo_nome
+
+        db.session.commit()
+
+        flash(
+            "Foto de perfil atualizada com sucesso!",
+            "success"
+        )
+
+        return redirect(url_for('centroInfo'))
+    @app.context_processor
+    def dados_usuario():
+        usuario_logado = None
+
+        if session.get('idLogado'):
+            usuario_logado = db.session.get(
+                Usuario,
+                session['idLogado']
+            )
+
+        return {
+            'usuario_logado': usuario_logado
+        }
