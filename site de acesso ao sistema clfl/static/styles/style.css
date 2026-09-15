@@ -61,6 +61,8 @@ main.main-home {
 
 .secao {
     padding: 90px 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .secao-home {
@@ -72,9 +74,7 @@ main.main-home {
 /* 
    NAVBAR
  */
-/* =========================
-   NAVBAR PLANTHEALTH
-========================= */
+
 
 .navbar {
     height: 68px;
@@ -536,6 +536,7 @@ main.main-home {
 /* 
    HOME / HERO
 */
+
 .home-hero {
     width: 100%;
     max-width: 1450px;
@@ -683,7 +684,14 @@ main.main-home {
 .btn-home-outline i {
     font-size: 20px;
 }
-
+.fundo-folha {
+    position: absolute;
+    width: 380px;
+    left: -100px;
+    top: 100px;
+    z-index: 0;
+    pointer-events: none;
+}
 
 /* 
    VANTAGEN */
@@ -691,6 +699,8 @@ main.main-home {
 .vantagens-section {
     padding: 80px 30px;
     background: #f5faf6;
+    position: relative;
+    overflow: hidden;
 }
 
 .vantagens-container {
@@ -1280,6 +1290,8 @@ main.main-home {
 .sobre-card {
     max-width: 900px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 .sobre-card h2 {
     color: #10251a;
@@ -1299,6 +1311,8 @@ main.main-home {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 22px;
+    position: relative;
+    z-index: 1;
 }
 .card-sobre {
     display: flex;
