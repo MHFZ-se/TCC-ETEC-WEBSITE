@@ -147,18 +147,14 @@
         <!-- USUÁRIO NÃO LOGADO -->
         <div class="navbar-auth ms-auto">
 
-            <a
-                class="login-link"
-                href="{{ url_for('login') }}"
-            >
+            <a class="login-link" href="{{ url_for('login') }}">
+                <i class="bi bi-box-arrow-in-right"></i>
                 Entrar
             </a>
 
-            <a
-                class="cadastro-link"
-                href="{{ url_for('cadastro') }}"
-            >
-                Criar conta
+            <a class="cadastro-link" href="{{ url_for('cadastro') }}">
+                <i class="bi bi-person-plus">Criar conta</i>
+                
             </a>
 
         </div>

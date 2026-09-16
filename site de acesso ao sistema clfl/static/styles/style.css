@@ -275,8 +275,69 @@ main.main-home {
 
 .navbar-auth {
     display: flex;
-    gap: 0.75rem;
-    margin-top: -4px;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+}
+
+/* ENTRAR */
+.login-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 14px;
+
+    color: #ffffff !important;
+    background: transparent;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    border-radius: 8px;
+
+    transition: all 0.2s ease;
+}
+
+.login-link:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+
+/* CRIAR CONTA */
+.cadastro-link {
+    background-color: #ffffff !important;
+    color: #2e7d32 !important;
+    border: 1px solid #ffffff;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 9px 16px;
+    border-radius: 8px;
+
+    text-decoration: none !important;
+    font-size: 14px;
+    font-weight: 600;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.cadastro-link i {
+    color: #2e7d32 !important;
+}
+
+.cadastro-link:hover {
+    background-color: #e8f5e9 !important;
+    color: #256b29 !important;
+}
+
+.cadastro-link:hover i {
+    color: #256b29 !important;
 }
 
 .navbar-auth .nav-link {
