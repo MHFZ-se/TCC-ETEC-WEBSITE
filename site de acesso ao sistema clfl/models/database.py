@@ -48,3 +48,40 @@ def __init__(self, id_usuario, data, corA, led_vermelho, led_verde, led_azul):
     self.led_verde = led_verde
     self.led_azul = led_azul
     
+    
+    
+    #modelos para o chat de atendimento ao cliente
+class Atendimento(db.Model):
+    id_atendimento = db.Column(db.Integer, primary_key=True)
+    id_cliente = db.Column(db.Integer)
+    id_adm = db.Column(db.Integer)
+    data_abertura = db.Column(db.Datetime)
+    estado = db.Column(db.String(25))
+    assunto = db.Column(db.String(50))
+    
+def __init__(self, id_atendimento):
+    self.id_atendimento = id_atendimento
+
+class Mensagens(db.Model):
+    id_mensagem = db.Column(db.Integer, primary_key=True)
+    mensagem = db.Column(db.String(500))
+    data_hora = db.Column(db.DateTime)
+    id_remetente = db.Column(db.Integer)
+    adm = db.Column(db.Boolean)
+
+
+def __init__(self, id_mensagem):
+    self.id_mensagem = id_mensagem
+    
+    
+    
+    #relatos de bub ou plroblemas
+class Problemas(db.Model):
+    id_problema = db.Column(db.Integer, primary_key=True)
+    id_cliente_afetado
+    tpo_problema
+    mensagem
+
+
+def __init__(self, id_problema):
+    self.id_problema = id_problema
