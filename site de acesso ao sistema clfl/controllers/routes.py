@@ -1,6 +1,6 @@
 
 from flask import render_template, request, redirect, url_for, flash, session 
-from models.database import Usuario,Sensor,db, Coleta
+from models.database import *
 from controllers.funcoes import *
 from markupsafe import Markup
 from controllers.funcoes import quantidade_de_sensores
@@ -539,6 +539,16 @@ def init_app(app):
         return render_template('atendimento_ao_cliente.html')
     
     @app.route('/atendimento/chat-atendente')
-    def atendimentoAoClienteChat():
-        return render_template('chat.html')
+    @app.route('/atendimento/chat-atendente/<int:id_atendimento>')
+    #@app.route('/atendimento/chat-atendente')
+    def atendimentoAoClienteChat(id_atendimento):#se o usuario clicou em abrir uma conversa ja existente
+        atendimentos = []
+        atendimentos = Atendimento.query.filter_by(id_cliente = session['idLogado'], estado='aberto').order_by(Atendimento.data_abertura.asc()).all()
+        mensagens = []
+        mensagens = Mensagens.query.order_by(Mensagens.data_hora.asc()).all()
+        
+        if id_atendimento:# abre a conversa
+            return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens, id_conversa = id_atendimento)
+        
+        return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens)
     

@@ -3421,3 +3421,9 @@ main.main-home {
     height: 100%;
     object-fit: cover;
 }
+
+/* estilos da pagina de atendimentos(chat) */
+.conversas{
+    width: 20%;
+    align-self: start;
+}

@@ -1,0 +1,47 @@
+{% extends 'template_null.html' %}
+
+{% block content %} <!--isto indica o uso de um codigo .py-->
+    
+
+<main>
+        <div class="conversas">
+            <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
+        {% if atendimentos is not Null %}
+        <div class="atendimentos_scrollview_nometemporario_trocar_dps">
+            {% for atendimento in atendimentos  %}
+                {% if atendimento['estado'] == 'aberto' %}
+
+                    <div class="atendimento">
+                        <h5>Assunto : {{ atendimento['sssunto']}}</h5>
+                        <p> Aberto em {{ atendimento['data_hora']}} </p>
+                        <p> Estado: Ainda pendente</p>
+                        <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {% for atendimento in atendimentos  %}
+                {% if atendimento['estado'] == 'fechado' %}
+                    <div class="atendimento">
+                        <h5>Assunto : {{ atendimento['sssunto']}}</h5>
+                        <p> Aberto em {{ atendimento['data_hora']}} </p>
+                        <p> Estado: Ja finalisado</p>
+                        <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        
+        </div>
+        {% endif %}
+        <!-- Caso o usuario nunca tenha aberto nehum atendimento -->
+        </div>
+
+        <!-- Carrega a conversar se o idconversa for passado for, se alguma convesa tiver sido aberta  -->
+
+        <div class="chat">
+            {% if id_atendimento%}
+            {% if %}
+
+        </div>
+    </main>
+{% endblock content %}
