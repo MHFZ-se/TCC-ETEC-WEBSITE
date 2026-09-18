@@ -1,0 +1,50 @@
+{% extends 'template_null.html' %}
+
+{% block content %}
+
+<main class="sensores-page">
+
+  <div>
+    <p><h1>atemdimento ao Cliente</h1></p>
+    <div style="align-items: center; align-self: center; width: 50%;"> 
+        <!--era pra fica no meio da tela  pequeninho, mas não é meu trabalho fazer isso, se fode ai caio, tmj, abraço, beijo, se cuida ...-->
+         
+        <a href="{{ url_for('atendimentoAoClienteChat') }}" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Enviar um feedback sobre nosso site</h3>
+                <p>Relate uma incoerencia falha de desing ou experiencia ruim que teve e acha que podemos melhorar.</p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>     
+        
+        <a href="{{ url_for('atendimentoAoClienteChat') }}" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Resolver problemas</h3>
+                <p>Procuraremos lhe orientar da melhor manerira possivel.</p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>
+        
+        <a href="{{ url_for('atendimentoAoClienteChat') }}" class="dashboard-card">
+            <div class="dashboard-icon">
+                <i class="bi bi-plus-circle"></i>
+            </div>
+            <div class="dashboard-texto">
+                <h3>Abrir chamado</h3>
+                <p>Inicie uma conversa com um dos membros de nossa equipe caso tenha graves problemas </p>
+            </div>
+            <i class="bi bi-chevron-right dashboard-seta"></i>
+        </a>
+        
+        
+    </div>
+  </div>
+</main>
+
+{% endblock content %}

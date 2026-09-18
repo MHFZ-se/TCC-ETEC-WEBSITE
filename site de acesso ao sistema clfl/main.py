@@ -50,6 +50,7 @@ if __name__ == '__main__':
     with app.test_request_context():
         db.create_all()
 
+        #dados pré inscritos no banco para facilitação de debug deploy teste, esses termo estranho aí
         for numero in range(1, 51):
             sensor = Sensor.query.get(numero)
 

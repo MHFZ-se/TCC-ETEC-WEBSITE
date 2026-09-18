@@ -531,3 +531,14 @@ def init_app(app):
         return {
             'usuario_logado': usuario_logado
         }
+
+
+    #rotas para problemas com
+    @app.route('/atendimento')
+    def atendimentoAoCliente():
+        return render_template('atendimento_ao_cliente.html')
+    
+    @app.route('/atendimento/chat-atendente')
+    def atendimentoAoClienteChat():
+        return render_template('chat.html')
+    
