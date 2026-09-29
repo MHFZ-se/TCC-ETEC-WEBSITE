@@ -1,4 +1,6 @@
-from models.database import Sensor
+from models.database import Sensor,db,Usuario,Atendimento
+from sqlalchemy import func
+import random
 
 #numera a quantidade de sensores vínculados a um id especifico
 def quantidade_de_sensores(id):

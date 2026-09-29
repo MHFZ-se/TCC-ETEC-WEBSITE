@@ -44,3 +44,18 @@ Recados pro Henri
 Recados pro caio
     os botões da interface não parecem ser botões
     Melhorar as paginas de login e cadastro
+
+
+
+
+    o usuario acessa a rota atendimento ao cliente a clica na rota para abrir um chamado
+    como é um botão para abrir um chamado 
+    a aplicação faz o request dos chamados de cada adm e compara escolhendo aquele que tem menos chamados
+        caso um ou mais sejam iguais é escolhido de forma aleatoria
+    o adm escolhido é vinculado ao chamado criado, que no banco de dados é chamado de atendimento, contendo o id do cliente e do adm
+    o sistema exibe a tela na qual o cliente pode escolher entre uma lista ou outra nomenclatura para o próprio ploblema
+    o sistema recebe e cria o chamado passando o id do chamado especifico
+    no lado esquerdo aparencem os chamados, primeiro os abertos e depois os ja finalizados
+        não é possivel enviar mensagens em um chamado finalizado
+    no lado direito ficam as mensagens da conversa aberta
+    junto de um cabeçalho com nome do adm data de abertura

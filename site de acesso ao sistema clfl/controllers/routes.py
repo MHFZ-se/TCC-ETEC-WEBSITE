@@ -4,6 +4,8 @@ from models.database import *
 from controllers.funcoes import *
 from markupsafe import Markup
 from controllers.funcoes import quantidade_de_sensores
+from sqlalchemy import func
+import random
 
 from werkzeug.security import generate_password_hash,check_password_hash
 from werkzeug.utils import secure_filename
@@ -540,12 +542,54 @@ def init_app(app):
     
     @app.route('/atendimento/chat-atendente')
     @app.route('/atendimento/chat-atendente/<int:id_atendimento>')
+    @app.route('/atendimento/chat-atendente/<int:novo_atendimento>')
     #@app.route('/atendimento/chat-atendente')
-    def atendimentoAoClienteChat(id_atendimento):#se o usuario clicou em abrir uma conversa ja existente
+    def atendimentoAoClienteChat(id_atendimento=None,novo_atendimento = None):#se o usuario clicou em abrir uma conversa ja existente
         atendimentos = []
-        atendimentos = Atendimento.query.filter_by(id_cliente = session['idLogado'], estado='aberto').order_by(Atendimento.data_abertura.asc()).all()
+        atendimentos = Atendimento.query.filter_by(id_cliente = session['idLogado']).order_by(Atendimento.data_abertura.asc()).all()
         mensagens = []
         mensagens = Mensagens.query.order_by(Mensagens.data_hora.asc()).all()
+        
+        def escolher_adm():
+            adms = (
+                db.session.query(
+                    Usuario,
+                    func.count(Atendimento.id_atendimento).label('quantidade')
+                )
+                .outerjoin(
+                    Atendimento,
+                    Atendimento.id_adm == Usuario.id
+                )
+                .filter(Usuario.adm == True)
+                .group_by(Usuario.id)
+                .all()
+            )
+
+            menor_quantidade = min(
+                quantidade for usuario, quantidade in adms
+            )
+
+            adms_disponiveis = [
+                usuario
+                for usuario, quantidade in adms
+                if quantidade == menor_quantidade
+            ]
+
+            return random.choice(adms_disponiveis)
+        
+        if novo_atendimento:#escolhe o 
+            adm = escolher_adm()
+            atendimento = Atendimento(
+                id_cliente = session['idLogado'],
+                id_adm = adm.id,
+                data_abertura = datetime.now(),
+                estado = "Aberto"
+            )
+            
+            db.session.add(atendimento)
+            db.session.commit()
+            
+            return redirect(atendimentoAoClienteChat())
         
         if id_atendimento:# abre a conversa
             return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens, id_conversa = id_atendimento)

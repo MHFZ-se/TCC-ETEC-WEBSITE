@@ -6,15 +6,16 @@
 <main>
         <div class="conversas">
             <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
-        {% if atendimentos is not Null %}
+        {% if atendimentos %}
         <div class="atendimentos_scrollview_nometemporario_trocar_dps">
+            <a href="">abrir novo atendimento</a>
             {% for atendimento in atendimentos  %}
                 {% if atendimento['estado'] == 'aberto' %}
 
                     <div class="atendimento">
                         <h5>Assunto : {{ atendimento['sssunto']}}</h5>
                         <p> Aberto em {{ atendimento['data_hora']}} </p>
-                        <p> Estado: Ainda pendente</p>
+                        <p> Estado: Ainda em andamento</p>
                         <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
                     </div>
                 {% endif %}
@@ -25,7 +26,7 @@
                     <div class="atendimento">
                         <h5>Assunto : {{ atendimento['sssunto']}}</h5>
                         <p> Aberto em {{ atendimento['data_hora']}} </p>
-                        <p> Estado: Ja finalisado</p>
+                        <p> Estado: Ja finalizado</p>
                         <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
                     </div>
                 {% endif %}
@@ -39,8 +40,7 @@
         <!-- Carrega a conversar se o idconversa for passado for, se alguma convesa tiver sido aberta  -->
 
         <div class="chat">
-            {% if id_atendimento%}
-            {% if %}
+            
 
         </div>
     </main>
