@@ -4,8 +4,13 @@
     
 
 <main>
+        {% if novo_atendimento %}  
+            <div>
+                <form action=""></form>
+            </div>
+        {% else %}
         <div class="conversas">
-            <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
+                <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
         {% if atendimentos %}
         <div class="atendimentos_scrollview_nometemporario_trocar_dps">
             <a href="">abrir novo atendimento</a>
@@ -44,4 +49,5 @@
 
         </div>
     </main>
+    {% endif %}
 {% endblock content %}

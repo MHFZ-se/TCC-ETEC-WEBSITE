@@ -342,7 +342,7 @@ def init_app(app):
 
 
     @app.route('/detalhes-deficiencia/<tipo>')
-    def detalhes_deficiencia(tipo):
+    def detalhes_deficiencia(tipo=None):
 
         informacoes = {
 
@@ -541,8 +541,7 @@ def init_app(app):
         return render_template('atendimento_ao_cliente.html')
     
     @app.route('/atendimento/chat-atendente')
-    @app.route('/atendimento/chat-atendente/<int:id_atendimento>')
-    @app.route('/atendimento/chat-atendente/<int:novo_atendimento>')
+    @app.route('/atendimento/chat-atendente/<int:novo_atendimento>&<int:id_atendimento>')
     #@app.route('/atendimento/chat-atendente')
     def atendimentoAoClienteChat(id_atendimento=None,novo_atendimento = None):#se o usuario clicou em abrir uma conversa ja existente
         atendimentos = []
