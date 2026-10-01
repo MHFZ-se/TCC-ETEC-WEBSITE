@@ -3,23 +3,40 @@
 {% block content %} <!--isto indica o uso de um codigo .py-->
     
 
-<main>
-        {% if novo_atendimento %}  
+    <main>
+        
+        {% if novo_atendimento == 1 %}  
+        
             <div>
-                <form action=""></form>
+                <form action="{{url_for('atendimentoAoClienteChat', novo_atendimento = 2)}}" method="POST">
+
+                    <label>Qual é o problema que você esta tendo?</label>
+                    <select name="opcao">
+                        <option value="troca_de_senha">Não consigo trocar minha senha</option>
+                        <option value="sensor_com_problema_defeituoso">Meu sensor está funcionando de forma inadequada</option>
+                        <option value="cadastro_de_sensor">Não consigo cadastrar meu sensor</option>
+                        <option value="">Nenhum dos listados</option>
+                    </select>
+                    <Input name="problemaTexto" placeholder="Não é nenhum acima? Digite:">
+                    <button type="submit">Pronto</button>
+                </form>
             </div>
+
+
         {% else %}
+        
         <div class="conversas">
                 <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
         {% if atendimentos %}
-        <div class="atendimentos_scrollview_nometemporario_trocar_dps">
-            <a href="">abrir novo atendimento</a>
+        
+         <div  class="atendimentos_scrollview_nometemporario_trocar_dps" > 
+            <a href="{{url_for('atendimentoAoClienteChat', novo_atendimento = 1)}}" class="button">abrir novo atendimento</a>
             {% for atendimento in atendimentos  %}
-                {% if atendimento['estado'] == 'aberto' %}
+                {% if atendimento.estado == 'aberto' %}
 
                     <div class="atendimento">
-                        <h5>Assunto : {{ atendimento['sssunto']}}</h5>
-                        <p> Aberto em {{ atendimento['data_hora']}} </p>
+                        <h5>Assunto : {{ atendimento.assunto }}</h5>
+                        <p> Aberto em {{ atendimento.data_hora }} </p>
                         <p> Estado: Ainda em andamento</p>
                         <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
                     </div>
@@ -27,10 +44,10 @@
             {% endfor %}
 
             {% for atendimento in atendimentos  %}
-                {% if atendimento['estado'] == 'fechado' %}
+                {% if atendimento.estado == 'fechado' %}
                     <div class="atendimento">
-                        <h5>Assunto : {{ atendimento['sssunto']}}</h5>
-                        <p> Aberto em {{ atendimento['data_hora']}} </p>
+                        <h5>Assunto : {{ atendimento.assunto }}</h5>
+                        <p> Aberto em {{ atendimento.data_hora }} </p>
                         <p> Estado: Ja finalizado</p>
                         <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
                     </div>
@@ -45,9 +62,15 @@
         <!-- Carrega a conversar se o idconversa for passado for, se alguma convesa tiver sido aberta  -->
 
         <div class="chat">
-            
+            {% if atendimento %}
 
+            {% endif %}
         </div>
-    </main>
+    
+
+
     {% endif %}
+
+    </main>
+
 {% endblock content %}
