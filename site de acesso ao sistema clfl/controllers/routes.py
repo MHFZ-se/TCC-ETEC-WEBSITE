@@ -541,15 +541,15 @@ def init_app(app):
         return render_template('atendimento_ao_cliente.html')
     
     @app.route('/atendimento/chat-atendente', methods= ['GET','POST'])
-    @app.route('/atendimento/chat-atendente/<int:id_atendimento>', methods= ['GET','POST'])
-    @app.route('/atendimento/chat-atendente/<int:novo_atendimento>', methods= ['GET','POST'])
     #@app.route('/atendimento/chat-atendente')
-    def atendimentoAoClienteChat(id_atendimento=None,novo_atendimento = None):#se o usuario clicou em abrir uma conversa ja existente
+    def atendimentoAoClienteChat(id_atendimento=None,novo_atendimento = None, enviarMensagem = None):#se o usuario clicou em abrir uma conversa ja existente
         atendimentos = []
         atendimentos = Atendimento.query.filter_by(id_cliente = session['idLogado']).order_by(Atendimento.data_abertura.asc()).all()
         mensagens = []
         mensagens = Mensagens.query.order_by(Mensagens.data_hora.asc()).all()
-        
+        id_atendimento = request.args.get('id_atendimento', type=int)
+        novo_atendimento = request.args.get('novo_atendimento', type=int)
+        enviarMensagem = request.args.get('enviarMensagem', type=int)
         
         def escolher_adm():
             adms = (
@@ -570,11 +570,14 @@ def init_app(app):
 
             return random.choice(adms_disponiveis)
         
-        
+        if id_atendimento:
+            print("passou aq")
+            return render_template('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa ,
+                            esseAtendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
         if novo_atendimento:
             
             if novo_atendimento == 1:
-                    
+                print('chegou no 1')
                 return render_template('chat.html', novo_atendimento = 1)
             
             #ao receber o form
@@ -584,7 +587,7 @@ def init_app(app):
                 
                 if opcao == '' and not texto.strip():
                     flash("Você deve preencher pelo menos um dos campos com uma opção valida", 'danger')
-                       
+                    print("passou aq 6")   
                     return render_template('chat.html', novo_atendimento = 1)
                 
                 elif opcao:
@@ -599,8 +602,8 @@ def init_app(app):
                                         
                     db.session.add(atendimento)
                     db.session.commit()    
-                        
-                    return redirect(url_for(atendimentoAoClienteChat( novo_atendimento = 3)))
+                    print("passou aq 5")    
+                    return redirect(url_for('atendimentoAoClienteChat', novo_atendimento = 3))
                 else:
                     adm = escolher_adm()
                     atendimento = Atendimento(
@@ -613,8 +616,8 @@ def init_app(app):
                                         
                     db.session.add(atendimento)
                     db.session.commit()                        
-                       
-                    return redirect(url_for(atendimentoAoClienteChat( novo_atendimento = 3)))
+                    print("passou aq 4")   
+                    return redirect(url_for('atendimentoAoClienteChat', novo_atendimento = 3))
         
                 
             if novo_atendimento == 3:
@@ -626,14 +629,19 @@ def init_app(app):
                 for mensagem in mensagens:
                     if mensagem.id_atendimento == idUltimoAtendimento:
                         mensagensConversa.append(mensagem)
-                       
-                    #a rota passa as mensagens da conversa(para mostralas), os atendimentos(para a barra lateral) e o ultimo atendimento(para os dados da convers))
+                print(ultimoAtendimentoAberto.assunto)     
+                
+                print("passou aq 2")   #a rota passa as mensagens da conversa(para mostralas), os atendimentos(para a barra lateral) e o ultimo atendimento(para os dados da convers))
                 return render_template ('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa ,
-                    atendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
+                    esseAtendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
+            
         
-        # if id_atendimento:# abre a conversa
+                
+        
+        
             
         #     return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens, id_conversa = id_atendimento)
+            
        
-        return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens)
+        return render_template('chat.html', atendimentos = atendimentos)
     
