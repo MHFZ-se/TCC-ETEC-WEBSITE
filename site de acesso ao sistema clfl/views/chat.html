@@ -48,7 +48,7 @@
             {% endfor %}
 
             {% for atendimento in atendimentos  %}
-                {% if atendimento.estado == 'fechado' %}
+                {% if atendimento.estado == 'Fechado' %}
                     <div class="atendimento button" href="{{ url_for('atendimentoAoClienteChat', id_atendimento = atendimento.id_atendimento) }}" class="button">
                         <h5>Assunto : {{ atendimento.assunto }}</h5>
                         <p> Aberto em {{ atendimento.data_abertura }} </p>
@@ -65,14 +65,27 @@
         <!-- Carrega a conversar se o idconversa for passado for, se alguma convesa tiver sido aberta  -->
 
         <div class="chat">
-            {% if mensagensConversa %}
+            {% if esseAtendimento %}
+                {% for mensagem in mensagensConversa %}
+                    <div class="{{ 'mensagem_do_atendente' if mensagem.adm else 'mensagem_do_usuario' }}">
+                        {{ "mensagem_do_atendente" if mensagem.adm else "mensagem_do_usuario" }}
+                        {{ mensagem.mensagem}} <br>
+                    </div>
+                {% endfor %}
+            
 
-                <form action="{{url_for('atendimentoAoClienteChat', enviarMensagem )}}">
-                    <input type="text" name="textoMensagem"> <button type="submit">enviar</button>
-                </form>
-            {% endif %}
+            <form action="{{ url_for('atendimentoAoClienteChat') }}" method="POST">
+
+                <input type="text" name="textoMensagem" placeholder="Digite sua mensagem" >
+
+                <input type="hidden" name="id_naoatendimento" value="{{ esseAtendimento.id_atendimento }}" >
+
+                <button type="submit"> enviar </button>
+
+            </form>
+
         </div>
-    
+        {% endif %}
 
 
     {% endif %}

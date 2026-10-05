@@ -549,7 +549,6 @@ def init_app(app):
         mensagens = Mensagens.query.order_by(Mensagens.data_hora.asc()).all()
         id_atendimento = request.args.get('id_atendimento', type=int)
         novo_atendimento = request.args.get('novo_atendimento', type=int)
-        enviarMensagem = request.args.get('enviarMensagem', type=int)
         
         def escolher_adm():
             adms = (
@@ -569,11 +568,33 @@ def init_app(app):
             ]
 
             return random.choice(adms_disponiveis)
+
+        if request.method == 'POST' and novo_atendimento != 2:
+                print('passou pelo enviar mensagem')
+                
+                id_atendimento = request.form['id_naoatendimento'] 
+                mensagem = request.form['textoMensagem']
+                
+                #tratamento pra ver se ta nulo
+                if mensagem == 'bananinha' :
+                    return 0
+                
+
+                novaMensagem = Mensagens(
+                    mensagem = mensagem,
+                    data_hora = datetime.now(),
+                    id_remetente = session['idLogado'],
+                    adm = False,
+                    id_atendimento = id_atendimento
+                )
+
+                db.session.add(novaMensagem)
+                db.session.commit()
+
+
+                return redirect(url_for('atendimentoAoClienteChat',id_atendimento=id_atendimento))
         
-        if id_atendimento:
-            print("passou aq")
-            return render_template('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa ,
-                            esseAtendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
+        
         if novo_atendimento:
             
             if novo_atendimento == 1:
@@ -629,16 +650,28 @@ def init_app(app):
                 for mensagem in mensagens:
                     if mensagem.id_atendimento == idUltimoAtendimento:
                         mensagensConversa.append(mensagem)
-                print(ultimoAtendimentoAberto.assunto)     
+        
+
                 
                 print("passou aq 2")   #a rota passa as mensagens da conversa(para mostralas), os atendimentos(para a barra lateral) e o ultimo atendimento(para os dados da convers))
                 return render_template ('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa ,
                     esseAtendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
+  
+        
+        
+        if id_atendimento:
+            print("passou aq")
+            mensagensConversa = []
+            atendimento =  Atendimento.query.filter_by(id_atendimento = id_atendimento).first()
+            admSelecionado = Usuario.query.filter_by(id = atendimento.id_adm).first()    
+
+            for mensagem in mensagens:
+                if mensagem.id_atendimento == id_atendimento:
+                    mensagensConversa.append(mensagem)
+                  
             
-        
-                
-        
-        
+            return render_template('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa,
+                            esseAtendimento = atendimento, admSelecionado = admSelecionado)
             
         #     return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens, id_conversa = id_atendimento)
             
