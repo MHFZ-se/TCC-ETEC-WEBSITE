@@ -3512,6 +3512,7 @@ main.main-home {
     object-fit: cover;
 }
 
+<<<<<<< HEAD
 
 
 /* =========================================================
@@ -4434,3 +4435,10 @@ main.main-home {
     padding: 45px;
     display: block;
 }
+=======
+/* estilos da pagina de atendimentos(chat) */
+.conversas{
+    width: 20%;
+    align-self: start;
+}
+>>>>>>> 1d3dffc97e0650745088aaf8b97aca206cd4b82c

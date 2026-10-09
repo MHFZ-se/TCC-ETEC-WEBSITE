@@ -339,7 +339,7 @@ def init_app(app):
 
 
     @app.route('/detalhes-deficiencia/<tipo>')
-    def detalhes_deficiencia(tipo):
+    def detalhes_deficiencia(tipo=None):
 
         informacoes = {
 

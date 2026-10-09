@@ -135,10 +135,20 @@
                     <li>
                         <a
                             class="dropdown-item sair"
-                            href="{{ url_for('sair') }}"
+                            href="{{ url_for('atendimentoAoCliente') }}"
                         >
                             <i class="bi bi-box-arrow-right"></i>
                             Relatar problema
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            class="dropdown-item sair"
+                            href="{{ url_for('atendimentoAoClienteChat') }}"
+                        >
+                            <i class="bi bi-box-arrow-right"></i>
+                            Atendimentos
                         </a>
                     </li>
 
@@ -194,6 +204,9 @@
 {% endwith %}
 
 {% block content %} 
+
+
+
 
 {% endblock content %}
 
