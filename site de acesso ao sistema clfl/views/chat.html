@@ -4,6 +4,62 @@
 
 <main class="atendimento-page">
 
+    {% if novo_atendimento == 1 %}
+                <div class="novo-atendimento">
+                    <div class="novo-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+
+                    <span class="novo-label">
+                        NOVO ATENDIMENTO
+                    </span>
+
+                    <h2> Como podemos ajudar? </h2>
+
+
+                    <p>
+                        Selecione o problema que você está
+                        enfrentando para iniciarmos seu atendimento.
+                    </p>
+
+
+                    <form action="{{ url_for( 'atendimentoAoClienteChat', novo_atendimento=2 ) }}" method="POST" class="form-atendimento" >
+
+                        <label> Qual é o problema que você está tendo? </label>
+
+                        <select name="opcao">
+                            <option value="troca_de_senha">
+                                Não consigo trocar minha senha
+                            </option>
+
+                            <option value="sensor_com_problema_defeituoso">
+                                Meu sensor está funcionando de forma inadequada
+                            </option>
+
+                            <option value="cadastro_de_sensor">
+                                Não consigo cadastrar meu sensor
+                            </option>
+
+                            <option value="">
+                                Nenhum dos listados
+                            </option>
+                        </select>
+
+                        <label>
+                            Não encontrou seu problema?
+                        </label>
+
+
+                        <input type="text" name="problemaTexto" placeholder="Descreva o problema..." >
+
+                        <button type="submit">
+                            Iniciar atendimento
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
+
+    {% else %}    
     <div class="atendimento-container">
 
         <!-- =====================================================
@@ -175,8 +231,7 @@
                                 'atendimentoAoClienteChat',
                                 novo_atendimento=1
                             ) }}"
-                            class="btn-iniciar"
-                        >
+                            class="btn-iniciar" >
 
                             Iniciar atendimento
 
@@ -193,93 +248,8 @@
         <section class="atendimento-conteudo">
 
 
-            {% if novo_atendimento == 1 %}
-
-                <div class="novo-atendimento">
-
-                    <div class="novo-icon">
-
-                        <i class="bi bi-headset"></i>
-
-                    </div>
-
-
-                    <span class="novo-label">
-                        NOVO ATENDIMENTO
-                    </span>
-
-
-                    <h2>
-                        Como podemos ajudar?
-                    </h2>
-
-
-                    <p>
-                        Selecione o problema que você está
-                        enfrentando para iniciarmos seu atendimento.
-                    </p>
-
-
-                    <form
-                        action="{{ url_for(
-                            'atendimentoAoClienteChat',
-                            novo_atendimento=2
-                        ) }}"
-                        method="POST"
-                        class="form-atendimento"
-                    >
-
-                        <label>
-                            Qual é o problema que você está tendo?
-                        </label>
-
-
-                        <select name="opcao">
-
-                            <option value="troca_de_senha">
-                                Não consigo trocar minha senha
-                            </option>
-
-                            <option value="sensor_com_problema_defeituoso">
-                                Meu sensor está funcionando de forma inadequada
-                            </option>
-
-                            <option value="cadastro_de_sensor">
-                                Não consigo cadastrar meu sensor
-                            </option>
-
-                            <option value="">
-                                Nenhum dos listados
-                            </option>
-
-                        </select>
-
-
-                        <label>
-                            Não encontrou seu problema?
-                        </label>
-
-
-                        <input
-                            type="text"
-                            name="problemaTexto"
-                            placeholder="Descreva o problema..."
-                        >
-
-
-                        <button type="submit">
-
-                            Iniciar atendimento
-
-                            <i class="bi bi-arrow-right"></i>
-
-                        </button>
-
-                    </form>
-
-                </div>
-
-            {% elif esseAtendimento %}
+            
+            {% if esseAtendimento %}
 
                 <div class="chat-container">
 
@@ -343,55 +313,26 @@
                     </div>
                     {% if esseAtendimento.estado == 'Aberto' %}
 
-                        <form
-                            action="{{ url_for('atendimentoAoClienteChat') }}"
-                            method="POST"
-                            class="chat-form"
-                        >
+                        <form action="{{ url_for('atendimentoAoClienteChat') }}" method="POST" class="chat-form" >
 
-                            <input
-                                type="text"
-                                name="textoMensagem"
-                                placeholder="Digite uma mensagem..."
-                                autocomplete="off"
-                                required
-                            >
-
-
-                            <input
-                                type="hidden"
-                                name="id_naoatendimento"
-                                value="{{ esseAtendimento.id_atendimento }}"
-                            >
-
-
+                            <input type="text" name="textoMensagem" placeholder="Digite uma mensagem..." autocomplete="off" required >
+                            <input type="hidden"  name="id_naoatendimento" value="{{ esseAtendimento.id_atendimento }}" >
                             <button type="submit">
-
                                 <i class="bi bi-send-fill"></i>
-
                             </button>
-
                         </form>
-
                     {% endif %}
 
                 </div>
 
             {% else %}
-
                 <div class="chat-vazio">
 
                     <div class="chat-vazio-icon">
-
                         <i class="bi bi-chat-dots"></i>
-
                     </div>
 
-
-                    <h2>
-                        Selecione um atendimento
-                    </h2>
-
+                    <h2> Selecione um atendimento </h2>
 
                     <p>
                         Escolha uma conversa ao lado ou
@@ -399,28 +340,17 @@
                     </p>
 
 
-                    <a
-                        href="{{ url_for(
-                            'atendimentoAoClienteChat',
-                            novo_atendimento=1
-                        ) }}"
-                    >
+                    <a href="{{ url_for( 'atendimentoAoClienteChat', novo_atendimento=1 ) }}" >
 
                         <i class="bi bi-plus-lg"></i>
 
                         Novo atendimento
 
                     </a>
-
                 </div>
-
             {% endif %}
-
-
         </section>
-
     </div>
-
 </main>
-
+{% endif %}
 {% endblock content %}

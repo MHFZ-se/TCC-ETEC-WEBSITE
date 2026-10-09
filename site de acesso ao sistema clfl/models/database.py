@@ -75,15 +75,15 @@ class Mensagens(db.Model):
     id_remetente = db.Column(db.Integer)
     adm = db.Column(db.Boolean)
     id_atendimento = db.Column(db.Integer)
+    lida = db.Column(db.Boolean)
 
-
-def __init__(self, id_mensagem , mensagem , id_remetente , adm, id_atendimento):
+def __init__(self, id_mensagem , mensagem , id_remetente , adm, id_atendimento,lida):
     self.id_mensagem = id_mensagem
     self.mensagem = mensagem
     self.id_remetente = id_remetente 
     self.adm = adm 
     self.id_atendimento = id_atendimento
-    
+    self.lida = lida
     
     #relatos de bub ou plroblemas
 class Problemas(db.Model):
