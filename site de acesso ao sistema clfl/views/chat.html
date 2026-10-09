@@ -6,6 +6,10 @@
 
     <div class="atendimento-container">
 
+        <!-- =====================================================
+             LATERAL ESQUERDA - CONVERSAS
+        ====================================================== -->
+
         <aside class="atendimento-sidebar">
 
             <div class="sidebar-header">
@@ -197,56 +201,6 @@
 
                         <i class="bi bi-headset"></i>
 
-    <main>
-        
-        {% if novo_atendimento == 1 %}  
-        
-            <div>
-                <form action=" {{ url_for('atendimentoAoClienteChat', novo_atendimento = 2)}}" method="POST">
-
-                    <label>Qual é o problema que você esta tendo?</label>
-                    <select name="opcao">
-                        <option value="troca_de_senha">Não consigo trocar minha senha</option>
-                        <option value="sensor_com_problema_defeituoso">Meu sensor está funcionando de forma inadequada</option>
-                        <option value="cadastro_de_sensor">Não consigo cadastrar meu sensor</option>
-                        <option value="">Nenhum dos listados</option>
-                    </select>
-                    <Input name="problemaTexto" placeholder="Não é nenhum acima? Digite:">
-                    <button type="submit">Pronto</button>
-                </form>
-            </div>
-
-
-        {% else %}
-        
-        <div class="conversas">
-                <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
-        {% if atendimentos %}
-        
-         <div  class="atendimentos_scrollview_nometemporario_trocar_dps" > 
-            <a href="{{url_for('atendimentoAoClienteChat', novo_atendimento = 1)}}" class="button">abrir novo atendimento</a>
-            <p>Conversas:</p>
-            E para ser tipo aquelas barrinhas laterais do watsap
-            {% for atendimento in atendimentos  %}
-                
-            {% if atendimento.estado == 'Aberto' %}
-                    
-                    <a href="{{ url_for('atendimentoAoClienteChat', id_atendimento = atendimento.id_atendimento) }}">
-                        <div class="atendimento button">
-                            <h5>Assunto: {{ atendimento.assunto }}</h5>
-                            <p>Aberto em {{ atendimento.data_abertura }}</p> 
-                            <p>Estado: Ainda em andamento</p> 
-                        </div>
-                    </a>
-                {% endif %}
-            {% endfor %}
-
-            {% for atendimento in atendimentos  %}
-                {% if atendimento.estado == 'Fechado' %}
-                    <div class="atendimento button" href="{{ url_for('atendimentoAoClienteChat', id_atendimento = atendimento.id_atendimento) }}" class="button">
-                        <h5>Assunto : {{ atendimento.assunto }}</h5>
-                        <p> Aberto em {{ atendimento.data_abertura }} </p>
-                        <p> Estado: Ja finalizado</p>
                     </div>
 
 
@@ -468,33 +422,5 @@
     </div>
 
 </main>
-
-        <div class="chat">
-            {% if esseAtendimento %}
-                {% for mensagem in mensagensConversa %}
-                    <div class="{{ 'mensagem_do_atendente' if mensagem.adm else 'mensagem_do_usuario' }}">
-                        {{ "mensagem_do_atendente" if mensagem.adm else "mensagem_do_usuario" }}
-                        {{ mensagem.mensagem}} <br>
-                    </div>
-                {% endfor %}
-            
-
-            <form action="{{ url_for('atendimentoAoClienteChat') }}" method="POST">
-
-                <input type="text" name="textoMensagem" placeholder="Digite sua mensagem" >
-
-                <input type="hidden" name="id_naoatendimento" value="{{ esseAtendimento.id_atendimento }}" >
-
-                <button type="submit"> enviar </button>
-
-            </form>
-
-        </div>
-        {% endif %}
-
-
-    {% endif %}
-
-    </main>
 
 {% endblock content %}
