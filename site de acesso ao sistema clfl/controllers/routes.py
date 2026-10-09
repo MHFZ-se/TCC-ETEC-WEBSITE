@@ -4,15 +4,14 @@ from models.database import *
 from controllers.funcoes import *
 from markupsafe import Markup
 from controllers.funcoes import quantidade_de_sensores
-
+from sqlalchemy import func
+import random
+from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 from werkzeug.utils import secure_filename
 
 import os
 import uuid
-
-
-
 
 def init_app(app):
 
@@ -538,17 +537,141 @@ def init_app(app):
     def atendimentoAoCliente():
         return render_template('atendimento_ao_cliente.html')
     
-    @app.route('/atendimento/chat-atendente')
-    @app.route('/atendimento/chat-atendente/<int:id_atendimento>')
+    @app.route('/atendimento/chat-atendente', methods= ['GET','POST'])
     #@app.route('/atendimento/chat-atendente')
-    def atendimentoAoClienteChat(id_atendimento):#se o usuario clicou em abrir uma conversa ja existente
+    def atendimentoAoClienteChat(id_atendimento=None,novo_atendimento = None, enviarMensagem = None):#se o usuario clicou em abrir uma conversa ja existente
         atendimentos = []
-        atendimentos = Atendimento.query.filter_by(id_cliente = session['idLogado'], estado='aberto').order_by(Atendimento.data_abertura.asc()).all()
+        atendimentos = Atendimento.query.filter_by(id_cliente = session['idLogado']).order_by(Atendimento.data_abertura.asc()).all()
         mensagens = []
         mensagens = Mensagens.query.order_by(Mensagens.data_hora.asc()).all()
+        id_atendimento = request.args.get('id_atendimento', type=int)
+        novo_atendimento = request.args.get('novo_atendimento', type=int)
         
-        if id_atendimento:# abre a conversa
-            return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens, id_conversa = id_atendimento)
+        def escolher_adm():
+            adms = (
+                db.session.query(
+                    Usuario,func.count(Atendimento.id_atendimento).label('quantidade'))
+                    .outerjoin(Atendimento,Atendimento.id_adm == Usuario.id).filter(Usuario.adm == True).group_by(Usuario.id).all()
+            )
+
+            menor_quantidade = min(
+                quantidade for usuario, quantidade in adms
+            )
+
+            adms_disponiveis = [
+                usuario
+                for usuario, quantidade in adms
+                if quantidade == menor_quantidade
+            ]
+
+            return random.choice(adms_disponiveis)
+
+        if request.method == 'POST' and novo_atendimento != 2:
+                print('passou pelo enviar mensagem')
+                
+                id_atendimento = request.form['id_naoatendimento'] 
+                mensagem = request.form['textoMensagem']
+                
+                #tratamento pra ver se ta nulo
+                if mensagem == 'bananinha' :
+                    return 0
+                
+
+                novaMensagem = Mensagens(
+                    mensagem = mensagem,
+                    data_hora = datetime.now(),
+                    id_remetente = session['idLogado'],
+                    adm = False,
+                    id_atendimento = id_atendimento
+                )
+
+                db.session.add(novaMensagem)
+                db.session.commit()
+
+
+                return redirect(url_for('atendimentoAoClienteChat',id_atendimento=id_atendimento))
         
-        return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens)
+        
+        if novo_atendimento:
+            
+            if novo_atendimento == 1:
+                print('chegou no 1')
+                return render_template('chat.html', novo_atendimento = 1)
+            
+            #ao receber o form
+            if novo_atendimento == 2:
+                opcao = request.form['opcao']
+                texto = request.form['problemaTexto']
+                
+                if opcao == '' and not texto.strip():
+                    flash("Você deve preencher pelo menos um dos campos com uma opção valida", 'danger')
+                    print("passou aq 6")   
+                    return render_template('chat.html', novo_atendimento = 1)
+                
+                elif opcao:
+                    adm = escolher_adm()
+                    atendimento = Atendimento(
+                        id_cliente = session['idLogado'],
+                        id_adm = adm.id,
+                        data_abertura = datetime.now(),
+                        estado = "Aberto",
+                        assunto = opcao
+                    )
+                                        
+                    db.session.add(atendimento)
+                    db.session.commit()    
+                    print("passou aq 5")    
+                    return redirect(url_for('atendimentoAoClienteChat', novo_atendimento = 3))
+                else:
+                    adm = escolher_adm()
+                    atendimento = Atendimento(
+                        id_cliente = session['idLogado'],
+                        id_adm = adm.id,
+                        data_abertura = datetime.now(),
+                        estado = "Aberto",
+                        assunto = texto
+                    )
+                                        
+                    db.session.add(atendimento)
+                    db.session.commit()                        
+                    print("passou aq 4")   
+                    return redirect(url_for('atendimentoAoClienteChat', novo_atendimento = 3))
+        
+                
+            if novo_atendimento == 3:
+                ultimoAtendimentoAberto = Atendimento.query.filter_by(id_cliente = session['idLogado'], estado='aberto').order_by(Atendimento.data_abertura.desc()).first()
+                idUltimoAtendimento = ultimoAtendimentoAberto.id_atendimento
+                mensagensConversa = []
+                admSelecionado = Usuario.query.filter_by(id = ultimoAtendimentoAberto.id_adm ).first()
+                
+                for mensagem in mensagens:
+                    if mensagem.id_atendimento == idUltimoAtendimento:
+                        mensagensConversa.append(mensagem)
+        
+
+                
+                print("passou aq 2")   #a rota passa as mensagens da conversa(para mostralas), os atendimentos(para a barra lateral) e o ultimo atendimento(para os dados da convers))
+                return render_template ('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa ,
+                    esseAtendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
+  
+        
+        
+        if id_atendimento:
+            print("passou aq")
+            mensagensConversa = []
+            atendimento =  Atendimento.query.filter_by(id_atendimento = id_atendimento).first()
+            admSelecionado = Usuario.query.filter_by(id = atendimento.id_adm).first()    
+
+            for mensagem in mensagens:
+                if mensagem.id_atendimento == id_atendimento:
+                    mensagensConversa.append(mensagem)
+                  
+            
+            return render_template('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa,
+                            esseAtendimento = atendimento, admSelecionado = admSelecionado)
+            
+        #     return render_template('chat.html', atendimentos = atendimentos, mensagens = mensagens, id_conversa = id_atendimento)
+            
+       
+        return render_template('chat.html', atendimentos = atendimentos)
     

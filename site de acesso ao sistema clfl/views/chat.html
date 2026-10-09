@@ -1,47 +1,426 @@
 {% extends 'template_null.html' %}
 
-{% block content %} <!--isto indica o uso de um codigo .py-->
-    
+{% block content %}
 
-<main>
-        <div class="conversas">
-            <!-- tem dois fors porque quero q primeiro apareça os que estão abertos e daí depois os já fechados -->
-        {% if atendimentos is not Null %}
-        <div class="atendimentos_scrollview_nometemporario_trocar_dps">
-            {% for atendimento in atendimentos  %}
-                {% if atendimento['estado'] == 'aberto' %}
+<main class="atendimento-page">
 
-                    <div class="atendimento">
-                        <h5>Assunto : {{ atendimento['sssunto']}}</h5>
-                        <p> Aberto em {{ atendimento['data_hora']}} </p>
-                        <p> Estado: Ainda pendente</p>
-                        <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
+    <div class="atendimento-container">
+
+        <!-- =====================================================
+             LATERAL ESQUERDA - CONVERSAS
+        ====================================================== -->
+
+        <aside class="atendimento-sidebar">
+
+            <div class="sidebar-header">
+
+                <div>
+                    <span class="sidebar-label">PLANTHEALTH</span>
+                    <h1>Atendimentos</h1>
+                </div>
+
+                <a
+                    href="{{ url_for('atendimentoAoClienteChat', novo_atendimento=1) }}"
+                    class="btn-novo"
+                    title="Novo atendimento">
+
+                    <i class="bi bi-plus-lg"></i>
+
+                </a>
+
+            </div>
+
+
+            <!-- Pesquisa -->
+
+            <div class="pesquisa-atendimento">
+
+                <i class="bi bi-search"></i>
+
+                <input
+                    type="text"
+                    placeholder="Pesquisar conversas..."
+                >
+
+            </div>
+
+
+            <div class="lista-atendimentos">
+
+                {% if atendimentos %}
+
+                    <!-- ATENDIMENTOS ABERTOS -->
+
+                    {% for atendimento in atendimentos %}
+
+                        {% if atendimento.estado == 'Aberto' %}
+
+                            <a
+                                href="{{ url_for(
+                                    'atendimentoAoClienteChat',
+                                    id_atendimento=atendimento.id_atendimento
+                                ) }}"
+                                class="atendimento-item
+                                {% if esseAtendimento and esseAtendimento.id_atendimento == atendimento.id_atendimento %}
+                                    ativo
+                                {% endif %}"
+                            >
+
+                                <div class="atendimento-icone">
+                                    <i class="bi bi-headset"></i>
+                                </div>
+
+                                <div class="atendimento-info">
+
+                                    <div class="atendimento-topo">
+
+                                        <strong>
+                                            {{ atendimento.assunto }}
+                                        </strong>
+
+                                        <span>
+                                            {{ atendimento.data_abertura }}
+                                        </span>
+
+                                    </div>
+
+                                    <p>
+                                        Atendimento em andamento
+                                    </p>
+
+                                    <small class="status-aberto">
+
+                                        <i class="bi bi-circle-fill"></i>
+
+                                        Aberto
+
+                                    </small>
+
+                                </div>
+
+                            </a>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    {% for atendimento in atendimentos %}
+
+                        {% if atendimento.estado == 'Fechado' %}
+
+                            <a
+                                href="{{ url_for(
+                                    'atendimentoAoClienteChat',
+                                    id_atendimento=atendimento.id_atendimento
+                                ) }}"
+                                class="atendimento-item fechado"
+                            >
+
+                                <div class="atendimento-icone">
+                                    <i class="bi bi-headset"></i>
+                                </div>
+
+                                <div class="atendimento-info">
+
+                                    <div class="atendimento-topo">
+
+                                        <strong>
+                                            {{ atendimento.assunto }}
+                                        </strong>
+
+                                        <span>
+                                            {{ atendimento.data_abertura }}
+                                        </span>
+
+                                    </div>
+
+                                    <p>
+                                        Atendimento finalizado
+                                    </p>
+
+                                    <small>
+
+                                        <i class="bi bi-check-circle-fill"></i>
+
+                                        Fechado
+
+                                    </small>
+
+                                </div>
+
+                            </a>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                {% else %}
+
+                    <div class="sem-atendimentos">
+
+                        <i class="bi bi-chat-square-text"></i>
+
+                        <strong>
+                            Nenhum atendimento
+                        </strong>
+
+                        <p>
+                            Você ainda não possui conversas.
+                        </p>
+
+                        <a
+                            href="{{ url_for(
+                                'atendimentoAoClienteChat',
+                                novo_atendimento=1
+                            ) }}"
+                            class="btn-iniciar"
+                        >
+
+                            Iniciar atendimento
+
+                        </a>
+
                     </div>
-                {% endif %}
-            {% endfor %}
 
-            {% for atendimento in atendimentos  %}
-                {% if atendimento['estado'] == 'fechado' %}
-                    <div class="atendimento">
-                        <h5>Assunto : {{ atendimento['sssunto']}}</h5>
-                        <p> Aberto em {{ atendimento['data_hora']}} </p>
-                        <p> Estado: Ja finalisado</p>
-                        <a href="{{url_for('atendimentoAoClienteChat', atendimento[id_atendimento])}}" class="button"></a>
+                {% endif %}
+
+            </div>
+
+        </aside>
+
+        <section class="atendimento-conteudo">
+
+
+            {% if novo_atendimento == 1 %}
+
+                <div class="novo-atendimento">
+
+                    <div class="novo-icon">
+
+                        <i class="bi bi-headset"></i>
+
                     </div>
-                {% endif %}
-            {% endfor %}
-        
-        </div>
-        {% endif %}
-        <!-- Caso o usuario nunca tenha aberto nehum atendimento -->
-        </div>
 
-        <!-- Carrega a conversar se o idconversa for passado for, se alguma convesa tiver sido aberta  -->
 
-        <div class="chat">
-            {% if id_atendimento%}
-            {% if %}
+                    <span class="novo-label">
+                        NOVO ATENDIMENTO
+                    </span>
 
-        </div>
-    </main>
+
+                    <h2>
+                        Como podemos ajudar?
+                    </h2>
+
+
+                    <p>
+                        Selecione o problema que você está
+                        enfrentando para iniciarmos seu atendimento.
+                    </p>
+
+
+                    <form
+                        action="{{ url_for(
+                            'atendimentoAoClienteChat',
+                            novo_atendimento=2
+                        ) }}"
+                        method="POST"
+                        class="form-atendimento"
+                    >
+
+                        <label>
+                            Qual é o problema que você está tendo?
+                        </label>
+
+
+                        <select name="opcao">
+
+                            <option value="troca_de_senha">
+                                Não consigo trocar minha senha
+                            </option>
+
+                            <option value="sensor_com_problema_defeituoso">
+                                Meu sensor está funcionando de forma inadequada
+                            </option>
+
+                            <option value="cadastro_de_sensor">
+                                Não consigo cadastrar meu sensor
+                            </option>
+
+                            <option value="">
+                                Nenhum dos listados
+                            </option>
+
+                        </select>
+
+
+                        <label>
+                            Não encontrou seu problema?
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="problemaTexto"
+                            placeholder="Descreva o problema..."
+                        >
+
+
+                        <button type="submit">
+
+                            Iniciar atendimento
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            {% elif esseAtendimento %}
+
+                <div class="chat-container">
+
+
+                    <!-- CABEÇALHO DO CHAT -->
+
+                    <div class="chat-header">
+
+                        <div class="chat-avatar">
+
+                            <i class="bi bi-headset"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                {{ esseAtendimento.assunto }}
+                            </strong>
+
+                            <span>
+
+                                <i class="bi bi-circle-fill"></i>
+
+                                {% if esseAtendimento.estado == 'Aberto' %}
+                                    Atendimento em andamento
+                                {% else %}
+                                    Atendimento finalizado
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="chat-mensagens">
+
+                        {% for mensagem in mensagensConversa %}
+
+                            <div
+                                class="
+                                mensagem
+                                {% if mensagem.adm %}
+                                    mensagem-atendente
+                                {% else %}
+                                    mensagem-usuario
+                                {% endif %}
+                                "
+                            >
+
+                                <p>
+                                    {{ mensagem.mensagem }}
+                                </p>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+                    {% if esseAtendimento.estado == 'Aberto' %}
+
+                        <form
+                            action="{{ url_for('atendimentoAoClienteChat') }}"
+                            method="POST"
+                            class="chat-form"
+                        >
+
+                            <input
+                                type="text"
+                                name="textoMensagem"
+                                placeholder="Digite uma mensagem..."
+                                autocomplete="off"
+                                required
+                            >
+
+
+                            <input
+                                type="hidden"
+                                name="id_naoatendimento"
+                                value="{{ esseAtendimento.id_atendimento }}"
+                            >
+
+
+                            <button type="submit">
+
+                                <i class="bi bi-send-fill"></i>
+
+                            </button>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            {% else %}
+
+                <div class="chat-vazio">
+
+                    <div class="chat-vazio-icon">
+
+                        <i class="bi bi-chat-dots"></i>
+
+                    </div>
+
+
+                    <h2>
+                        Selecione um atendimento
+                    </h2>
+
+
+                    <p>
+                        Escolha uma conversa ao lado ou
+                        inicie um novo atendimento.
+                    </p>
+
+
+                    <a
+                        href="{{ url_for(
+                            'atendimentoAoClienteChat',
+                            novo_atendimento=1
+                        ) }}"
+                    >
+
+                        <i class="bi bi-plus-lg"></i>
+
+                        Novo atendimento
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+
+        </section>
+
+    </div>
+
+</main>
+
 {% endblock content %}

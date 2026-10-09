@@ -74,13 +74,15 @@ class Mensagens(db.Model):
     data_hora = db.Column(db.DateTime)
     id_remetente = db.Column(db.Integer)
     adm = db.Column(db.Boolean)
+    id_atendimento = db.Column(db.Integer)
 
 
-def __init__(self, id_mensagem , mensagem , id_remetente , adm):
+def __init__(self, id_mensagem , mensagem , id_remetente , adm, id_atendimento):
     self.id_mensagem = id_mensagem
     self.mensagem = mensagem
     self.id_remetente = id_remetente 
     self.adm = adm 
+    self.id_atendimento = id_atendimento
     
     
     #relatos de bub ou plroblemas
