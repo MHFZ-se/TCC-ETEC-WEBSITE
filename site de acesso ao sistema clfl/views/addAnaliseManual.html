@@ -1,0 +1,82 @@
+{% extends 'template_null.html' %}
+
+{% block content %} <!--isto indica o uso de um codigo .py-->
+    <main>
+        <div>
+            <form action="{{url_for('analiseAddManu')}}" method="POST">
+                <label> Codigo de produto</label><br>
+                <input type="text" placeholder="Id do sensor" name="idSensor"><br>
+                <br>
+                <label> Cor aparente nas folhas analisadas</label><br>
+
+                <select name="corA">
+                    <option value="Verde claro saudavel">Verde claro saudavel</option>
+                    <option value="Verde claro">Verde claro</option>
+                    <option value="Verde escuro saudavel">Verde escuro saudavel</option>
+                    <option value="Verde escuro">Verde escuro</option>
+                    <option value="Amarelado">Amarelada</option>
+                    <option value="Azulada">Azulada</option>
+                    <option value="Acinzentado">Acinzentado</option>
+                    <option value="Preto">Preto</option>
+                </select>
+                
+                <h6>Níveis de pigmentação, apenas digite exatamente oque o sensor exibe🏵️</h6><!-- Isso foi um emoji colocado manualmente caso o leitor tenha alguma duvida-->
+                    <br>
+                <label>Nível de Vermelho  </label>
+                <input type="range"  id="led_vermelho_range" min="0" max="255" step="1" value="50" >
+                <input type="number" id="led_vermelho" name="led_vermelho" min="0" max="255" step="1" value="50" required>
+                <br>
+                    <br>
+                <label>Nível de Verde  </label>
+                <input type="range"  id="led_verde_range" min="0" max="255" step="1" value="150" >
+                <input type="number" id="led_verde" name="led_verde" min="0" max="255" step="1" value="150" required>
+                <br>
+                    <br>
+                <label>Nível de Azul  </label>
+                <input type="range"  id="led_azul_range" min="0" max="255" step="1" value="60" >
+                <input type="number" id="led_azul" name="led_azul" min="0" max="255" step="1" value="60" required>
+                <br>
+
+                <button type="submit">Salvar Coleta e gerar analise</button>
+            </form>
+        </div>
+
+
+    </main>
+    <!-- faz com que os campos e as slidebars se unifiquem -->
+    <script>
+        // sim, foi usada ia, faz melhor ai o bomzão
+        function sincronizarCampos(idBarra, idCampo) {
+            const barra = document.getElementById(idBarra);
+            const campo = document.getElementById(idCampo);
+
+            // Ao arrastar a barra, atualiza o campo numérico
+            barra.addEventListener("input", function () {
+                campo.value = barra.value;
+            });
+
+            // Ao digitar, atualiza a barra
+            campo.addEventListener("input", function () {
+                if (campo.value === "") {
+                    return;
+                }
+
+                const valor = Number(campo.value);
+
+                if (valor >= 0 && valor <= 255) {
+                    barra.value = valor;
+                }
+            });
+        }
+
+        // Vermelho
+        sincronizarCampos("led_vermelho_range", "led_vermelho");
+
+        // Verde
+        sincronizarCampos("led_verde_range", "led_verde");
+
+        // Azul
+        sincronizarCampos("led_azul_range", "led_azul");
+
+    </script>
+{% endblock content %}

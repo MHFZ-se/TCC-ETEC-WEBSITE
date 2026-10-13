@@ -336,6 +336,39 @@ def init_app(app):
 
         return render_template( 'analises.html', analises=lista_analises)
 
+    @app.route('/analises/adicionarNova')
+    def analiseAdd():
+        return render_template('addAnalise.html')
+    
+
+
+
+
+
+
+    @app.route('/analises/adicionarNova/manual', methods=['GET','POST'])
+    def analiseAddManu():
+        if request.method == "POST":
+            coleta = Coleta(
+                id_usuario = session['idLogado'],
+                numero_de_serie = request.form['idSensor'],
+                data = datetime.now(),
+                corA = request.form['corA'],
+                led_vermelho = request.form['led_vermelho'],
+                led_verde = request.form['led_verde'],
+                led_azul = request.form['led_azul']
+            )
+            db.session.add(coleta)
+            db.session.commit()
+            
+            return redirect(url_for('analises'))
+        return render_template('addAnaliseManual.html')
+
+
+
+
+
+
 
 
     @app.route('/detalhes-deficiencia/<tipo>')
@@ -652,10 +685,10 @@ def init_app(app):
                 
                 print("passou aq 2")   #a rota passa as mensagens da conversa(para mostralas), os atendimentos(para a barra lateral) e o ultimo atendimento(para os dados da convers))
                 return render_template ('chat.html', atendimentos = atendimentos, mensagensConversa = mensagensConversa ,
-                    esseAtendimento = ultimoAtendimentoAberto, admSelecionado = admSelecionado)
+                    esseAtendimento = ultimoAtendimentoAberto, admSelecionado =  admSelecionado)
   
         
-        
+         
         if id_atendimento:
             print("passou aq")
             mensagensConversa = []
