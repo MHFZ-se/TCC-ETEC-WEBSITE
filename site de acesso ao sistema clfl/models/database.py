@@ -23,11 +23,13 @@ def __init__(self, nome, telefone, senha, email, numero_de_serie,rota_foto_perfi
     
 class Sensor(db.Model):
     numero_de_serie = db.Column(db.Integer, primary_key = True)
+    codinome = db.Column(db.String(150))
     id = db.Column(db.String(150))
 
-def __init__(self, id, numero_de_serie):
+def __init__(self, id, numero_de_serie,codinome):
     self.numero_de_serie = numero_de_serie
     self.id = id
+    self.codinome = codinome
     
 class Coleta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -89,12 +91,14 @@ def __init__(self, id_mensagem , mensagem , id_remetente , adm, id_atendimento,l
 class Problemas(db.Model):
     id_problema = db.Column(db.Integer, primary_key=True)
     id_cliente_afetado = db.Column(db.Integer)
-    tpo_problema = db.Column(db.String(50))
+    tipo_problema = db.Column(db.String(50))
     mensagem = db.Column(db.String(250))
+    rota_foto = db.Column(db.String(60), nullable=True)
 
 
-def __init__(self, id_problema, id_cliente_afetado, tpo_problema, mensagem):
+def __init__(self, id_problema, id_cliente_afetado, tpo_problema, mensagem, rota_foto):
     self.id_problema = id_problema
-    self.id_cliente_afetado =id_cliente_afetado
-    self.tpo_problema =tpo_problema
-    self.mensagem =mensagem
+    self.id_cliente_afetado = id_cliente_afetado
+    self.tpo_problema = tpo_problema
+    self.mensagem = mensagem
+    self.rota_foto = rota_foto

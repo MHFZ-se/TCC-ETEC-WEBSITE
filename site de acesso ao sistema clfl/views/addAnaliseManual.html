@@ -2,10 +2,10 @@
 
 {% block content %} <!--isto indica o uso de um codigo .py-->
     <main>
-        <div>
+        <div class="col-md-4">
             <form action="{{url_for('analiseAddManu')}}" method="POST">
                 <label> Codigo de produto</label><br>
-                <input type="text" placeholder="Id do sensor" name="idSensor"><br>
+                <input type="text" placeholder="Id do sensor" name="idSensor" required><br>
                 <br>
                 <label> Cor aparente nas folhas analisadas</label><br>
 

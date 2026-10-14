@@ -5,15 +5,13 @@
         <div class="col-md-4">
             <form action="{{url_for('editarInfos')}}" method="POST" >
                 <label class="abel">Informe seu nome completo</label><br>
-                <input class="inp" type="text" name="nome" value={{usuario.nome}}><br>
+                <input class="inp" type="text" name="nome" value={{usuario.nome}} required><br>
                 <label class="abel">Informe seu numero de  Telefone</label><br>
-                <input class="inp" type="text" name="telefone" value={{usuario.telefone}}><br>
+                <input class="inp" type="text" name="telefone" value={{usuario.telefone}} required><br>
                 <label class="abel">Informe um endereço de email válido </label><br>
-                <input class="inp" type="text" name="email" value={{usuario.email}}><br>
-                <label class="abel">Informe uma senha</label><br>
-                <input class="inp" type="password" name="senha" value={{usuario.senha}} onfocus="this.select()"><br>
-                <label class="abel">Informe a senha novamente</label><br>
-                <input class="inp" type="password" name="senha2" value={{usuario.senha}} onfocus="this.select()"><br>
+                <input class="inp" type="text" name="email" value={{usuario.email}} required><br>
+                <label class="abel" style="margin-bottom:15px ;">Alterar senha?</label><br>
+                <a href="{{url_for('novaSenha')}}" class="button" style="margin-top:50px ;">Alterar agora!</a>
 
                 <input class="button" type="submit" value="Registrar alterações">
                 

@@ -1,0 +1,41 @@
+{% extends 'template_null.html' %}
+
+{% block content %} <!--isto indica o uso de um codigo .py-->
+    <main>
+        <div class="col-md-4">
+            <div class="card-body">
+                <form action="{{url_for('feedback')}}" method="POST" enctype="multipart/form-data">
+                    
+                    <label class="abel"> Qual é o tipo de feedback que você gostaria de enviar?</label><br>
+
+                    <select name="tipo" style="height: 50px; width: 100%;" required>
+                        <option value="elogiarAspecto">Elogiar um aspecto</option>
+                        <option value="melhoria">Comentar sobre algo que poderia ser melhorado</option>
+                        <option value="relatoDeBug">Relatar um bug(recomendavel anexar uma imagem)</option>
+                        <option value="criticaDesconstrutiva">Criticar um aspecto</option>
+                        <option value="outro">Outro</option>
+                    </select><br>
+                    
+                    <label class="abel"> Escreva sua mensagem</label><br>
+                    <input class="inp" type="text" placeholder="Descreva a situação" name="msg_feedback" style="height: 60px;" required><br>
+                    <br>
+
+                    <label class="abel"> Gostaria de anexar uma foto da situação ou como exemplo?</label><br>
+
+                    <input type="file" name="file" id="input-foto" accept="image/png,image/jpeg,image/gif,image/webp" hidden 
+                                onchange="document.getElementById('form-foto').submit()">
+
+                                <button class="button" style="background-color: rgb(22, 22, 143);" type="button" onclick="document.getElementById('input-foto').click()">
+                                    selecionar fotografia
+                                </button>
+                                <div style="align-self: center; width: 100%;">(Totalmente opcional)</div>
+
+
+                    <button type="submit" class="button">Salvar feedback e voltar a pagina inicial</button>
+                </form>
+            </div>
+        </div>
+
+
+    </main>
+{% endblock content %}

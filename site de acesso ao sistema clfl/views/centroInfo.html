@@ -32,27 +32,12 @@
             <div class="conteiner col-6">
                 <div class="card mt-4">
                     <div class="card-body">
-                        <form
-                            action="{{ url_for('galeria') }}"
-                            method="POST"
-                            enctype="multipart/form-data"
-                            id="form-foto"
-                        >
+                        <form action="{{ url_for('galeria') }}" method="POST" enctype="multipart/form-data" id="form-foto">
 
-                            <input
-                                type="file"
-                                name="file"
-                                id="input-foto"
-                                accept="image/png,image/jpeg,image/gif,image/webp"
-                                hidden
-                                onchange="document.getElementById('form-foto').submit()"
-                            >
+                            <input type="file" name="file" id="input-foto" accept="image/png,image/jpeg,image/gif,image/webp" hidden 
+                            onchange="document.getElementById('form-foto').submit()">
 
-                            <button
-                                class="btn-foto"
-                                type="button"
-                                onclick="document.getElementById('input-foto').click()"
-                            >
+                            <button class="btn-foto" type="button" onclick="document.getElementById('input-foto').click()">
                                 <i class="bi bi-camera-fill"></i>
                             </button>
 

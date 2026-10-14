@@ -1,0 +1,21 @@
+{% extends 'template_null.html' %}
+
+{% block content %} <!--isto indica o uso de um codigo .py-->
+    <main>
+        <div class="col-md-4">
+            <div class="card-body">
+
+                <form action="{{ url_for('renSensor', numero_de_serie=sensor.numero_de_serie) }}" method="POST" >
+
+                    <label class="abel">Informe o novo codinome do sensor {{sensor.numero_de_serie}}</label><br>
+
+                    <input class="inp" type="text" name="codinome" value={{sensor.codinome}}><br>
+                    
+
+                    <button class="button" type="submit">Registrar alterações</button>
+                    
+                </form>
+            </div>
+        </div>
+    </main> 
+{% endblock content %}

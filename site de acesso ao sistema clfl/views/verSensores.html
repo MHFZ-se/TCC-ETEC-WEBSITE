@@ -17,9 +17,10 @@
 
                 <thead>
                     <tr>
-                        <th>Nome</th>
+                        <th>Codinome</th>
                         <th>Número de série</th>
                         <th>Consultas</th>
+                        <th>Alterar dados</th>
                     </tr>
                 </thead>
 
@@ -29,7 +30,7 @@
 
                     <tr>
                         <td>
-                            Sensor {{ sensor.numero_de_serie }}
+                            {{ sensor.codinome }}
                         </td>
 
                         <td>
@@ -39,6 +40,12 @@
                         <td>
                             <a href="{{url_for('analises')}}" class="btn-consultar">
                                 Ver análises
+                            </a>
+                        </td>
+
+                        <td>
+                            <a href="{{url_for('renSensor', numero_de_serie = sensor.numero_de_serie)}}" class="btn-consultar">
+                                Alterar
                             </a>
                         </td>
                     </tr>

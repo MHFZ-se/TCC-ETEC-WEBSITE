@@ -149,6 +149,7 @@ def init_app(app):
 
             dados_form = request.form.to_dict()
             numero_de_serie = int(dados_form['numero_de_serie'])
+            codinome = dados_form['nome']
 
 
             # sensor_existente = Sensor.query.filter_by(
@@ -164,12 +165,36 @@ def init_app(app):
                 return "O sensor informado já está no nome de um usuario, entre em contato pelo suporte ou tente de novo"
             
             sensor.id = str(session['idLogado'])
+            sensor.codinome = codinome
 
             db.session.commit()
             
             return redirect(url_for('interface'))
 
         return render_template('vincSensor.html')
+    
+    @app.route('/interface/renSensor', methods=['GET','POST'])
+    def renSensor():
+        numero_de_serie = request.args.get('numero_de_serie', type=int)
+        sensor = Sensor.query.filter_by(numero_de_serie = numero_de_serie).first()
+
+        if sensor is None:
+            flash("Sensor não encontrado.", "danger")
+            return redirect(url_for('verSensores'))
+        
+        
+        if request.method == 'POST':
+            dados = request.form
+            novoCodinome = dados['codinome']
+            sensor.codinome = novoCodinome
+            
+
+            db.session.commit()
+            return redirect(url_for('verSensores'))
+        
+        
+        
+        return render_template('renSensor.html', sensor=sensor)
     
     @app.route('/interface/verSensores', methods=['GET','POST'])
     def verSensores():
@@ -238,25 +263,19 @@ def init_app(app):
             nome = dadosSubtitutos['nome']
             email = dadosSubtitutos['email']
             telefone = dadosSubtitutos['telefone']
-            senha = dadosSubtitutos['senha']
-            senha2 = dadosSubtitutos['senha2']
+            
 
-            if  nome == None or email == None or telefone == None or senha == None or senha2 == None:
+            if  nome == None or email == None or telefone == None:
                 return "Preencha todos os campos!!!"
             
 
-            if senha != senha2: 
-                return "Informe Duas senhas iguais"
+            
             
             usuario.nome = nome
             usuario.email = email
             usuario.telefone = telefone
             
-            if check_password_hash(usuario.senha,senha) and check_password_hash(usuario.senha,senha2):
-                db.session.commit()
-                return redirect(url_for('centroInfo'))
             
-            usuario.senha = generate_password_hash(senha)
             db.session.commit()
             return redirect(url_for('centroInfo'))
             
@@ -269,58 +288,6 @@ def init_app(app):
         lista_analises = []
         for coleta in coletas:
             lista_analises.append(coleta)
-
-            # {
-            #     "data": "2026-08-01",
-            #     "corA": "Verde saudável",
-            #     "led_vermelho": 45,
-            #     "led_verde": 180,
-            #     "led_azul": 60
-            # },
-
-            # {
-            #     "data": "2026-08-05",
-            #     "corA": "Verde claro",
-            #     "led_vermelho": 70,
-            #     "led_verde": 190,
-            #     "led_azul": 80
-            # },
-
-            # {
-            #     "data": "2026-08-10",
-            #     "corA": "Amarelado",
-            #     "led_vermelho": 150,
-            #     "led_verde": 160,
-            #     "led_azul": 40
-            # },
-
-            # {
-            #     "data": "2026-08-15",
-            #     "corA": "Azulada",
-            #     "led_vermelho": 30,
-            #     "led_verde": 80,
-            #     "led_azul": 120
-            # },
-
-            # {
-            #     "data": "2026-08-20",
-            #     "corA": "Verde saudável",
-            #     "led_vermelho": 48,
-            #     "led_verde": 178,
-            #     "led_azul": 62
-            # },
-            
-            # {
-            #     "data": "2026-08-29",
-            #     "corA": "Verde saudável",
-            #     "led_vermelho": 30,
-            #     "led_verde": 110,
-            #     "led_azul": 50
-            # }
-        
-
-
-
         for analise in lista_analises:
 
             resultado = analisar_cor(
@@ -374,116 +341,13 @@ def init_app(app):
     @app.route('/detalhes-deficiencia/<tipo>')
     def detalhes_deficiencia(tipo=None):
 
-        informacoes = {
-
-            "nitrogenio": {
-
-                "titulo": "Possível deficiência de Nitrogênio (N)",
-
-                "descricao":
-                "O nitrogênio é importante para o crescimento "
-                "da planta e para a formação de clorofila.",
-
-                "sintomas":
-                "O amarelecimento das folhas, principalmente "
-                "das folhas mais velhas, pode estar associado "
-                "à deficiência de nitrogênio.",
-
-                "manejo":
-                "Verifique a disponibilidade de nitrogênio no solo "
-                "e faça a correção da adubação de acordo com a "
-                "necessidade da planta.",
-
-                "confirmacao":
-                "A cor da folha não confirma sozinha a deficiência. "
-                "Realize uma nova análise e, quando possível, "
-                "uma análise do solo."
-            },
-
-
-            "fosforo": {
-
-                "titulo": "Possível deficiência de Fósforo (P)",
-
-                "descricao":
-                "O fósforo participa de processos importantes "
-                "relacionados ao crescimento da planta.",
-
-                "sintomas":
-                "Algumas plantas podem apresentar folhas "
-                "verde-escuras e coloração arroxeada ou "
-                "avermelhada.",
-
-                "manejo":
-                "Verifique a disponibilidade de fósforo no solo "
-                "e faça a correção da adubação de acordo com "
-                "a necessidade da planta.",
-
-                "confirmacao":
-                "A coloração é apenas uma indicação inicial. "
-                "Uma nova análise e, quando possível, uma análise "
-                "do solo ajudam a confirmar o problema."
-            },
-
-
-            "normal": {
-
-                "titulo": "Planta aparentemente saudável",
-
-                "descricao":
-                "A coloração identificada pelo sensor está "
-                "dentro do padrão definido para uma planta "
-                "aparentemente saudável.",
-
-                "sintomas":
-                "Não foram identificadas alterações de cor "
-                "associadas às deficiências analisadas.",
-
-                "manejo":
-                "Continue realizando o monitoramento periódico "
-                "da planta.",
-
-                "confirmacao":
-                "Continue realizando novas análises para "
-                "acompanhar a evolução da planta."
-            },
-
-
-            "inconclusivo": {
-
-                "titulo": "Resultado inconclusivo",
-
-                "descricao":
-                "A leitura não apresentou características "
-                "suficientes para indicar uma possível deficiência.",
-
-                "sintomas":
-                "A coloração detectada não se enquadrou "
-                "nos padrões utilizados pelo sistema.",
-
-                "manejo":
-                "Realize uma nova leitura, mantendo condições "
-                "semelhantes de iluminação e posicionamento "
-                "do sensor.",
-
-                "confirmacao":
-                "O resultado deve ser confirmado com novas "
-                "medições e, quando possível, outros métodos "
-                "de avaliação."
-            }
-        }
-
-
         info = informacoes.get(tipo)
 
         if info is None:
             return "Resultado não encontrado", 404
 
 
-        return render_template(
-            'detalhes_deficiencia.html',
-            info=info
-        )
+        return render_template( 'detalhes_deficiencia.html', info=info )
     
     @app.route('/galeria', methods=['POST'])
     def galeria():
@@ -580,24 +444,6 @@ def init_app(app):
         id_atendimento = request.args.get('id_atendimento', type=int)
         novo_atendimento = request.args.get('novo_atendimento', type=int)
         
-        def escolher_adm():
-            adms = (
-                db.session.query(
-                    Usuario,func.count(Atendimento.id_atendimento).label('quantidade'))
-                    .outerjoin(Atendimento,Atendimento.id_adm == Usuario.id).filter(Usuario.adm == True).group_by(Usuario.id).all()
-            )
-
-            menor_quantidade = min(
-                quantidade for usuario, quantidade in adms
-            )
-
-            adms_disponiveis = [
-                usuario
-                for usuario, quantidade in adms
-                if quantidade == menor_quantidade
-            ]
-
-            return random.choice(adms_disponiveis)
 
         if request.method == 'POST' and novo_atendimento != 2:
                 print('passou pelo enviar mensagem')
@@ -708,3 +554,87 @@ def init_app(app):
        
         return render_template('chat.html', atendimentos = atendimentos)
     
+
+    
+    @app.route('/atendimento/feedback', methods=['GET', 'POST'])
+    def feedback():
+        if request.method == 'POST':
+            dados = request.form
+
+            rota_foto = None
+
+            # if 'file' in request.files:
+            #     arquivo = request.files['file']
+
+            #     if arquivo.filename != '':
+            #         rota_foto = arquivo.filename
+
+            problema = Problemas(
+
+                id_cliente_afetado=session['idLogado'],
+                tipo_problema=dados['tipo'],
+                mensagem=dados['msg_feedback'],
+                rota_foto=rota_foto
+            )
+
+            db.session.add(problema)
+            db.session.commit()
+
+            flash("Feedback enviado com sucesso, muito obrigado pelo seu tempo😘.", 'success' )
+
+            return redirect(url_for('atendimentoAoCliente'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return render_template('feedback.html')
+    
+
+
+
+
+
+
+
+
+
+
+    
+    @app.route('/centro/informacoes/editar/nova_senha', methods= ['GET','POST'])
+    def novaSenha():
+        id = session['idLogado']
+        usuario = Usuario.query.filter_by(id=id).first()
+
+        if request.method == "POST":
+
+            dadosSubtitutos = request.form
+            senhaAtual = dadosSubtitutos['senhaAtual']
+            senha1 = dadosSubtitutos['novaSenha1']
+            senha2 = dadosSubtitutos['novaSenha2']
+
+            if senha1 != senha2: 
+                flash("Preencha os campos de nova senha exatamente iguais",'danger')
+                return render_template('novaSenha.html')
+            
+            if check_password_hash(usuario.senha, senhaAtual) is False:
+                flash("Preencha o campo EXATAMENTE igual a sua senha atual",'danger')
+                return render_template('novaSenha.html')
+            
+            usuario.senha = generate_password_hash(senha1)
+            db.session.commit()
+            return redirect(url_for('centroInfo'))
+        return render_template('novaSenha.html')

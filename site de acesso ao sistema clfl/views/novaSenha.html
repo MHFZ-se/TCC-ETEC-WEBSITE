@@ -1,0 +1,21 @@
+{% extends 'template_null.html' %}
+
+{% block content %} <!--isto indica o uso de um codigo .py-->
+    <main>
+        <div class="col-md-4">
+            <form action="{{url_for('novaSenha')}}" method="POST" >
+
+                <label class="abel">Informe sua senha atual</label><br>
+                <input class="inp" type="password" name="senhaAtual" required><br>
+
+                <label class="abel">Informe sua nova senha</label><br>
+                <input class="inp" type="password" name="novaSenha1" required> <br>
+                <label class="abel">Informe novamente</label><br>
+                <input class="inp" type="password" name="novaSenha2" required><br>
+
+                <input class="button" type="submit" value="Registrar alterações">
+                
+            </form>
+        </div>
+    </main> 
+{% endblock content %}
