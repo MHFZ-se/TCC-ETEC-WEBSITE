@@ -62,7 +62,7 @@ if __name__ == '__main__':
             
                 Usuario(nome = "Henri Muniz Fudali", telefone = "122465423", senha = generate_password_hash("12345678"), email = "Henri@gmail", adm = 1),
                 Usuario(nome = "Caio Muniz Iha", telefone = "122465423", senha = generate_password_hash("12345678"), email = "Caio@gmail", adm = 1),
-                Usuario(nome = "Breno Mathias de Souza", telefone = "122465423", senha = generate_password_hash("12345678"), email = "Breno@gmail", adm = 1),
+                Usuario(nome = "Breno Maciel de Mattos", telefone = "122465423", senha = generate_password_hash("12345678"), email = "Breno@gmail", adm = 1),
                 Usuario(nome = "Eduarido Miguel Pereira", telefone = "122465423", senha = generate_password_hash("12345678"), email = "Eduardo@gmail", adm = 1)
             ]
         for usuario in usuarios:

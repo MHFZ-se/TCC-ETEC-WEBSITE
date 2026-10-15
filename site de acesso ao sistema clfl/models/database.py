@@ -96,9 +96,9 @@ class Problemas(db.Model):
     rota_foto = db.Column(db.String(60), nullable=True)
 
 
-def __init__(self, id_problema, id_cliente_afetado, tpo_problema, mensagem, rota_foto):
+def __init__(self, id_problema, id_cliente_afetado, tipo_problema, mensagem, rota_foto):
     self.id_problema = id_problema
     self.id_cliente_afetado = id_cliente_afetado
-    self.tpo_problema = tpo_problema
+    self.tipo_problema = tpo_problema
     self.mensagem = mensagem
     self.rota_foto = rota_foto

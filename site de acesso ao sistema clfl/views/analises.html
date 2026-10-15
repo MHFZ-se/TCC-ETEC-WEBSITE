@@ -12,10 +12,7 @@
                 <span class="analises-label">PLANTHEALTH</span>
 
                 <h1>Minhas análises</h1>
-
-                <p>
-                    Resultados obtidos pelo sensor.
-                </p>
+                <p>Resultados obtidos pelo sensor e histórico de leituras.</p>
             </div>
 
             <div class="total-analises">
@@ -36,96 +33,55 @@
 
                     <div>
                         <span class="card-label">DATA</span>
-
-                        <h2>
-                            {{ analise.data }}
-                        </h2>
+                        <h2>{{ analise.data }}</h2>
                     </div>
 
                     {% if analise.nivel == "Normal" %}
-
-                        <span class="status normal">
-                            ✓ Normal
-                        </span>
-
+                        <span class="status normal">✓ Normal</span>
                     {% elif analise.nivel == "Atenção" %}
-
-                        <span class="status atencao">
-                            ⚠ Atenção
-                        </span>
-
+                        <span class="status atencao">⚠ Atenção</span>
                     {% else %}
-
-                        <span class="status inconclusivo">
-                            ? Inconclusivo
-                        </span>
-
+                        <span class="status inconclusivo">? Inconclusivo</span>
                     {% endif %}
 
                 </div>
 
 
                 <div class="cor-detectada">
-
-                    <div
-                        class="cor-preview"
-                        style="
-                            background: rgb({{ analise.led_vermelho }},{{ analise.led_verde }},{{ analise.led_azul }}
-                            );
-                        ">
-                    </div>
-
+                    <div class="cor-preview" style="--cor-preview: {{ analise.cor_rgb }}; background-color: var(--cor-preview);"></div>
                     <div>
 
                         <span>Cor detectada</span>
-
-                        <strong>
-                            {{ analise.corA }}
-                        </strong>
-
+                        <strong>{{ analises.corA if analise.corA else "Análise Sensor" }}</strong>
                     </div>
 
                 </div>
 
 
                 <div class="rgb-container">
-
-                    <span class="rgb-title">
-                        Valores RGB
-                    </span>
-
+                    <span class="rgb-title">Valores RGB</span>
                     <div class="rgb-grid">
 
                         <div class="rgb-item">
                             <span>R</span>
-                            <strong>
-                                {{ analise.led_vermelho }}
-                            </strong>
+                            <strong>{{ analise.led_vermelho }}</strong>
                         </div>
 
                         <div class="rgb-item">
                             <span>G</span>
-                            <strong>
-                                {{ analise.led_verde }}
-                            </strong>
+                            <strong>{{ analise.led_verde }}</strong>
                         </div>
 
                         <div class="rgb-item">
                             <span>B</span>
-                            <strong>
-                                {{ analise.led_azul }}
-                            </strong>
+                            <strong>{{ analise.led_azul }}</strong>
                         </div>
 
                     </div>
 
                 </div>
 
-
-                <a
-                    href="{{ url_for('detalhes_deficiencia', tipo=analise.tipo) }}"
-                    class="btn-detalhes">
-
+                <a href="{{ url_for('detalhes_deficiencia', tipo=analise.tipo) }}" class="btn-detalhes">
                     Ver detalhes
 
                     <i class="bi bi-arrow-right"></i>
@@ -135,14 +91,11 @@
             </article>
 
             {% endfor %}
-            {% for coleta in coletas %}
-                {{coleta.led_azul}}
-                <!-- coleta.data ;coleta.data; coleta.led_vermelho; coleta.led_verde ;coleta.led_azul -->
-            {% endfor %}
+
 
 
         </div>
-        <a href="{{url_for('analiseAdd')}}" class="button">Registar nova analise</a>
+         <a href="{{url_for('analiseAdd')}}" class="button">Registar nova analise</a>
 
     </div>
 

@@ -284,24 +284,37 @@ def init_app(app):
 
     @app.route('/analises')
     def analises():
-        coletas = Coleta.query.filter_by(id_usuario=session["idLogado"]).all()
-        lista_analises = []
-        for coleta in coletas:
-            lista_analises.append(coleta)
-        for analise in lista_analises:
+        if 'idLogado' not in session:
+            flash('Faça login para ver suas análises.', 'danger')
+            return redirect(url_for('login'))
 
+        coletas = Coleta.query.all()
+        lista_analises = []
+
+        for coleta in coletas:
+            # Chama a função de análise agronômica baseada no RGB guardado
             resultado = analisar_cor(
-                analise.led_vermelho,
-                analise.led_verde,
-                analise.led_azul
+                coleta.led_vermelho, coleta.led_verde, coleta.led_azul
             )
 
-            analise.tipo = resultado["tipo"]
-            analise.deficiencia = resultado["deficiencia"]
-            analise.nivel = resultado["nivel"]
+        # Atribui todos os campos retornados pela análise ao objeto
+        coleta.tipo = resultado.get('tipo', 'Desconhecido')
+        coleta.deficiencia = resultado.get('deficiencia', '--')
+        coleta.nivel = resultado.get('nivel', 'Baixo')
+        coleta.indice_saude = resultado.get('indice_saude', 0)
+        coleta.tom_verde = resultado.get('tom_verde', '--')
+        coleta.diagnostico = resultado.get('diagnostico', '--')
+        coleta.solucao = resultado.get('solucao', '--')
 
+        # Formata a cor RGB para o preview visual no card do histórico
+        r = coleta.led_vermelho if coleta.led_vermelho is not None else 0
+        g = coleta.led_verde if coleta.led_verde is not None else 0
+        b = coleta.led_azul if coleta.led_azul is not None else 0
+        coleta.cor_rgb = f"rgb({r}, {g}, {b})"
 
-        return render_template( 'analises.html', analises=lista_analises)
+        lista_analises.append(coleta)
+
+        return render_template('analises.html', analises=lista_analises)
 
     @app.route('/analises/adicionarNova')
     def analiseAdd():
@@ -354,51 +367,41 @@ def init_app(app):
 
         FILE_TYPES = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'avif'}
 
-        usuario = db.session.get(
-            Usuario,
-            session['idLogado']
-        )
+        usuario = db.session.get(Usuario, session['idLogado'])
 
         if usuario is None:
-            flash("Usuário não encontrado.", "danger")
+            flash('Usuário não encontrado.', 'danger')
             return redirect(url_for('login'))
 
-        # Pega a imagem enviada pelo formulário
+
         file = request.files.get('file')
 
         if file is None or file.filename == '':
-            flash("Selecione uma imagem.", "danger")
+            flash('Selecione uma imagem.', 'danger')
             return redirect(url_for('centroInfo'))
 
-        # Verifica a extensão
+
         extensao = file.filename.rsplit('.', 1)[-1].lower()
 
         if extensao not in FILE_TYPES:
             flash(
-                "Arquivo não permitido! "
-                "Envie PNG, JPG, JPEG, GIF ou WEBP.",
-                "danger"
+                'Arquivo não permitido! Envie PNG, JPG, JPEG, GIF ou WEBP.', 'danger'
             )
             return redirect(url_for('centroInfo'))
 
+        # Se já existir uma foto antiga, remove do disco
         if usuario.rota_foto_perfil:
-
             foto_antiga = os.path.join(
-                app.config['UPLOAD_FOLDER'],
-                usuario.rota_foto_perfil
+                app.config['UPLOAD_FOLDER'], usuario.rota_foto_perfil
             )
 
-            if os.path.exists(foto_antiga):
-                os.remove(foto_antiga)
+        if os.path.exists(foto_antiga):
+            os.remove(foto_antiga)
 
-        novo_nome = secure_filename(
-            f"{uuid.uuid4().hex}.{extensao}"
-        )
+        # ESTES COMANDOS AGORA FICAM FORA DO IF ACIMA (funcionam para qualquer usuário)
+        novo_nome = secure_filename(f'{uuid.uuid4().hex}.{extensao}')
 
-        caminho = os.path.join(
-            app.config['UPLOAD_FOLDER'],
-            novo_nome
-        )
+        caminho = os.path.join(app.config['UPLOAD_FOLDER'], novo_nome)
 
         # Salva a nova imagem
         file.save(caminho)
@@ -408,25 +411,10 @@ def init_app(app):
 
         db.session.commit()
 
-        flash(
-            "Foto de perfil atualizada com sucesso!",
-            "success"
-        )
+        flash('Foto de perfil atualizada com sucesso!', 'success')
 
         return redirect(url_for('centroInfo'))
-    @app.context_processor
-    def dados_usuario():
-        usuario_logado = None
 
-        if session.get('idLogado'):
-            usuario_logado = db.session.get(
-                Usuario,
-                session['idLogado']
-            )
-
-        return {
-            'usuario_logado': usuario_logado
-        }
 
 
     #rotas para problemas com
@@ -638,3 +626,120 @@ def init_app(app):
             db.session.commit()
             return redirect(url_for('centroInfo'))
         return render_template('novaSenha.html')
+
+    @app.route('/sensor')
+    def pagina_sensor():
+        """Página opcional do painel de monitoramento do sensor."""
+        if 'idLogado' not in session:
+            flash('Faça login para acessar o monitoramento.', 'warning')
+            return redirect(url_for('login'))
+        return render_template('sensor.html')
+
+    @app.route('/api/dados-atuais', methods=['GET', 'POST'])
+    def get_dados_esp():
+        """Endpoint consumido pelo JavaScript do dashboard em tempo real."""
+        global dados_atuais_memoria
+        return jsonify(dados_atuais_memoria)
+
+    @app.route('/dados', methods=['POST'])
+    def receber_dados_esp():
+        """Endpoint chamado via HTTP POST pelo ESP32."""
+        global dados_atuais_memoria
+
+        conteudo = request.get_json(silent=True)
+        if not conteudo:
+            return jsonify({'erro': 'JSON invalido ou ausente'}), 400
+
+        r = conteudo.get('vermelho', 0)
+        g = conteudo.get('verde', 0)
+        b = conteudo.get('azul', 0)
+
+        # Processamento agronômico avançado (HSV + ExG)
+        r_norm = r / 255.0
+        g_norm = g / 255.0
+        b_norm = b / 255.0
+
+        h, s, v = colorsys.rgb_to_hsv(r_norm, g_norm, b_norm)
+        hue_graus = h * 360.0
+        exg = (2 * g_norm) - r_norm - b_norm
+
+        if (80 <= hue_graus <= 140) or (exg > 0.05 and g > r):
+            tom = f'Verde Intenso ({round(hue_graus, 1)}°)'
+            indice = round(min(100.0, max(70.0, (g_norm * 100) + (exg * 20))), 1)
+            diag = 'Folha saudável com alta densidade de clorofila.'
+            nutriente = 'Nenhum (Níveis de NPK equilibrados)'
+            solucao = 'Manter o plano de rega e a adubação de manutenção vigentes.'
+            nome_cor_banco = 'Verde claro saudavel'
+
+        elif 50 <= hue_graus < 80:
+            tom = f'Verde-Claro / Amarelado ({round(hue_graus, 1)}°)'
+            indice = round(max(35.0, (hue_graus / 80.0) * 65.0), 1)
+            diag = 'Clorose foliar detectada (Início de amarelamento).'
+            nutriente = 'Nitrogênio (N) - Carência no desenvolvimento'
+            solucao = 'Aplicar adubação rica em Nitrogênio (ex: Ureia).'
+            nome_cor_banco = 'Verde claro'
+
+        elif 30 <= hue_graus < 50:
+            tom = f'Amarelo / Clorótico ({round(hue_graus, 1)}°)'
+            indice = round(max(20.0, (hue_graus / 50.0) * 35.0), 1)
+            diag = 'Clorose severa / Falta de pigmentação.'
+            nutriente = 'Magnésio (Mg) ou Ferro (Fe)'
+            solucao = (
+                'Realizar pulverização foliar com Sulfato de Magnésio ou Quelato de'
+                ' Ferro.'
+            )
+            nome_cor_banco = 'Amarelado'
+
+        elif r > g and r > b:
+            tom = 'Tons Amarronzados / Seco'
+            indice = 15.0
+            diag = 'Tecido foliar seco ou necrosado.'
+            nutriente = 'Fósforo (P) ou Estresse Hídrico'
+            solucao = 'Ajustar irrigação e aplicar adubo rico em Fósforo (ex: MAP).'
+            nome_cor_banco = 'Necrose / Seca'
+
+        else:
+            tom = 'Indeterminado / Escuro'
+            indice = 40.0
+            diag = 'Iluminação insuficiente no sensor.'
+            nutriente = 'Acompanhamento recomendado'
+            solucao = 'Aproxime o sensor da folha.'
+            nome_cor_banco = 'Indeterminado'
+
+        # Atualiza a memória para o painel em tempo real
+        dados_atuais_memoria = {
+            'vermelho': r,
+            'verde': g,
+            'azul': b,
+            'indice_saude': indice,
+            'tom_verde': tom,
+            'diagnostico': diag,
+            'deficiencia': nutriente,
+            'solucao': solucao,
+            'horario': datetime.now().strftime('%H:%M:%S'),
+        }
+
+        # Salva automaticamente a leitura na tabela Coleta do MySQL
+        try:
+            id_user = session.get('idLogado', 1)
+            nova_coleta = Coleta(
+                id_usuario=id_user,
+                data=datetime.now().strftime('%Y-%m-%d'),
+                corA=nome_cor_banco,
+                led_vermelho=r,
+                led_verde=g,
+                led_azul=b,
+            )
+            db.session.add(nova_coleta)
+            db.session.commit()
+        except Exception as e:
+            print(f'Erro ao salvar coleta automática no banco: {e}')
+
+            print(
+                f'[{dados_atuais_memoria["horario"]}] ESP32 -> R:{r} G:{g} B:{b} | Tom:'
+                f' {tom} | Saúde: {indice}%'
+            )
+        return (
+            jsonify({'status': 'sucesso', 'dados': dados_atuais_memoria}),
+            200,
+        )
