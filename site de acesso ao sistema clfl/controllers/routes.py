@@ -1,10 +1,11 @@
 
-from flask import render_template, request, redirect, url_for, flash, session 
+from flask import render_template, request, redirect, url_for, flash, session, jsonify
 from models.database import *
 from controllers.funcoes import *
 from markupsafe import Markup
 from controllers.funcoes import quantidade_de_sensores
 from sqlalchemy import func
+import colorsys
 import random
 from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -684,10 +685,7 @@ def init_app(app):
             indice = round(max(20.0, (hue_graus / 50.0) * 35.0), 1)
             diag = 'Clorose severa / Falta de pigmentação.'
             nutriente = 'Magnésio (Mg) ou Ferro (Fe)'
-            solucao = (
-                'Realizar pulverização foliar com Sulfato de Magnésio ou Quelato de'
-                ' Ferro.'
-            )
+            solucao = 'Realizar pulverização foliar com Sulfato de Magnésio ou Quelato de Ferro.'
             nome_cor_banco = 'Amarelado'
 
         elif r > g and r > b:
@@ -706,7 +704,8 @@ def init_app(app):
             solucao = 'Aproxime o sensor da folha.'
             nome_cor_banco = 'Indeterminado'
 
-        # Atualiza a memória para o painel em tempo real
+        # Atualiza a memória corretamente com os dados reais calculados
+        horario_atual = datetime.now().strftime('%H:%M:%S')
         dados_atuais_memoria = {
             'vermelho': r,
             'verde': g,
@@ -716,7 +715,7 @@ def init_app(app):
             'diagnostico': diag,
             'deficiencia': nutriente,
             'solucao': solucao,
-            'horario': datetime.now().strftime('%H:%M:%S'),
+            'horario': horario_atual,
         }
 
         # Salva automaticamente a leitura na tabela Coleta do MySQL
@@ -735,10 +734,11 @@ def init_app(app):
         except Exception as e:
             print(f'Erro ao salvar coleta automática no banco: {e}')
 
-            print(
-                f'[{dados_atuais_memoria["horario"]}] ESP32 -> R:{r} G:{g} B:{b} | Tom:'
-                f' {tom} | Saúde: {indice}%'
-            )
+        # Log de sucesso no terminal
+        print(
+            f'[{horario_atual}] ESP32 -> R:{r} G:{g} B:{b} | Tom: {tom} | Saúde: {indice}%'
+        )
+        
         return (
             jsonify({'status': 'sucesso', 'dados': dados_atuais_memoria}),
             200,
