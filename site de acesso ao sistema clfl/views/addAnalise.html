@@ -1,15 +1,143 @@
+
 {% extends 'template_null.html' %}
 
-{% block content %} <!--isto indica o uso de um codigo .py-->
-    <main>
-        <div>
+{% block content %}
+
+<style>
+
+</style>
+
+<main class="conexao-page">
+    <div class="conexao-container">
+
+        <header class="conexao-header">
+            <span class="conexao-tag">
+                <i class="bi bi-cpu"></i>
+                PLANTHEALTH / MONITORAMENTO
+            </span>
+
+            <h1>Iniciar monitoramento</h1>
+
             <p>
-                Iniciar conexão
+                Escolha como deseja registrar os dados das folhas.
+                Utilize o sensor PlantHealth para iniciar uma coleta
+                ou insira manualmente os valores de uma análise.
             </p>
+        </header>
 
-             <a href="#">
-        </div>
+        <section class="conexao-grid">
 
-        <a href="{{url_for('analiseAddManu')}}">Cadastrar de forma manual</a>
-    </main>
+            <!-- CONEXÃO COM SENSOR -->
+            <article class="conexao-card">
+
+                <div class="conexao-icone">
+                    <i class="bi bi-usb-plug"></i>
+                </div>
+
+                <h2>Conectar sensor</h2>
+
+                <p>
+                    Inicie uma coleta utilizando o sensor para registrar
+                    os níveis de cor das folhas e encaminhar os dados
+                    para análise no sistema.
+                </p>
+
+                <ul class="conexao-detalhes">
+                    <li>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Coleta dos valores de cor RGB</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Registro dos dados para consulta</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Análise conforme os critérios do sistema</span>
+                    </li>
+                </ul>
+
+                <button
+                    type="button"
+                    class="conexao-btn"
+                    onclick="iniciarConexao()"
+                >
+                    <i class="bi bi-plug"></i>
+                    Iniciar conexão
+                </button>
+
+                <p id="status-conexao"
+                   role="status"
+                   aria-live="polite"
+                   style="display:none; margin:14px 0 0; font-size:13px;">
+                </p>
+
+            </article>
+
+            <!-- ANÁLISE MANUAL -->
+            <article class="conexao-card">
+
+                <div class="conexao-icone manual">
+                    <i class="bi bi-pencil-square"></i>
+                </div>
+
+                <h2>Cadastro manual</h2>
+
+                <p>
+                    Já possui os valores de uma coleta?
+                    Registre o código do sensor, a cor observada
+                    e os níveis RGB para gerar uma análise.
+                </p>
+
+                <ul class="conexao-detalhes">
+                    <li>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Preenchimento manual dos dados</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Ajuste dos canais vermelho, verde e azul</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Registro no sistema PlantHealth</span>
+                    </li>
+                </ul>
+
+                <a
+                    href="{{ url_for('analiseAddManu') }}"
+                    class="conexao-btn conexao-btn-secundario"
+                >
+                    <i class="bi bi-clipboard2-plus"></i>
+                    Cadastrar análise manualmente
+                </a>
+
+            </article>
+
+        </section>
+
+        <aside class="conexao-info">
+            <i class="bi bi-info-circle"></i>
+            <span>
+                <strong>Importante:</strong> a conexão automática depende
+                da implementação da comunicação entre o sensor e o sistema.
+                Se ela ainda não estiver configurada, utilize o cadastro manual.
+            </span>
+        </aside>
+
+    </div>
+</main>
+
+<script>
+    function iniciarConexao() {
+        const status = document.getElementById('status-conexao');
+
+        status.style.display = 'block';
+        status.style.color = '#856404';
+        status.textContent =
+            'A comunicação com o sensor precisa estar configurada para iniciar a coleta.';
+    }
+</script>
+
 {% endblock content %}
+

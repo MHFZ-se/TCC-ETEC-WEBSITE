@@ -1,16 +1,16 @@
+
 {% extends 'template_null.html' %}
 
 {% block content %}
 
-<main class="analises-page">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analises.css') }}">
 
+<main class="analises-page">
     <div class="analises-container">
 
-        <div class="analises-header">
-
+        <header class="analises-header">
             <div>
                 <span class="analises-label">PLANTHEALTH</span>
-
                 <h1>Minhas análises</h1>
                 <p>Resultados obtidos pelo sensor e histórico de leituras.</p>
             </div>
@@ -19,18 +19,15 @@
                 <strong>{{ analises|length }}</strong>
                 <span>Análises</span>
             </div>
+        </header>
 
-        </div>
-
-
-        <div class="analises-grid">
+        {% if analises %}
+        <section class="analises-grid">
 
             {% for analise in analises %}
-
             <article class="analise-card">
 
                 <div class="card-top">
-
                     <div>
                         <span class="card-label">DATA</span>
                         <h2>{{ analise.data }}</h2>
@@ -43,62 +40,126 @@
                     {% else %}
                         <span class="status inconclusivo">? Inconclusivo</span>
                     {% endif %}
-
                 </div>
 
+                    {% set vermelho = analise.led_vermelho | default(0, true) | int %}
+                    {% set verde = analise.led_verde | default(0, true) | int %}
+                    {% set azul = analise.led_azul | default(0, true) | int %}
 
-                <div class="cor-detectada">
-                    <div class="cor-preview" style="--cor-preview: {{ analise.cor_rgb }}; background-color: var(--cor-preview);"></div>
-                    <div>
+                    <div class="cor-detectada">
+                        <div
+                            class="cor-preview"
+                            style="background-color: rgb({{ vermelho }}, {{ verde }}, {{ azul }});">
+                        </div>
 
-                        <span>Cor detectada</span>
-                        <strong>{{ analises.corA if analise.corA else "Análise Sensor" }}</strong>
+                        <div>
+                            <span>Cor detectada</span>
+                            <strong>{{ analise.corA or "Não identificada" }}</strong>
+                        </div>
                     </div>
 
-                </div>
+                    <div class="rgb-container">
+                        <span class="rgb-title">Valores RGB</span>
 
+                        <div class="rgb-grid">
+                            <div class="rgb-item">
+                                <span>R — Vermelho</span>
+                                <strong>{{ analise.led_vermelho }}</strong>
+                            </div>
 
-                <div class="rgb-container">
-                    <span class="rgb-title">Valores RGB</span>
-                    <div class="rgb-grid">
+                            <div class="rgb-item">
+                                <span>G — Verde</span>
+                                <strong>{{ analise.led_verde }}</strong>
+                            </div>
 
-                        <div class="rgb-item">
-                            <span>R</span>
-                            <strong>{{ analise.led_vermelho }}</strong>
+                            <div class="rgb-item">
+                                <span>B — Azul</span>
+                                <strong>{{ analise.led_azul }}</strong>
+                            </div>
                         </div>
-
-                        <div class="rgb-item">
-                            <span>G</span>
-                            <strong>{{ analise.led_verde }}</strong>
-                        </div>
-
-                        <div class="rgb-item">
-                            <span>B</span>
-                            <strong>{{ analise.led_azul }}</strong>
-                        </div>
-
                     </div>
 
-                </div>
-
-                <a href="{{ url_for('detalhes_deficiencia', tipo=analise.tipo) }}" class="btn-detalhes">
-                    Ver detalhes
-
-                    <i class="bi bi-arrow-right"></i>
-
-                </a>
+                    <a href="{{ url_for('detalhes_deficiencia', tipo=analise.tipo) }}" class="btn-detalhes">
+                        Ver detalhes
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
 
             </article>
-
             {% endfor %}
 
+        </section>
 
-
+        {% else %}
+        <div class="sem-analises">
+            <i class="bi bi-clipboard-data"></i>
+            <h2>Nenhuma análise registrada</h2>
+            <p>Registre uma nova análise para visualizar os resultados aqui.</p>
         </div>
-         <a href="{{url_for('analiseAdd')}}" class="button">Registar nova analise</a>
+        {% endif %}
+
+        <div class="analises-actions">
+            <a href="{{ url_for('analiseAdd') }}" class="btn-nova-analise">
+                <i class="bi bi-plus-circle"></i>
+                Registrar nova análise
+            </a>
+        </div>
+
+        <section class="legenda-section">
+            <h2>
+                <i class="bi bi-info-circle"></i>
+                Como interpretar os resultados
+            </h2>
+
+            <p class="legenda-intro">
+                Entenda o significado dos status e das cores exibidas nas análises.
+            </p>
+
+            <div class="legenda-grid">
+
+                <div class="legenda-item">
+                    <div class="legenda-cor legenda-normal"></div>
+                    <div>
+                        <strong>Normal</strong>
+                        <p>A leitura está dentro dos parâmetros definidos pelo sistema.</p>
+                    </div>
+                </div>
+
+                <div class="legenda-item">
+                    <div class="legenda-cor legenda-atencao"></div>
+                    <div>
+                        <strong>Atenção</strong>
+                        <p>A leitura merece uma verificação adicional.</p>
+                    </div>
+                </div>
+
+                <div class="legenda-item">
+                    <div class="legenda-cor legenda-inconclusivo"></div>
+                    <div>
+                        <strong>Inconclusivo</strong>
+                        <p>Os dados não permitem uma classificação segura.</p>
+                    </div>
+                </div>
+
+                <div class="legenda-item">
+                    <div class="legenda-cor legenda-detectada"></div>
+                    <div>
+                        <strong>Cor detectada</strong>
+                        <p>Representa a cor registrada pelo sensor a partir dos dados RGB.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="legenda-observacao">
+                <strong>O que significa RGB?</strong>
+                R representa vermelho, G representa verde e B representa azul.
+                Cada componente normalmente varia de 0 a 255. A combinação dos três
+                forma a cor exibida no cartão. A cor, isoladamente, não confirma
+                uma deficiência ou doença da planta.
+            </div>
+        </section>
 
     </div>
-
 </main>
 
 {% endblock content %}

@@ -64,128 +64,94 @@
         </ul>
 
 
-        <!-- ÁREA DO USUÁRIO -->
-        {% if session.get('idLogado') %}
 
-        <ul class="navbar-nav ms-auto">
+<!-- ÁREA DO USUÁRIO -->
+{% if session.get('idLogado') %}
 
-            <li class="nav-item dropdown">
+<ul class="navbar-nav ms-auto">
+    <li class="nav-item dropdown">
+        <a
+            class="nav-link dropdown-toggle user-menu"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+        >
+            <span class="navbar-avatar">
+                {% if usuario_logado and usuario_logado.rota_foto_perfil %}
+                    <img
+                        src="{{ url_for('static', filename='uploads/' ~ usuario_logado.rota_foto_perfil) }}"
+                        alt="Foto de perfil"
+                        class="foto-perfil-navbar"
+                    >
+                {% else %}
+                    <i class="bi bi-person-circle icone-perfil"></i>
+                {% endif %}
+            </span>
 
-                <a
-                    class="nav-link dropdown-toggle user-menu"
-                    href="#"
-                    role="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                >
+            <span class="user-name">
+                {{ session.get('nomeLogado', 'Usuário') }}
+            </span>
+        </a>
 
-                    <span class="navbar-avatar">
-
-                        {% if usuario_logado and usuario_logado.rota_foto_perfil %}
-
-                            <img
-                                src="{{ url_for(
-                                    'static',
-                                    filename='uploads/' + usuario_logado.rota_foto_perfil
-                                ) }}"
-                                alt="Foto de perfil"
-                            >
-
-                        {% else %}
-
-                            <i class="bi bi-person-fill"></i>
-
-                        {% endif %}
-
-                    </span>
-
-                    <span class="user-name">
-                        {{ session.get('nomeLogado', 'Usuário') }}
-                    </span>
-
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item" href="{{ url_for('centroInfo') }}">
+                    <i class="bi bi-person-badge"></i>
+                    Dados pessoais
                 </a>
-
-
-                <ul class="dropdown-menu dropdown-menu-end">
-
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="{{ url_for('centroInfo') }}"
-                        >
-                            <i class="bi bi-person-badge"></i>
-                            Dados pessoais
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            class="dropdown-item"
-                            href="{{ url_for('analises') }}"
-                        >
-                            <i class="bi bi-clipboard2-data"></i>
-                            Análises
-                        </a>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li>
-                        <a
-                            class="dropdown-item sair"
-                            href="{{ url_for('atendimentoAoCliente') }}"
-                        >
-                            <i class="bi bi-box-arrow-right"></i>
-                            Relatar problema
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            class="dropdown-item sair"
-                            href="{{ url_for('atendimentoAoClienteChat') }}"
-                        >
-                            <i class="bi bi-box-arrow-right"></i>
-                            Atendimentos
-                        </a>
-                    </li>
-
-                    <li>
-                        <a
-                            class="dropdown-item sair"
-                            href="{{ url_for('sair') }}"
-                        >
-                            <i class="bi bi-box-arrow-right"></i>
-                            Sair
-                        </a>
-                    </li>
-
-                </ul>
-
             </li>
 
+            <li>
+                <a class="dropdown-item" href="{{ url_for('analises') }}">
+                    <i class="bi bi-clipboard2-data"></i>
+                    Análises
+                </a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+                <a class="dropdown-item" href="{{ url_for('atendimentoAoCliente') }}">
+                    <i class="bi bi-chat-left-text"></i>
+                    Relatar problema
+                </a>
+            </li>
+
+            <li>
+                <a class="dropdown-item" href="{{ url_for('atendimentoAoClienteChat') }}">
+                    <i class="bi bi-headset"></i>
+                    Atendimentos
+                </a>
+            </li>
+
+            <li>
+                <a class="dropdown-item sair" href="{{ url_for('sair') }}">
+                    <i class="bi bi-box-arrow-right"></i>
+                    Sair
+                </a>
+            </li>
         </ul>
+    </li>
+</ul>
 
-        {% else %}
+{% else %}
 
-        <!-- USUÁRIO NÃO LOGADO -->
-        <div class="navbar-auth ms-auto">
+<!-- USUÁRIO NÃO LOGADO -->
+<div class="navbar-auth ms-auto">
+    <a class="login-link" href="{{ url_for('login') }}">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Entrar
+    </a>
 
-            <a class="login-link" href="{{ url_for('login') }}">
-                <i class="bi bi-box-arrow-in-right"></i>
-                Entrar
-            </a>
+    <a class="cadastro-link" href="{{ url_for('cadastro') }}">
+        <i class="bi bi-person-plus"></i>
+        Criar conta
+    </a>
+</div>
 
-            <a class="cadastro-link" href="{{ url_for('cadastro') }}">
-                <i class="bi bi-person-plus">Criar conta</i>
-                
-            </a>
+{% endif %}
 
-        </div>
-
-        {% endif %}
 
     </div>
 </nav>

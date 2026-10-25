@@ -1,82 +1,668 @@
+
 {% extends 'template_null.html' %}
 
-{% block content %} <!--isto indica o uso de um codigo .py-->
-    <main>
-        <div class="col-md-4">
-            <form action="{{url_for('analiseAddManu')}}" method="POST">
-                <label> Codigo de produto</label><br>
-                <input type="text" placeholder="Id do sensor" name="idSensor" required><br>
-                <br>
-                <label> Cor aparente nas folhas analisadas</label><br>
+{% block content %}
 
-                <select name="corA">
-                    <option value="Verde claro saudavel">Verde claro saudavel</option>
-                    <option value="Verde claro">Verde claro</option>
-                    <option value="Verde escuro saudavel">Verde escuro saudavel</option>
-                    <option value="Verde escuro">Verde escuro</option>
-                    <option value="Amarelado">Amarelada</option>
-                    <option value="Azulada">Azulada</option>
-                    <option value="Acinzentado">Acinzentado</option>
-                    <option value="Preto">Preto</option>
-                </select>
-                
-                <h6>Níveis de pigmentação, apenas digite exatamente oque o sensor exibe🏵️</h6><!-- Isso foi um emoji colocado manualmente caso o leitor tenha alguma duvida-->
-                    <br>
-                <label>Nível de Vermelho  </label>
-                <input type="range"  id="led_vermelho_range" min="0" max="255" step="1" value="50" >
-                <input type="number" id="led_vermelho" name="led_vermelho" min="0" max="255" step="1" value="50" required>
-                <br>
-                    <br>
-                <label>Nível de Verde  </label>
-                <input type="range"  id="led_verde_range" min="0" max="255" step="1" value="150" >
-                <input type="number" id="led_verde" name="led_verde" min="0" max="255" step="1" value="150" required>
-                <br>
-                    <br>
-                <label>Nível de Azul  </label>
-                <input type="range"  id="led_azul_range" min="0" max="255" step="1" value="60" >
-                <input type="number" id="led_azul" name="led_azul" min="0" max="255" step="1" value="60" required>
-                <br>
+<style>
+    .coleta-page {
+        min-height: 75vh;
+        padding: 45px 20px 65px;
+        background: #f5f7f4;
+        font-family: 'Inter', sans-serif;
+    }
 
-                <button type="submit">Salvar Coleta e gerar analise</button>
-            </form>
-        </div>
+    .coleta-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
 
+    .coleta-cabecalho {
+        margin-bottom: 28px;
+    }
 
-    </main>
-    <!-- faz com que os campos e as slidebars se unifiquem -->
-    <script>
-        // sim, foi usada ia, faz melhor ai o bomzão
-        function sincronizarCampos(idBarra, idCampo) {
-            const barra = document.getElementById(idBarra);
-            const campo = document.getElementById(idCampo);
+    .coleta-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 30px;
+        background: #e5f1e5;
+        color: #276738;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: .6px;
+    }
 
-            // Ao arrastar a barra, atualiza o campo numérico
-            barra.addEventListener("input", function () {
-                campo.value = barra.value;
-            });
+    .coleta-cabecalho h1 {
+        margin: 18px 0 10px;
+        color: #193c27;
+        font-size: clamp(27px, 4vw, 36px);
+        font-weight: 750;
+        letter-spacing: -1px;
+    }
 
-            // Ao digitar, atualiza a barra
-            campo.addEventListener("input", function () {
-                if (campo.value === "") {
-                    return;
-                }
+    .coleta-cabecalho p {
+        max-width: 650px;
+        margin: 0;
+        color: #68776b;
+        font-size: 15px;
+        line-height: 1.7;
+    }
 
-                const valor = Number(campo.value);
+    .coleta-card {
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #e3e9e1;
+        border-radius: 18px;
+        box-shadow: 0 8px 28px rgba(28, 62, 37, .06);
+    }
 
-                if (valor >= 0 && valor <= 255) {
-                    barra.value = valor;
-                }
-            });
+    .coleta-card-topo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 24px 30px;
+        border-bottom: 1px solid #e9eee8;
+    }
+
+    .coleta-icone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
+        background: #e8f3e8;
+        color: #28733b;
+        font-size: 23px;
+    }
+
+    .coleta-card-topo h2 {
+        margin: 0 0 5px;
+        color: #23452e;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .coleta-card-topo p {
+        margin: 0;
+        color: #7a867c;
+        font-size: 13px;
+    }
+
+    .coleta-form {
+        padding: 30px;
+    }
+
+    .coleta-secao {
+        margin-bottom: 30px;
+    }
+
+    .coleta-secao:last-of-type {
+        margin-bottom: 25px;
+    }
+
+    .coleta-secao-titulo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
+        color: #244b30;
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .coleta-numero {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 8px;
+        background: #e8f3e8;
+        color: #28733b;
+        font-size: 12px;
+    }
+
+    .coleta-campo {
+        margin-bottom: 20px;
+    }
+
+    .coleta-campo label {
+        display: block;
+        margin-bottom: 8px;
+        color: #35493a;
+        font-size: 13px;
+        font-weight: 650;
+    }
+
+    .coleta-campo label span {
+        color: #89948b;
+        font-weight: 400;
+    }
+
+    .coleta-input,
+    .coleta-select {
+        width: 100%;
+        min-height: 47px;
+        padding: 11px 13px;
+        border: 1px solid #dce5da;
+        border-radius: 9px;
+        outline: none;
+        background: #fff;
+        color: #283b2d;
+        font: inherit;
+        font-size: 14px;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .coleta-input:focus,
+    .coleta-select:focus {
+        border-color: #39834b;
+        box-shadow: 0 0 0 3px rgba(57, 131, 75, .12);
+    }
+
+    .coleta-ajuda {
+        margin-top: 8px;
+        color: #7a867c;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .coleta-aviso {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 13px 15px;
+        border: 1px solid #dcebdc;
+        border-radius: 10px;
+        background: #f3f8f2;
+        color: #42654a;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .coleta-aviso i {
+        margin-top: 2px;
+        font-size: 16px;
+    }
+
+    .rgb-lista {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .rgb-card {
+        min-width: 0;
+        padding: 17px;
+        border: 1px solid #e4e9e2;
+        border-radius: 12px;
+        background: #fcfdfb;
+    }
+
+    .rgb-titulo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 16px;
+        color: #34473a;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .rgb-ponto {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+    }
+
+    .rgb-ponto-vermelho { background: #d94b4b; }
+    .rgb-ponto-verde { background: #36a456; }
+    .rgb-ponto-azul { background: #4388df; }
+
+    .rgb-valor {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .rgb-valor input {
+        width: 100%;
+        min-width: 0;
+        padding: 9px;
+        border: 1px solid #dce5da;
+        border-radius: 8px;
+        background: #fff;
+        color: #263c2c;
+        font-size: 17px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .rgb-valor input:focus {
+        outline: 2px solid #c7e2c9;
+        border-color: #39834b;
+    }
+
+    .rgb-card input[type="range"] {
+        width: 100%;
+        margin: 4px 0 8px;
+        cursor: pointer;
+        accent-color: #39834b;
+    }
+
+    .rgb-limites {
+        display: flex;
+        justify-content: space-between;
+        color: #879187;
+        font-size: 10px;
+    }
+
+    .coleta-acoes {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        padding-top: 23px;
+        border-top: 1px solid #e9eee8;
+    }
+
+    .coleta-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 9px;
+        min-height: 46px;
+        padding: 12px 20px;
+        border: 1px solid transparent;
+        border-radius: 9px;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background .2s, transform .2s;
+    }
+
+    .coleta-btn-voltar {
+        border-color: #dce5da;
+        background: #fff;
+        color: #405345;
+    }
+
+    .coleta-btn-voltar:hover {
+        background: #f2f6f1;
+    }
+
+    .coleta-btn-salvar {
+        background: #276738;
+        color: #fff;
+    }
+
+    .coleta-btn-salvar:hover {
+        background: #1d512c;
+        color: #fff;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 650px) {
+        .coleta-page {
+            padding: 30px 13px 45px;
         }
 
-        // Vermelho
-        sincronizarCampos("led_vermelho_range", "led_vermelho");
+        .coleta-card-topo,
+        .coleta-form {
+            padding: 21px 17px;
+        }
 
-        // Verde
-        sincronizarCampos("led_verde_range", "led_verde");
+        .rgb-lista {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
 
-        // Azul
-        sincronizarCampos("led_azul_range", "led_azul");
+        .rgb-card {
+            padding: 15px;
+        }
 
-    </script>
+        .coleta-acoes {
+            flex-direction: column-reverse;
+        }
+
+        .coleta-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+<main class="coleta-page">
+    <div class="coleta-container">
+
+        <header class="coleta-cabecalho">
+            <span class="coleta-tag">
+                <i class="bi bi-clipboard2-pulse"></i>
+                PLANTHEALTH / COLETA MANUAL
+            </span>
+
+            <h1>Registrar nova análise</h1>
+
+            <p>
+                Registre manualmente os dados de uma coleta para gerar
+                uma análise da condição visual das folhas e consultar
+                os resultados no sistema.
+            </p>
+        </header>
+
+        <section class="coleta-card">
+
+            <div class="coleta-card-topo">
+                <div class="coleta-icone">
+                    <i class="bi bi-flower1"></i>
+                </div>
+
+                <div>
+                    <h2>Dados da coleta</h2>
+                    <p>Preencha as informações abaixo para continuar.</p>
+                </div>
+            </div>
+
+            <form
+                class="coleta-form"
+                action="{{ url_for('analiseAddManu') }}"
+                method="POST"
+            >
+
+                <!-- IDENTIFICAÇÃO -->
+                <section class="coleta-secao">
+
+                    <h3 class="coleta-secao-titulo">
+                        <span class="coleta-numero">01</span>
+                        Identificação do sensor
+                    </h3>
+
+                    <div class="coleta-campo">
+                        <label for="idSensor">Código do sensor</label>
+
+                        <input
+                            class="coleta-input"
+                            type="text"
+                            id="idSensor"
+                            name="idSensor"
+                            placeholder="Ex.: 1001"
+                            required
+                        >
+
+                        <p class="coleta-ajuda">
+                            Informe o identificador do sensor associado à coleta.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- COR -->
+                <section class="coleta-secao">
+
+                    <h3 class="coleta-secao-titulo">
+                        <span class="coleta-numero">02</span>
+                        Características visuais
+                    </h3>
+
+                    <div class="coleta-campo">
+                        <label for="corA">Cor aparente das folhas</label>
+
+                        <select
+                            class="coleta-select"
+                            id="corA"
+                            name="corA"
+                            required
+                        >
+                            <option value="" disabled selected>
+                                Selecione a classificação da cor
+                            </option>
+                            <option value="Verde claro saudavel">
+                                Verde claro saudável
+                            </option>
+                            <option value="Verde claro">
+                                Verde claro
+                            </option>
+                            <option value="Verde escuro saudavel">
+                                Verde escuro saudável
+                            </option>
+                            <option value="Verde escuro">
+                                Verde escuro
+                            </option>
+                            <option value="Amarelado">
+                                Amarelada
+                            </option>
+                            <option value="Azulada">
+                                Azulada
+                            </option>
+                            <option value="Acinzentado">
+                                Acinzentada
+                            </option>
+                            <option value="Preto">
+                                Preta ou muito escura
+                            </option>
+                        </select>
+
+                        <p class="coleta-ajuda">
+                            Selecione a classificação observada durante a coleta.
+                        </p>
+                    </div>
+
+                </section>
+
+                <!-- RGB -->
+                <section class="coleta-secao">
+
+                    <h3 class="coleta-secao-titulo">
+                        <span class="coleta-numero">03</span>
+                        Níveis de cor RGB
+                    </h3>
+
+                    <div class="coleta-aviso" style="margin-bottom: 20px;">
+                        <i class="bi bi-info-circle"></i>
+                        <span>
+                            Digite os valores registrados pelo sensor ou ajuste
+                            as barras. Os valores devem estar entre 0 e 255.
+                            Utilize a mesma escala de leitura adotada pelo projeto.
+                        </span>
+                    </div>
+
+                    <div class="rgb-lista">
+
+                        <!-- VERMELHO -->
+                        <div class="rgb-card">
+                            <div class="rgb-titulo">
+                                <span class="rgb-ponto rgb-ponto-vermelho"></span>
+                                Vermelho (R)
+                            </div>
+
+                            <div class="rgb-valor">
+                                <input
+                                    type="number"
+                                    id="led_vermelho"
+                                    name="led_vermelho"
+                                    min="0"
+                                    max="255"
+                                    step="1"
+                                    value="50"
+                                    aria-label="Valor vermelho"
+                                    required
+                                >
+                            </div>
+
+                            <input
+                                type="range"
+                                id="led_vermelho_range"
+                                min="0"
+                                max="255"
+                                step="1"
+                                value="50"
+                                aria-label="Ajustar vermelho"
+                            >
+
+                            <div class="rgb-limites">
+                                <span>0</span>
+                                <span>255</span>
+                            </div>
+                        </div>
+
+                        <!-- VERDE -->
+                        <div class="rgb-card">
+                            <div class="rgb-titulo">
+                                <span class="rgb-ponto rgb-ponto-verde"></span>
+                                Verde (G)
+                            </div>
+
+                            <div class="rgb-valor">
+                                <input
+                                    type="number"
+                                    id="led_verde"
+                                    name="led_verde"
+                                    min="0"
+                                    max="255"
+                                    step="1"
+                                    value="150"
+                                    aria-label="Valor verde"
+                                    required
+                                >
+                            </div>
+
+                            <input
+                                type="range"
+                                id="led_verde_range"
+                                min="0"
+                                max="255"
+                                step="1"
+                                value="150"
+                                aria-label="Ajustar verde"
+                            >
+
+                            <div class="rgb-limites">
+                                <span>0</span>
+                                <span>255</span>
+                            </div>
+                        </div>
+
+                        <!-- AZUL -->
+                        <div class="rgb-card">
+                            <div class="rgb-titulo">
+                                <span class="rgb-ponto rgb-ponto-azul"></span>
+                                Azul (B)
+                            </div>
+
+                            <div class="rgb-valor">
+                                <input
+                                    type="number"
+                                    id="led_azul"
+                                    name="led_azul"
+                                    min="0"
+                                    max="255"
+                                    step="1"
+                                    value="60"
+                                    aria-label="Valor azul"
+                                    required
+                                >
+                            </div>
+
+                            <input
+                                type="range"
+                                id="led_azul_range"
+                                min="0"
+                                max="255"
+                                step="1"
+                                value="60"
+                                aria-label="Ajustar azul"
+                            >
+
+                            <div class="rgb-limites">
+                                <span>0</span>
+                                <span>255</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- AÇÕES -->
+                <div class="coleta-acoes">
+
+                    <a
+                        href="{{ url_for('interface') }}"
+                        class="coleta-btn coleta-btn-voltar"
+                    >
+                        <i class="bi bi-arrow-left"></i>
+                        Voltar
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="coleta-btn coleta-btn-salvar"
+                    >
+                        <i class="bi bi-clipboard2-check"></i>
+                        Salvar e analisar
+                    </button>
+
+                </div>
+
+            </form>
+        </section>
+
+    </div>
+</main>
+
+<script>
+    function sincronizarCampos(idBarra, idCampo) {
+        const barra = document.getElementById(idBarra);
+        const campo = document.getElementById(idCampo);
+
+        if (!barra || !campo) return;
+
+        // Barra deslizante -> campo numérico
+        barra.addEventListener('input', function () {
+            campo.value = barra.value;
+        });
+
+        // Campo numérico -> barra deslizante
+        campo.addEventListener('input', function () {
+            if (campo.value === '') return;
+
+            const valor = Number(campo.value);
+
+            if (
+                Number.isInteger(valor) &&
+                valor >= 0 &&
+                valor <= 255
+            ) {
+                barra.value = valor;
+            }
+        });
+
+        // Valida o valor ao sair do campo
+        campo.addEventListener('change', function () {
+            if (campo.value === '') {
+                campo.value = barra.value;
+                return;
+            }
+
+            let valor = Number(campo.value);
+
+            if (!Number.isFinite(valor)) {
+                valor = 0;
+            }
+
+            valor = Math.max(0, Math.min(255, Math.round(valor)));
+
+            campo.value = valor;
+            barra.value = valor;
+        });
+    }
+
+    sincronizarCampos('led_vermelho_range', 'led_vermelho');
+    sincronizarCampos('led_verde_range', 'led_verde');
+    sincronizarCampos('led_azul_range', 'led_azul');
+</script>
+
 {% endblock content %}

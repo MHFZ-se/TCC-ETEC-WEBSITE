@@ -365,7 +365,6 @@ def init_app(app):
     
     @app.route('/galeria', methods=['POST'])
     def galeria():
-
         FILE_TYPES = {'png', 'jpg', 'jpeg', 'gif', 'webp', 'avif'}
 
         usuario = db.session.get(Usuario, session['idLogado'])
@@ -374,13 +373,11 @@ def init_app(app):
             flash('Usuário não encontrado.', 'danger')
             return redirect(url_for('login'))
 
-
         file = request.files.get('file')
 
         if file is None or file.filename == '':
             flash('Selecione uma imagem.', 'danger')
             return redirect(url_for('centroInfo'))
-
 
         extensao = file.filename.rsplit('.', 1)[-1].lower()
 
@@ -395,21 +392,16 @@ def init_app(app):
             foto_antiga = os.path.join(
                 app.config['UPLOAD_FOLDER'], usuario.rota_foto_perfil
             )
+            if os.path.exists(foto_antiga):
+                os.remove(foto_antiga)
 
-        if os.path.exists(foto_antiga):
-            os.remove(foto_antiga)
-
-        # ESTES COMANDOS AGORA FICAM FORA DO IF ACIMA (funcionam para qualquer usuário)
+        # Gera um novo nome único e salva a nova imagem
         novo_nome = secure_filename(f'{uuid.uuid4().hex}.{extensao}')
-
         caminho = os.path.join(app.config['UPLOAD_FOLDER'], novo_nome)
-
-        # Salva a nova imagem
+        
         file.save(caminho)
 
-
         usuario.rota_foto_perfil = novo_nome
-
         db.session.commit()
 
         flash('Foto de perfil atualizada com sucesso!', 'success')
