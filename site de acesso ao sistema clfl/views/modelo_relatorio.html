@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório PlantHealth</title>
+    <style>
+        
+/* Configuração da página para impressão */
+@page {
+    size: A4;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #171717;
+}
+
+body {
+    font-size: 11pt;
+    line-height: 1.4;
+}
+
+.pagina {
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cabeçalho verde */
+.cabecalho {
+    background: #006b36;
+    color: #ffffff;
+    padding: 8mm 4mm 12mm;
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 8mm;
+    padding: 0 3mm 5mm;
+}
+
+.logo {
+    width: 22mm;
+    height: 22mm;
+    border-radius: 4mm;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.logo-fallback {
+    color: #006b36;
+    font-size: 38pt;
+    font-weight: bold;
+}
+
+.marca-texto h1 {
+    font-size: 30pt;
+    line-height: 1.1;
+    margin: 0;
+    font-weight: 700;
+}
+
+.marca-texto p {
+    font-size: 11pt;
+    margin: 2mm 0 0;
+}
+
+.linha-cabecalho {
+    height: 1px;
+    background: #ffffff;
+    margin: 0 0 7mm;
+}
+
+.cabecalho h2 {
+    font-size: 22pt;
+    font-weight: 400;
+    margin: 0 0 5mm;
+}
+
+.subtitulo {
+    font-size: 12pt;
+    margin: 0;
+}
+
+/* Conteúdo principal */
+.conteudo {
+    padding: 7mm 10.5mm 6mm;
+    flex: 1;
+}
+
+.secao {
+    margin: 0;
+}
+
+.secao h3 {
+    color: #00783e;
+    font-size: 16pt;
+    font-weight: 400;
+    margin: 0 0 5mm;
+}
+
+.informacoes {
+    display: flex;
+    gap: 16mm;
+    padding: 0 1mm;
+}
+
+.cartao-info {
+    width: 50%;
+    min-height: 32mm;
+    background: #e0efdc;
+    border-radius: 4mm;
+    padding: 3mm 3.5mm;
+}
+
+.rotulo {
+    display: block;
+    color: #00783e;
+    font-size: 11pt;
+    margin-bottom: 3mm;
+}
+
+.cartao-info p {
+    margin: 0;
+    font-size: 12pt;
+    font-weight: 600;
+    overflow-wrap: break-word;
+}
+
+.divisor {
+    height: 1px;
+    background: #999999;
+    margin: 8mm 0;
+}
+
+/* Resultado do sensor */
+.secao-resultado h3 {
+    margin-bottom: 2.5mm;
+}
+
+.resultado {
+    border: 1px solid #999999;
+    border-radius: 4mm;
+    padding: 2mm 4mm 3mm;
+}
+
+.classificacao {
+    display: flex;
+    align-items: flex-start;
+    gap: 2mm;
+    min-height: 22mm;
+}
+
+.icone-folha {
+    width: 22mm;
+    height: 22mm;
+    border-radius: 3mm;
+    background: #e0efdc;
+    color: #006b36;
+    font-size: 35pt;
+    line-height: 22mm;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.rotulo-classificacao {
+    color: #00783e;
+    font-size: 11pt;
+}
+
+.nome-classificacao {
+    color: #245d31;
+    font-weight: 700;
+    margin: 1mm 0 0;
+    font-size: 12pt;
+}
+
+.indicadores {
+    display: flex;
+    justify-content: flex-end;
+    gap: 13mm;
+    padding: 0 5mm 0 25mm;
+}
+
+.indicador {
+    width: 38mm;
+    min-height: 16mm;
+    background: #e5e5e5;
+    border-radius: 4mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2mm;
+}
+
+.indicador span {
+    font-size: 11pt;
+}
+
+.indicador strong {
+    font-size: 15pt;
+    margin-top: 1mm;
+}
+
+.indicador-vermelho span,
+.indicador-vermelho strong {
+    color: #ff2929;
+}
+
+.indicador-verde span,
+.indicador-verde strong {
+    color: #00a85a;
+}
+
+.indicador-azul span,
+.indicador-azul strong {
+    color: #1600cc;
+}
+
+/* Interpretação e recomendações */
+.secao-interpretacao {
+    margin-top: 10mm;
+}
+
+.secao-interpretacao h3 {
+    margin-bottom: 5mm;
+}
+
+.recomendacoes {
+    margin: 0 1mm;
+    background: #e0efdc;
+    border-radius: 4mm;
+    padding: 5mm 6mm;
+    min-height: 63mm;
+}
+
+.bloco-recomendacao {
+    min-height: 23mm;
+}
+
+.titulo-recomendacao {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+}
+
+.titulo-recomendacao h4 {
+    margin: 0;
+    font-size: 15pt;
+    font-weight: 400;
+}
+
+.icone {
+    color: #006b36;
+    font-size: 19pt;
+    font-weight: bold;
+    width: 6mm;
+    text-align: center;
+}
+
+.bloco-recomendacao p {
+    margin: 2mm 0 3mm;
+    font-size: 10pt;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.linha-recomendacoes {
+    height: 1px;
+    background: #d4d4d4;
+    margin: 3mm 0;
+}
+
+/* Rodapé */
+.rodape {
+    background: #005d30;
+    color: #ffffff;
+    padding: 7mm 6mm;
+    font-size: 13pt;
+    margin-top: auto;
+}
+
+/* Evita cortes em componentes importantes */
+.cartao-info,
+.resultado,
+.recomendacoes {
+    break-inside: avoid;
+}
+
+    </style>
+    
+</head>
+
+<body>
+    <div class="pagina">
+
+        <!-- Cabeçalho -->
+        <header class="cabecalho">
+            <div class="marca">
+                <div class="logo">
+                    {% if logo_path %}
+                        <img src="{{ logo_path }}" alt="PlantHealth">
+                    {% else %}
+                        <span class="logo-fallback">♧</span>
+                    {% endif %}
+                </div>
+
+                <div class="marca-texto">
+                    <h1>PlantHealth</h1>
+                    <p>MONITORAMENTO INTELIGENTE DE PLANTAS</p>
+                </div>
+            </div>
+
+            <div class="linha-cabecalho"></div>
+
+            <h2>Relatório de análise vegetal</h2>
+            <p class="subtitulo">
+                Registro das condições identificadas pelo sensor
+            </p>
+        </header>
+
+        <!-- Conteúdo -->
+        <main class="conteudo">
+
+            <!-- 1. Informações -->
+            <section class="secao">
+                <h3>1. Informações da análise</h3>
+
+                <div class="informacoes">
+                    <div class="cartao-info">
+                        <span class="rotulo">DATA DA COLETA</span>
+                        <p>{{ data_coleta or "Não informada" }}</p>
+                    </div>
+
+                    <div class="cartao-info">
+                        <span class="rotulo">CULTURA ANALISADA</span>
+                        <p>{{ cultura or "Não informada" }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <div class="divisor"></div>
+
+            <!-- 2. Resultado -->
+            <section class="secao secao-resultado">
+                <h3>2. Resultado do sensor</h3>
+
+                <div class="resultado">
+                    <div class="classificacao">
+                        <div class="icone-folha">♧</div>
+
+                        <div>
+                            <span class="rotulo-classificacao">
+                                Classificação registrada
+                            </span>
+
+                            <p class="nome-classificacao">
+                                {{ classificacao or "Sem classificação" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="indicadores">
+                        <div class="indicador indicador-vermelho">
+                            <span>Vermelho</span>
+                            <strong>{{ vermelho if vermelho is not none else "--" }}</strong>
+                        </div>
+
+                        <div class="indicador indicador-verde">
+                            <span>Verde</span>
+                            <strong>{{ verde if verde is not none else "--" }}</strong>
+                        </div>
+
+                        <div class="indicador indicador-azul">
+                            <span>Azul</span>
+                            <strong>{{ azul if azul is not none else "--" }}</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Interpretação -->
+            <section class="secao secao-interpretacao">
+                <h3>3. Interpretação e recomendações</h3>
+
+                <div class="recomendacoes">
+
+                    <div class="bloco-recomendacao">
+                        <div class="titulo-recomendacao">
+                            <span class="icone">✓</span>
+                            <h4>Interpretação</h4>
+                        </div>
+
+                        <p>
+                            {{ interpretacao or "Não há interpretação registrada para esta análise." }}
+                        </p>
+                    </div>
+
+                    <div class="linha-recomendacoes"></div>
+
+                    <div class="bloco-recomendacao">
+                        <div class="titulo-recomendacao">
+                            <span class="icone">♧</span>
+                            <h4>Orientação ao agricultor</h4>
+                        </div>
+
+                        <p>
+                            {{ orientacao or "Nenhuma orientação adicional registrada." }}
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Rodapé -->
+        <footer class="rodape">
+            <strong>
+                PlantHealth — Tecnologia a serviço da agricultura
+            </strong>
+        </footer>
+
+    </div>
+</body>
+</html>

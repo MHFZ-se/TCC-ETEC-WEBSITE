@@ -1,5 +1,5 @@
 
-from flask import render_template, request, redirect, url_for, flash, session, jsonify
+from flask import render_template, request, redirect, url_for, flash, session, jsonify, send_file
 from models.database import *
 from controllers.funcoes import *
 from markupsafe import Markup
@@ -8,8 +8,15 @@ from sqlalchemy import func
 import colorsys
 import random
 from datetime import datetime
+#seguranca
 from werkzeug.security import generate_password_hash,check_password_hash
 from werkzeug.utils import secure_filename
+#alteração e manipulação de pdf
+from weasyprint import HTML, CSS
+from io import BytesIO
+from datetime import datetime
+from pathlib import Path
+
 
 import os
 import uuid
@@ -289,7 +296,7 @@ def init_app(app):
             flash('Faça login para ver suas análises.', 'danger')
             return redirect(url_for('login'))
 
-        coletas = Coleta.query.all()
+        coletas = Coleta.query.filter_by(id_usuario=session['idLogado']).all()
         lista_analises = []
 
         for coleta in coletas:
@@ -299,21 +306,21 @@ def init_app(app):
             )
 
         # Atribui todos os campos retornados pela análise ao objeto
-        coleta.tipo = resultado.get('tipo', 'Desconhecido')
-        coleta.deficiencia = resultado.get('deficiencia', '--')
-        coleta.nivel = resultado.get('nivel', 'Baixo')
-        coleta.indice_saude = resultado.get('indice_saude', 0)
-        coleta.tom_verde = resultado.get('tom_verde', '--')
-        coleta.diagnostico = resultado.get('diagnostico', '--')
-        coleta.solucao = resultado.get('solucao', '--')
+            coleta.tipo = resultado.get('tipo', 'Desconhecido')
+            coleta.deficiencia = resultado.get('deficiencia', '--')
+            coleta.nivel = resultado.get('nivel', 'Baixo')
+            coleta.indice_saude = resultado.get('indice_saude', 0)
+            coleta.tom_verde = resultado.get('tom_verde', '--')
+            coleta.diagnostico = resultado.get('diagnostico', '--')
+            coleta.solucao = resultado.get('solucao', '--')
 
-        # Formata a cor RGB para o preview visual no card do histórico
-        r = coleta.led_vermelho if coleta.led_vermelho is not None else 0
-        g = coleta.led_verde if coleta.led_verde is not None else 0
-        b = coleta.led_azul if coleta.led_azul is not None else 0
-        coleta.cor_rgb = f"rgb({r}, {g}, {b})"
+            # Formata a cor RGB para o preview visual no card do histórico
+            r = coleta.led_vermelho if coleta.led_vermelho is not None else 0
+            g = coleta.led_verde if coleta.led_verde is not None else 0
+            b = coleta.led_azul if coleta.led_azul is not None else 0
+            coleta.cor_rgb = f"rgb({r}, {g}, {b})"
 
-        lista_analises.append(coleta)
+            lista_analises.append(coleta)
 
         return render_template('analises.html', analises=lista_analises)
 
@@ -735,3 +742,8 @@ def init_app(app):
             jsonify({'status': 'sucesso', 'dados': dados_atuais_memoria}),
             200,
         )
+
+    @app.route('/gerar-pdf')
+    def gerar_pdf():
+        modelo = PdfReader('static/pdf/modelo_relatorio.pdf')        
+        return
