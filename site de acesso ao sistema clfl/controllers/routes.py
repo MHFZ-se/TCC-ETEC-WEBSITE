@@ -12,10 +12,16 @@ from datetime import datetime
 from werkzeug.security import generate_password_hash,check_password_hash
 from werkzeug.utils import secure_filename
 #alteração e manipulação de pdf
-from weasyprint import HTML, CSS
-from io import BytesIO
+
 from datetime import datetime
 from pathlib import Path
+
+import base64
+from io import BytesIO
+
+from flask import send_file
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 
 import os
@@ -745,5 +751,52 @@ def init_app(app):
 
     @app.route('/gerar-pdf')
     def gerar_pdf():
-        modelo = PdfReader('static/pdf/modelo_relatorio.pdf')        
-        return
+        id_coleta = request.args.get('id_coleta', type=int)
+        coleta = Coleta.query.filter_by(id=id_coleta,id_usuario=session['idLogado']).first()
+                
+        #info = informacoes.get(coleta.tipo)
+        return render_template('modelo_relatorio.html', logo_path = "batata", coleta = coleta, info = "tria")
+    
+    @app.route('/relatorio/gerar/<int:id_coleta>')
+    def gerar_relatorio_pdf(id_coleta):
+        if 'idLogado' not in session:
+            return "Deu ruim"
+
+        opcoes = Options()
+        opcoes.add_argument('--headless')
+        opcoes.add_argument('--disable-gpu')
+
+        navegador = None
+
+        try:
+            navegador = webdriver.Chrome(options=opcoes)
+
+            url_relatorio = url_for('gerar_pdf',id_coleta=id_coleta, _external=True)
+
+            # Abre primeiro o domínio para permitir adicionar os cookies
+            navegador.get(url_relatorio)
+
+            # Transfere os cookies da sessão atual para o Chrome
+            for nome, valor in request.cookies.items():
+                navegador.add_cookie({
+                    'name': nome,
+                    'value': valor
+                })
+
+            # Recarrega a página com a sessão do usuário
+            navegador.get(url_relatorio)
+
+            pdf_base64 = navegador.print_page()
+            pdf_bytes = base64.b64decode(pdf_base64)
+
+            return send_file(
+                BytesIO(pdf_bytes),
+                mimetype='application/pdf',
+                as_attachment=True,
+                download_name=f'relatorio_{id_coleta}.pdf'
+            )
+
+        finally:
+            if navegador is not None:
+                navegador.quit()
+    
