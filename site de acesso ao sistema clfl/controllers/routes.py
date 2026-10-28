@@ -755,13 +755,14 @@ def init_app(app):
         id_coleta = request.args.get('id', type=int)
         print(id_coleta)
         coleta = Coleta.query.filter_by(id=id_coleta).first()
+        sensor = Sensor.query.filter_by(numero_de_serie = coleta.numero_de_serie)
         analise = analisar_cor(coleta.led_vermelho, coleta.led_verde, coleta.led_azul)
         info = informacoes.get(analise["tipo"])
         print(info)
         
         print(analise)
         
-        return render_template('modelo_relatorio.html', coleta = coleta, analise = analise, info = info)
+        return render_template('modelo_relatorio.html', coleta = coleta, analise = analise, info = info, sensor = sensor )
     
     @app.route('/relatorio/gerar/<int:id_coleta>')
     def gerar_relatorio_pdf(id_coleta):
