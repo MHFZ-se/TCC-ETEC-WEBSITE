@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Relatório PlantHealth</title>
+
     <style>
         
 /* Configuração da página para impressão */
@@ -352,12 +353,13 @@ body {
                 <div class="informacoes">
                     <div class="cartao-info">
                         <span class="rotulo">DATA DA COLETA</span>
-                        <p>{{ data_coleta or "Não informada" }}</p>
+                        <p>{{ coleta.data.strftime('%d/%m/%Y') }} às {{ coleta.hora or "Não informada" }}</p>
                     </div>
 
                     <div class="cartao-info">
                         <span class="rotulo">CULTURA ANALISADA</span>
-                        <p>{{ cultura or "Não informada" }}</p>
+                        <!-- colocar valores reais -->
+                        <p> Sensor de codinome abner em cultura {{cleiton or "Não informada" }}</p>
                     </div>
                 </div>
             </section>
@@ -378,7 +380,7 @@ body {
                             </span>
 
                             <p class="nome-classificacao">
-                                {{ classificacao or "Sem classificação" }}
+                                {{ info.titulo or "Sem classificação" }}
                             </p>
                         </div>
                     </div>
@@ -386,17 +388,17 @@ body {
                     <div class="indicadores">
                         <div class="indicador indicador-vermelho">
                             <span>Vermelho</span>
-                            <strong>{{ vermelho if vermelho is not none else "--" }}</strong>
+                            <strong>{{ coleta.led_vermelho if vermelho is not none else "--" }}</strong>
                         </div>
 
                         <div class="indicador indicador-verde">
                             <span>Verde</span>
-                            <strong>{{ verde if verde is not none else "--" }}</strong>
+                            <strong>{{ coleta.led_verde if verde is not none else "--" }}</strong>
                         </div>
 
                         <div class="indicador indicador-azul">
                             <span>Azul</span>
-                            <strong>{{ azul if azul is not none else "--" }}</strong>
+                            <strong>{{ coleta.led_azul if azul is not none else "--" }}</strong>
                         </div>
                     </div>
                 </div>

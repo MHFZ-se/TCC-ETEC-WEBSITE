@@ -347,6 +347,7 @@ def init_app(app):
                 id_usuario = session['idLogado'],
                 numero_de_serie = request.form['idSensor'],
                 data = datetime.now(),
+                hora = datetime.now().strftime('%H:%M:%S'),
                 corA = request.form['corA'],
                 led_vermelho = request.form['led_vermelho'],
                 led_verde = request.form['led_verde'],
@@ -751,11 +752,16 @@ def init_app(app):
 
     @app.route('/gerar-pdf')
     def gerar_pdf():
-        id_coleta = request.args.get('id_coleta', type=int)
-        coleta = Coleta.query.filter_by(id=id_coleta,id_usuario=session['idLogado']).first()
-                
-        #info = informacoes.get(coleta.tipo)
-        return render_template('modelo_relatorio.html', logo_path = "batata", coleta = coleta, info = "tria")
+        id_coleta = request.args.get('id', type=int)
+        print(id_coleta)
+        coleta = Coleta.query.filter_by(id=id_coleta).first()
+        analise = analisar_cor(coleta.led_vermelho, coleta.led_verde, coleta.led_azul)
+        info = informacoes.get(analise["tipo"])
+        print(info)
+        
+        print(analise)
+        
+        return render_template('modelo_relatorio.html', coleta = coleta, analise = analise, info = info)
     
     @app.route('/relatorio/gerar/<int:id_coleta>')
     def gerar_relatorio_pdf(id_coleta):
@@ -771,7 +777,7 @@ def init_app(app):
         try:
             navegador = webdriver.Chrome(options=opcoes)
 
-            url_relatorio = url_for('gerar_pdf',id_coleta=id_coleta, _external=True)
+            url_relatorio = url_for('gerar_pdf',id=id_coleta, _external=True)
 
             # Abre primeiro o domínio para permitir adicionar os cookies
             navegador.get(url_relatorio)

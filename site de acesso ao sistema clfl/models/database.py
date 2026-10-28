@@ -35,16 +35,18 @@ class Coleta(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_usuario = db.Column(db.Integer)
     numero_de_serie = db.Column(db.Integer, db.ForeignKey('sensor.numero_de_serie'))
-    data = db.Column(db.DateTime)
+    data = db.Column(db.Date)
+    hora = db.Column(db.Time)
     corA = db.Column(db.String(24))
     led_vermelho = db.Column(db.Integer)
     led_verde = db.Column(db.Integer)
     led_azul = db.Column(db.Integer)
 
-def __init__(self, id_usuario, data, corA, led_vermelho, led_verde, led_azul):
+def __init__(self, id_usuario, data, hora, corA, led_vermelho, led_verde, led_azul):
     self.id  = id
     self.id_usuario  = id_usuario
     self.data = data
+    self.hora = hora
     self.corA = corA
     self.led_vermelho = led_vermelho
     self.led_verde = led_verde

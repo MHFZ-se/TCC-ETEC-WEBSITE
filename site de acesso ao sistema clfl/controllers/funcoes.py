@@ -160,3 +160,7 @@ def escolher_adm():
             ]
 
             return random.choice(adms_disponiveis)
+
+def tratamento(variavel):# caio aqui é para colocar os tratamentos de forma mais detalhada possivel, cozinhe!
+      
+      return 0
