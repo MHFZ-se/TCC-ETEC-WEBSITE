@@ -855,3 +855,28 @@ def init_app(app):
             if navegador is not None:
                 navegador.quit()
     
+    
+    @app.route('/atendimento/atualizar-chat/<int:id_atendimento>')
+    def atualizar_chat(id_atendimento):
+        if 'idLogado' not in session:
+            return '', 401
+
+        atendimento = Atendimento.query.filter_by(
+            id_atendimento=id_atendimento,
+            id_cliente=session['idLogado']
+        ).first()
+
+        if atendimento is None:
+            return '', 403
+
+        ultima_id = request.args.get('ultima_id', 0, type=int)
+
+        mensagens = Mensagens.query.filter(
+            Mensagens.id_atendimento == id_atendimento,
+            Mensagens.id_mensagem > ultima_id
+        ).order_by(Mensagens.id_mensagem.asc()).all()
+
+        return render_template(
+            'novasMensagens.html',
+            mensagens=mensagens
+        )

@@ -1,0 +1,6 @@
+
+{% for mensagem in mensagens %}
+    <div class="mensagem {% if mensagem.adm %}mensagem-atendente{% else %}mensagem-usuario{% endif %}" data-id-mensagem="{{ mensagem.id_mensagem }}">
+        <p>{{ mensagem.mensagem }}</p>
+    </div>
+{% endfor %}

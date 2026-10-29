@@ -287,28 +287,19 @@
 
                     </div>
 
-                    <div class="chat-mensagens">
-
+                    <div class="chat-mensagens" id="chat-mensagens">
                         {% for mensagem in mensagensConversa %}
-
-                            <div
-                                class="
-                                mensagem
+                            <div class="mensagem
                                 {% if mensagem.adm %}
                                     mensagem-atendente
                                 {% else %}
                                     mensagem-usuario
                                 {% endif %}
-                                "
-                            >
-
-                                <p>
-                                    {{ mensagem.mensagem }}
-                                </p>
-
+                            " data-id-mensagem="{{ mensagem.id_mensagem }}">
+                                <p>{{ mensagem.mensagem }}</p>
                             </div>
-
                         {% endfor %}
+                    </div>
 
                     </div>
                     {% if esseAtendimento.estado == 'Aberto' %}
@@ -352,5 +343,51 @@
         </section>
     </div>
 </main>
+{% endif %}
+{% if esseAtendimento and esseAtendimento.estado == 'Aberto' %}
+<script>
+    const idAtendimento = {{ esseAtendimento.id_atendimento | tojson }};
+    const areaChat = document.getElementById('chat-mensagens');
+    let buscandoMensagens = false;
+
+    async function atualizarChat() {
+        if (buscandoMensagens || !areaChat) return;
+
+        buscandoMensagens = true;
+
+        try {
+            let ultimaId = 0;
+
+            areaChat.querySelectorAll('[data-id-mensagem]').forEach(m => {
+                ultimaId = Math.max(ultimaId, Number(m.dataset.idMensagem));
+            });
+
+            const resposta = await fetch(
+                `/atendimento/atualizar-chat/${idAtendimento}?ultima_id=${ultimaId}`
+            );
+
+            if (!resposta.ok) return;
+
+            const html = await resposta.text();
+
+            if (html.trim()) {
+                const estavaNoFinal =
+                    areaChat.scrollHeight - areaChat.scrollTop - areaChat.clientHeight < 80;
+
+                areaChat.insertAdjacentHTML('beforeend', html);
+
+                if (estavaNoFinal) {
+                    areaChat.scrollTop = areaChat.scrollHeight;
+                }
+            }
+        } catch (erro) {
+            console.error('Erro ao atualizar o chat:', erro);
+        } finally {
+            buscandoMensagens = false;
+        }
+    }
+
+    setInterval(atualizarChat, 3000);
+</script>
 {% endif %}
 {% endblock content %}
