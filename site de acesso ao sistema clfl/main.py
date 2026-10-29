@@ -4,14 +4,24 @@ from flask import Flask
 app = Flask(__name__, template_folder = 'views')
 from controllers import routes
 from werkzeug.security import generate_password_hash
-
+import os
 
 import pymysql
 
-from models.database import db, Usuario, Sensor, Coleta
+from models.database import db, Usuario, Sensor, Coleta, Problemas
 #from models.database import db
 
 #informa o nome do database
+
+PASTA_PROBLEMAS = os.path.join(
+    app.root_path, 'static', 'uploads', 'problemas'
+)
+
+os.makedirs(PASTA_PROBLEMAS, exist_ok=True)
+
+app.config['UPLOAD_FOLDER_PROBLEMAS'] = PASTA_PROBLEMAS
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  
+
 DB_NAME = 'planetHealth'
 
 app.config['DATABASE_NAME'] = DB_NAME

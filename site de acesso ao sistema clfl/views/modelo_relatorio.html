@@ -1,451 +1,592 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Relatório PlantHealth</title>
 
     <style>
-        
-/* Configuração da página para impressão */
-@page {
-    size: A4;
-    margin: 0;
-}
+        @page {
+            size: A4;
+            margin: 0;
+        }
 
-* {
-    box-sizing: border-box;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-html,
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #171717;
-}
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #173522;
+        }
 
-body {
-    font-size: 11pt;
-    line-height: 1.4;
-}
+        body {
+            font-size: 10pt;
+            line-height: 1.45;
+            background: #edf2ee;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
 
-.pagina {
-    width: 210mm;
-    min-height: 297mm;
-    background: #ffffff;
-    display: flex;
-    flex-direction: column;
-}
+        .pagina {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0 auto;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Cabeçalho verde */
-.cabecalho {
-    background: #006b36;
-    color: #ffffff;
-    padding: 8mm 4mm 12mm;
-}
+        /* CABEÇALHO */
 
-.marca {
-    display: flex;
-    align-items: center;
-    gap: 8mm;
-    padding: 0 3mm 5mm;
-}
+        .cabecalho {
+            background: #006b36;
+            color: #fff;
+            padding: 10mm 13mm;
+        }
 
-.logo {
-    width: 22mm;
-    height: 22mm;
-    border-radius: 4mm;
-    background: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    flex-shrink: 0;
-}
+        .marca {
+            display: flex;
+            align-items: center;
+            gap: 6mm;
+            padding-bottom: 6mm;
+        }
 
-.logo img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
+        .logo {
+            width: 20mm;
+            height: 20mm;
+            border-radius: 4mm;
+            background: #fff;
+            color: #006b36;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30pt;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
 
-.logo-fallback {
-    color: #006b36;
-    font-size: 38pt;
-    font-weight: bold;
-}
+        .marca-texto h1 {
+            margin: 0;
+            font-size: 29pt;
+            line-height: 1.15;
+        }
 
-.marca-texto h1 {
-    font-size: 30pt;
-    line-height: 1.1;
-    margin: 0;
-    font-weight: 700;
-}
+        .marca-texto p {
+            margin: 2mm 0 0;
+            font-size: 9pt;
+            letter-spacing: 1px;
+        }
 
-.marca-texto p {
-    font-size: 11pt;
-    margin: 2mm 0 0;
-}
+        .linha-cabecalho {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.65);
+            margin-bottom: 7mm;
+        }
 
-.linha-cabecalho {
-    height: 1px;
-    background: #ffffff;
-    margin: 0 0 7mm;
-}
+        .cabecalho h2 {
+            margin: 0 0 3mm;
+            font-size: 21pt;
+            font-weight: 500;
+        }
 
-.cabecalho h2 {
-    font-size: 22pt;
-    font-weight: 400;
-    margin: 0 0 5mm;
-}
+        .subtitulo {
+            margin: 0;
+            font-size: 11pt;
+        }
 
-.subtitulo {
-    font-size: 12pt;
-    margin: 0;
-}
+        /* CONTEÚDO */
 
-/* Conteúdo principal */
-.conteudo {
-    padding: 7mm 10.5mm 6mm;
-    flex: 1;
-}
+        .conteudo {
+            padding: 8mm 12mm;
+            flex: 1;
+        }
 
-.secao {
-    margin: 0;
-}
+        .secao {
+            margin: 0;
+        }
 
-.secao h3 {
-    color: #00783e;
-    font-size: 16pt;
-    font-weight: 400;
-    margin: 0 0 5mm;
-}
+        .secao h3 {
+            margin: 0 0 5mm;
+            color: #00783e;
+            font-size: 15pt;
+            font-weight: 700;
+        }
 
-.informacoes {
-    display: flex;
-    gap: 16mm;
-    padding: 0 1mm;
-}
+        .informacoes {
+            display: flex;
+            gap: 6mm;
+            align-items: stretch;
+        }
 
-.cartao-info {
-    width: 50%;
-    min-height: 32mm;
-    background: #e0efdc;
-    border-radius: 4mm;
-    padding: 3mm 3.5mm;
-}
+        .cartao-info {
+            width: 50%;
+            min-width: 0;
+            min-height: 27mm;
+            padding: 4mm;
+            background: #e8f3e6;
+            border-radius: 3mm;
+            overflow-wrap: anywhere;
+        }
 
-.rotulo {
-    display: block;
-    color: #00783e;
-    font-size: 11pt;
-    margin-bottom: 3mm;
-}
+        .rotulo {
+            display: block;
+            margin-bottom: 2mm;
+            color: #00783e;
+            font-size: 9pt;
+            font-weight: 700;
+        }
 
-.cartao-info p {
-    margin: 0;
-    font-size: 12pt;
-    font-weight: 600;
-    overflow-wrap: break-word;
-}
+        .cartao-info p {
+            margin: 0;
+            color: #173522;
+            font-size: 11pt;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
 
-.divisor {
-    height: 1px;
-    background: #999999;
-    margin: 8mm 0;
-}
+        .cartao-info .texto-secundario {
+            margin-top: 2mm;
+            font-size: 9pt;
+            font-weight: 400;
+        }
 
-/* Resultado do sensor */
-.secao-resultado h3 {
-    margin-bottom: 2.5mm;
-}
+        .divisor {
+            height: 1px;
+            background: #d8dfda;
+            margin: 7mm 0;
+        }
 
-.resultado {
-    border: 1px solid #999999;
-    border-radius: 4mm;
-    padding: 2mm 4mm 3mm;
-}
+        /* RESULTADO DO SENSOR */
 
-.classificacao {
-    display: flex;
-    align-items: flex-start;
-    gap: 2mm;
-    min-height: 22mm;
-}
+        .resultado {
+            padding: 5mm;
+            border: 1px solid #d6e1d8;
+            border-radius: 4mm;
+        }
 
-.icone-folha {
-    width: 22mm;
-    height: 22mm;
-    border-radius: 3mm;
-    background: #e0efdc;
-    color: #006b36;
-    font-size: 35pt;
-    line-height: 22mm;
-    text-align: center;
-    flex-shrink: 0;
-}
+        .classificacao {
+            display: flex;
+            align-items: center;
+            gap: 4mm;
+            margin-bottom: 5mm;
+        }
 
-.rotulo-classificacao {
-    color: #00783e;
-    font-size: 11pt;
-}
+        .icone-folha {
+            width: 17mm;
+            height: 17mm;
+            flex-shrink: 0;
+            border-radius: 3mm;
+            background: #e3f1e3;
+            color: #006b36;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24pt;
+        }
 
-.nome-classificacao {
-    color: #245d31;
-    font-weight: 700;
-    margin: 1mm 0 0;
-    font-size: 12pt;
-}
+        .rotulo-classificacao {
+            display: block;
+            color: #718078;
+            font-size: 9pt;
+        }
 
-.indicadores {
-    display: flex;
-    justify-content: flex-end;
-    gap: 13mm;
-    padding: 0 5mm 0 25mm;
-}
+        .nome-classificacao {
+            margin: 1mm 0 0;
+            color: #245d31;
+            font-size: 13pt;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
 
-.indicador {
-    width: 38mm;
-    min-height: 16mm;
-    background: #e5e5e5;
-    border-radius: 4mm;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2mm;
-}
+        .cor-amostra {
+            display: inline-block;
+            width: 5mm;
+            height: 5mm;
+            margin-right: 2mm;
+            vertical-align: middle;
+            border: 1px solid #cbd5cd;
+            border-radius: 1mm;
+        }
 
-.indicador span {
-    font-size: 11pt;
-}
+        .indicadores {
+            display: flex;
+            gap: 4mm;
+        }
 
-.indicador strong {
-    font-size: 15pt;
-    margin-top: 1mm;
-}
+        .indicador {
+            flex: 1;
+            min-width: 0;
+            padding: 4mm 2mm;
+            border-radius: 3mm;
+            background: #f0f4f1;
+            text-align: center;
+        }
 
-.indicador-vermelho span,
-.indicador-vermelho strong {
-    color: #ff2929;
-}
+        .indicador span {
+            display: block;
+            margin-bottom: 2mm;
+            font-size: 9pt;
+        }
 
-.indicador-verde span,
-.indicador-verde strong {
-    color: #00a85a;
-}
+        .indicador strong {
+            font-size: 17pt;
+        }
 
-.indicador-azul span,
-.indicador-azul strong {
-    color: #1600cc;
-}
+        .indicador-vermelho span,
+        .indicador-vermelho strong {
+            color: #d62828;
+        }
 
-/* Interpretação e recomendações */
-.secao-interpretacao {
-    margin-top: 10mm;
-}
+        .indicador-verde span,
+        .indicador-verde strong {
+            color: #168343;
+        }
 
-.secao-interpretacao h3 {
-    margin-bottom: 5mm;
-}
+        .indicador-azul span,
+        .indicador-azul strong {
+            color: #244dc5;
+        }
 
-.recomendacoes {
-    margin: 0 1mm;
-    background: #e0efdc;
-    border-radius: 4mm;
-    padding: 5mm 6mm;
-    min-height: 63mm;
-}
+        .nota-rgb {
+            margin: 4mm 0 0;
+            color: #718078;
+            font-size: 8.5pt;
+        }
 
-.bloco-recomendacao {
-    min-height: 23mm;
-}
 
-.titulo-recomendacao {
-    display: flex;
-    align-items: center;
-    gap: 3mm;
-}
+        .secao-interpretacao {
+            margin-top: 8mm;
+        }
 
-.titulo-recomendacao h4 {
-    margin: 0;
-    font-size: 15pt;
-    font-weight: 400;
-}
+        .recomendacoes {
+            padding: 5mm;
+            background: #e8f3e6;
+            border-radius: 4mm;
+        }
 
-.icone {
-    color: #006b36;
-    font-size: 19pt;
-    font-weight: bold;
-    width: 6mm;
-    text-align: center;
-}
+        .bloco-recomendacao {
+            padding: 1mm 0 3mm;
+            break-inside: avoid;
+        }
 
-.bloco-recomendacao p {
-    margin: 2mm 0 3mm;
-    font-size: 10pt;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-}
+        .titulo-recomendacao {
+            display: flex;
+            align-items: center;
+            gap: 3mm;
+            margin-bottom: 2mm;
+        }
 
-.linha-recomendacoes {
-    height: 1px;
-    background: #d4d4d4;
-    margin: 3mm 0;
-}
+        .icone {
+            width: 6mm;
+            flex-shrink: 0;
+            color: #006b36;
+            font-size: 16pt;
+            font-weight: bold;
+            text-align: center;
+        }
 
-/* Rodapé */
-.rodape {
-    background: #005d30;
-    color: #ffffff;
-    padding: 7mm 6mm;
-    font-size: 13pt;
-    margin-top: auto;
-}
+        .titulo-recomendacao h4 {
+            margin: 0;
+            color: #173522;
+            font-size: 12pt;
+        }
 
-/* Evita cortes em componentes importantes */
-.cartao-info,
-.resultado,
-.recomendacoes {
-    break-inside: avoid;
-}
+        .bloco-recomendacao p {
+            margin: 0;
+            font-size: 10pt;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
 
+        .linha-recomendacoes {
+            height: 1px;
+            background: #cdddcf;
+            margin: 3mm 0;
+        }
+
+        .aviso {
+            margin-top: 5mm;
+            padding: 3mm 4mm;
+            border-left: 3px solid #2e7d32;
+            background: #f4f8f4;
+            color: #536558;
+            font-size: 9pt;
+        }
+
+        /* RODAPÉ */
+
+        .rodape {
+            margin-top: auto;
+            padding: 6mm 12mm;
+            background: #005d30;
+            color: #fff;
+            font-size: 10pt;
+            text-align: center;
+        }
+
+        .rodape p {
+            margin: 1mm 0 0;
+            font-size: 8pt;
+        }
+
+        /* IMPRESSÃO */
+
+        .cartao-info,
+        .resultado,
+        .recomendacoes {
+            break-inside: avoid;
+        }
+
+        @media screen {
+            .pagina {
+                margin: 20px auto;
+                box-shadow: 0 5px 25px rgba(0, 0, 0, 0.12);
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            .pagina {
+                margin: 0;
+                box-shadow: none;
+            }
+        }
     </style>
-    
 </head>
 
 <body>
-    <div class="pagina">
+<div class="pagina">
 
-        <!-- Cabeçalho -->
-        <header class="cabecalho">
-            <div class="marca">
-                <div class="logo">
-                    {% if logo_path %}
-                        <img src="{{ logo_path }}" alt="PlantHealth">
-                    {% else %}
-                        <span class="logo-fallback">♧</span>
-                    {% endif %}
+    <!-- CABEÇALHO -->
+    <header class="cabecalho">
+        <div class="marca">
+            <div class="logo">♧</div>
+
+            <div class="marca-texto">
+                <h1>PlantHealth</h1>
+                <p>MONITORAMENTO INTELIGENTE DE PLANTAS</p>
+            </div>
+        </div>
+
+        <div class="linha-cabecalho"></div>
+
+        <h2>Relatório de análise vegetal</h2>
+
+        <p class="subtitulo">
+            Registro das condições identificadas pelo sensor
+        </p>
+    </header>
+
+    <!-- CONTEÚDO -->
+    <main class="conteudo">
+
+        <!-- 1. INFORMAÇÕES DA ANÁLISE -->
+        <section class="secao">
+            <h3>1. Informações da análise</h3>
+
+            <div class="informacoes">
+                <div class="cartao-info">
+                    <span class="rotulo">DATA DA COLETA</span>
+                    <p>
+                        {% if coleta.data %}
+                            {{ coleta.data.strftime('%d/%m/%Y') }}
+                        {% else %}
+                            Não informada
+                        {% endif %}
+                    </p>
+
+                    <p class="texto-secundario">
+                        Horário:
+                        {{ coleta.hora.strftime('%H:%M:%S') if coleta.hora else "Não informado" }}
+                    </p>
                 </div>
 
-                <div class="marca-texto">
-                    <h1>PlantHealth</h1>
-                    <p>MONITORAMENTO INTELIGENTE DE PLANTAS</p>
+                <div class="cartao-info">
+                    <span class="rotulo">IDENTIFICAÇÃO DO SENSOR</span>
+                    <p>
+                        {{ sensor.codinome if sensor and sensor.codinome else "Não informado" }}
+                    </p>
+
+                    <p class="texto-secundario">
+                        Número de série:
+                        {{ sensor.numero_de_serie if sensor else "Não informado" }}
+                    </p>
                 </div>
             </div>
 
-            <div class="linha-cabecalho"></div>
-
-            <h2>Relatório de análise vegetal</h2>
-            <p class="subtitulo">
-                Registro das condições identificadas pelo sensor
-            </p>
-        </header>
-
-        <!-- Conteúdo -->
-        <main class="conteudo">
-
-            <!-- 1. Informações -->
-            <section class="secao">
-                <h3>1. Informações da análise</h3>
-
-                <div class="informacoes">
-                    <div class="cartao-info">
-                        <span class="rotulo">DATA DA COLETA</span>
-                        <p>{{ coleta.data.strftime('%d/%m/%Y') }} às {{ coleta.hora or "Não informada" }}</p>
-                    </div>
-
-                    <div class="cartao-info">
-                        <span class="rotulo">CULTURA ANALISADA</span>
-                        <!-- colocar valores reais -->
-                        <p> Sensor de codinome {{ sensor.codinome or "não informado"}} em cultura {{cleiton or "Não informada" }}</p>
-                    </div>
+            <div class="informacoes" style="margin-top: 5mm;">
+                <div class="cartao-info">
+                    <span class="rotulo">CULTURA ANALISADA</span>
+                    <p>{{ cultura if cultura else "Não informada" }}</p>
                 </div>
-            </section>
 
-            <div class="divisor"></div>
-
-            <!-- 2. Resultado -->
-            <section class="secao secao-resultado">
-                <h3>2. Resultado do sensor</h3>
-
-                <div class="resultado">
-                    <div class="classificacao">
-                        <div class="icone-folha">♧</div>
-
-                        <div>
-                            <span class="rotulo-classificacao">
-                                Classificação registrada
-                            </span>
-
-                            <p class="nome-classificacao">
-                                {{ info.titulo or "Sem classificação" }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="indicadores">
-                        <div class="indicador indicador-vermelho">
-                            <span>Vermelho</span>
-                            <strong>{{ coleta.led_vermelho if vermelho is not none else "--" }}</strong>
-                        </div>
-
-                        <div class="indicador indicador-verde">
-                            <span>Verde</span>
-                            <strong>{{ coleta.led_verde if verde is not none else "--" }}</strong>
-                        </div>
-
-                        <div class="indicador indicador-azul">
-                            <span>Azul</span>
-                            <strong>{{ coleta.led_azul if azul is not none else "--" }}</strong>
-                        </div>
-                    </div>
+                <div class="cartao-info">
+                    <span class="rotulo">COR REGISTRADA</span>
+                    <p>{{ coleta.corA or "Não identificada" }}</p>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- 3. Interpretação -->
-            <section class="secao secao-interpretacao">
-                <h3>3. Interpretação e recomendações</h3>
+        <div class="divisor"></div>
 
-                <div class="recomendacoes">
+        <!-- 2. RESULTADO DO SENSOR -->
+        <section class="secao">
+            <h3>2. Resultado do sensor</h3>
 
-                    <div class="bloco-recomendacao">
-                        <div class="titulo-recomendacao">
-                            <span class="icone">✓</span>
-                            <h4>Interpretação</h4>
-                        </div>
+            <div class="resultado">
 
-                        <p>
-                            {{ interpretacao or "Não há interpretação registrada para esta análise." }}
+                <div class="classificacao">
+                    <div
+                        class="icone-folha"
+                        style="background-color: rgb(
+                            {{ coleta.led_vermelho or 0 }},
+                            {{ coleta.led_verde or 0 }},
+                            {{ coleta.led_azul or 0 }}
+                        );">
+                    </div>
+
+                    <div>
+                        <span class="rotulo-classificacao">
+                            Classificação registrada
+                        </span>
+
+                        <p class="nome-classificacao">
+                            {{ coleta.corA or "Sem classificação" }}
                         </p>
                     </div>
+                </div>
 
-                    <div class="linha-recomendacoes"></div>
-
-                    <div class="bloco-recomendacao">
-                        <div class="titulo-recomendacao">
-                            <span class="icone">♧</span>
-                            <h4>Orientação ao agricultor</h4>
-                        </div>
-
-                        <p>
-                            {{ orientacao or "Nenhuma orientação adicional registrada." }}
-                        </p>
+                <div class="indicadores">
+                    <div class="indicador indicador-vermelho">
+                        <span>Vermelho (R)</span>
+                        <strong>
+                            {{ coleta.led_vermelho if coleta.led_vermelho is not none else "--" }}
+                        </strong>
                     </div>
 
+                    <div class="indicador indicador-verde">
+                        <span>Verde (G)</span>
+                        <strong>
+                            {{ coleta.led_verde if coleta.led_verde is not none else "--" }}
+                        </strong>
+                    </div>
+
+                    <div class="indicador indicador-azul">
+                        <span>Azul (B)</span>
+                        <strong>
+                            {{ coleta.led_azul if coleta.led_azul is not none else "--" }}
+                        </strong>
+                    </div>
                 </div>
-            </section>
 
-        </main>
+                <p class="nota-rgb">
+                    Os valores RGB representam as intensidades de vermelho,
+                    verde e azul registradas pelo sensor.
+                </p>
+            </div>
+        </section>
 
-        <!-- Rodapé -->
-        <footer class="rodape">
-            <strong>
-                PlantHealth — Tecnologia a serviço da agricultura
-            </strong>
-        </footer>
+        <!-- 3. INTERPRETAÇÃO -->
+        <section class="secao secao-interpretacao">
 
-    </div>
+            <h3>3. Interpretação e recomendações</h3>
+
+            <div class="recomendacoes">
+
+                <!-- O QUE É -->
+                <div class="bloco-recomendacao">
+
+                    <div class="titulo-recomendacao">
+                        <span class="icone">i</span>
+                        <h4>O que é?</h4>
+                    </div>
+
+                    <p>
+                        {{ info.descricao if info and info.descricao
+                        else "Descrição não disponível para esta classificação." }}
+                    </p>
+
+                </div>
+
+                <div class="linha-recomendacoes"></div>
+
+                <!-- SINTOMAS -->
+                <div class="bloco-recomendacao">
+
+                    <div class="titulo-recomendacao">
+                        <span class="icone">!</span>
+                        <h4>Principais sintomas</h4>
+                    </div>
+
+                    <p>
+                        {{ info.sintomas if info and info.sintomas
+                        else "Não há sintomas registrados para esta classificação." }}
+                    </p>
+
+                </div>
+
+                <div class="linha-recomendacoes"></div>
+
+                <!-- MANEJO -->
+                <div class="bloco-recomendacao">
+
+                    <div class="titulo-recomendacao">
+                        <span class="icone">+</span>
+                        <h4>Manejo recomendado</h4>
+                    </div>
+
+                    <p>
+                        {{ info.manejo if info and info.manejo
+                        else "Não há orientações de manejo registradas." }}
+                    </p>
+
+                </div>
+
+                <div class="linha-recomendacoes"></div>
+
+                <!-- CONFIRMAÇÃO -->
+                <div class="bloco-recomendacao">
+
+                    <div class="titulo-recomendacao">
+                        <span class="icone">✓</span>
+                        <h4>Como confirmar?</h4>
+                    </div>
+
+                    <p>
+                        {{ info.confirmacao if info and info.confirmacao
+                        else "Não há informações de confirmação registradas." }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="aviso">
+                <strong>Importante:</strong>
+                a classificação por cor e os valores RGB são indicadores obtidos
+                pelo sensor. Eles não confirmam isoladamente uma doença ou
+                deficiência nutricional. Considere uma avaliação complementar
+                quando necessário.
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer class="rodape">
+        <strong>PlantHealth — Tecnologia a serviço da agricultura</strong>
+        <p>Relatório gerado pelo sistema de monitoramento vegetal.</p>
+    </footer>
+
+</div>
 </body>
 </html>

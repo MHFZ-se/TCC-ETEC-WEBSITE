@@ -556,28 +556,76 @@ def init_app(app):
         if request.method == 'POST':
             dados = request.form
 
+            # Verifica se o usuário está logado
+            id_cliente = session.get('idLogado')
+
+            if not id_cliente:
+                flash('Faça login para enviar seu feedback.', 'warning')
+                return redirect(url_for('login'))
+
+            tipo = dados.get('tipo')
+            mensagem = dados.get('msg_feedback', '').strip()
+
+            # A imagem é opcional
             rota_foto = None
+            arquivo = request.files.get('file')
 
-            # if 'file' in request.files:
-            #     arquivo = request.files['file']
+            if arquivo and arquivo.filename:
+                extensoes_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 
-            #     if arquivo.filename != '':
-            #         rota_foto = arquivo.filename
+                nome_original = secure_filename(arquivo.filename)
 
+                extensao = (
+                    nome_original.rsplit('.', 1)[-1].lower()
+                    if '.' in nome_original else ''
+                )
+
+                if extensao not in extensoes_permitidas:
+                    flash('Formato de imagem não permitido.', 'danger')
+                    return redirect(url_for('feedback'))
+
+                # Garante um nome de arquivo único
+                rota_foto = f'{uuid.uuid4().hex}.{extensao}'
+
+                pasta = os.path.join(app.root_path, 'static', 'uploads', 'problemas')
+                os.makedirs(pasta, exist_ok=True)
+
+                caminho = os.path.join(pasta, rota_foto)
+                arquivo.save(caminho)
+
+            # Cria o registro do problema
             problema = Problemas(
-
-                id_cliente_afetado=session['idLogado'],
-                tipo_problema=dados['tipo'],
-                mensagem=dados['msg_feedback'],
+                id_cliente_afetado=id_cliente,
+                tipo_problema=tipo,
+                mensagem=mensagem,
                 rota_foto=rota_foto
             )
 
-            db.session.add(problema)
-            db.session.commit()
+            try:
+                db.session.add(problema)
+                db.session.commit()
 
-            flash("Feedback enviado com sucesso, muito obrigado pelo seu tempo😘.", 'success' )
+            except Exception:
+                db.session.rollback()
+
+                # Remove o arquivo se o registro falhar
+                if rota_foto:
+                    caminho = os.path.join(
+                        app.root_path, 'static', 'uploads', 'problemas', rota_foto
+                    )
+                    if os.path.exists(caminho):
+                        os.remove(caminho)
+
+                raise
+
+            flash(
+                'Feedback enviado com sucesso, muito obrigado pelo seu tempo!',
+                'success'
+            )
 
             return redirect(url_for('atendimentoAoCliente'))
+
+        return render_template('feedback.html')
 
 
 

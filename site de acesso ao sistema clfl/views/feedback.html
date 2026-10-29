@@ -1,41 +1,176 @@
 {% extends 'template_null.html' %}
 
-{% block content %} <!--isto indica o uso de um codigo .py-->
-    <main>
-        <div class="col-md-4">
-            <div class="card-body">
-                <form action="{{url_for('feedback')}}" method="POST" enctype="multipart/form-data">
-                    
-                    <label class="abel"> Qual é o tipo de feedback que você gostaria de enviar?</label><br>
+{% block content %}
 
-                    <select name="tipo" style="height: 50px; width: 100%;" required>
-                        <option value="elogiarAspecto">Elogiar um aspecto</option>
-                        <option value="melhoria">Comentar sobre algo que poderia ser melhorado</option>
-                        <option value="relatoDeBug">Relatar um bug(recomendavel anexar uma imagem)</option>
-                        <option value="criticaDesconstrutiva">Criticar um aspecto</option>
-                        <option value="outro">Outro</option>
-                    </select><br>
-                    
-                    <label class="abel"> Escreva sua mensagem</label><br>
-                    <input class="inp" type="text" placeholder="Descreva a situação" name="msg_feedback" style="height: 60px;" required><br>
-                    <br>
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/feedback.css') }}">
 
-                    <label class="abel"> Gostaria de anexar uma foto da situação ou como exemplo?</label><br>
+<main class="feedback-page">
 
-                    <input type="file" name="file" id="input-foto" accept="image/png,image/jpeg,image/gif,image/webp" hidden 
-                                onchange="document.getElementById('form-foto').submit()">
+    <div class="feedback-container">
 
-                                <button class="button" style="background-color: rgb(22, 22, 143);" type="button" onclick="document.getElementById('input-foto').click()">
-                                    selecionar fotografia
-                                </button>
-                                <div style="align-self: center; width: 100%;">(Totalmente opcional)</div>
+        <!-- Cabeçalho -->
+        <header class="feedback-header">
 
-
-                    <button type="submit" class="button">Salvar feedback e voltar a pagina inicial</button>
-                </form>
+            <div class="feedback-icon">
+                <i class="bi bi-chat-square-heart"></i>
             </div>
-        </div>
 
+            <span class="feedback-tag">PLANTHEALTH</span>
 
-    </main>
+            <h1>Envie seu feedback</h1>
+
+            <p>
+                Sua opinião nos ajuda a melhorar o sistema
+                e oferecer uma experiência cada vez melhor.
+            </p>
+
+        </header>
+
+        <!-- Formulário -->
+        <section class="feedback-card">
+
+            <form action="{{ url_for('feedback') }}"
+                  method="POST"
+                  enctype="multipart/form-data">
+
+                <!-- Tipo de feedback -->
+                <div class="form-group">
+
+                    <label for="tipo">
+                        Qual é o tipo de feedback que você gostaria de enviar?
+                    </label>
+
+                    <select name="tipo" id="tipo" required>
+
+                        <option value="elogiarAspecto">
+                            Elogiar um aspecto
+                        </option>
+
+                        <option value="melhoria">
+                            Comentar sobre algo que poderia ser melhorado
+                        </option>
+
+                        <option value="relatoDeBug">
+                            Relatar um bug ou problema
+                        </option>
+
+                        <option value="criticaDesconstrutiva">
+                            Criticar um aspecto
+                        </option>
+
+                        <option value="outro">
+                            Outro
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- Mensagem -->
+                <div class="form-group">
+
+                    <label for="msg_feedback">
+                        Escreva sua mensagem
+                    </label>
+
+                    <textarea
+                        name="msg_feedback"
+                        id="msg_feedback"
+                        placeholder="Descreva a situação..."
+                        rows="5"
+                        maxlength="250"
+                        required></textarea>
+
+                    <div class="campo-ajuda">
+                        Explique sua sugestão ou o problema encontrado.
+                    </div>
+
+                </div>
+
+                <!-- Anexo de imagem -->
+                <div class="form-group">
+
+                    <label>
+                        Gostaria de anexar uma fotografia?
+                    </label>
+
+                    <p class="upload-descricao">
+                        A imagem é opcional e pode ajudar a explicar
+                        melhor a situação.
+                    </p>
+
+                    <input
+                        type="file"
+                        name="file"
+                        id="input-foto"
+                        accept="image/png,image/jpeg,image/gif,image/webp">
+
+                    <label for="input-foto" class="upload-area">
+
+                        <i class="bi bi-cloud-arrow-up"></i>
+
+                        <span class="upload-titulo">
+                            Selecionar fotografia
+                        </span>
+
+                        <span class="upload-subtitulo">
+                            PNG, JPG, GIF ou WEBP
+                        </span>
+
+                    </label>
+
+                    <div id="nome-arquivo" class="nome-arquivo">
+                        Nenhuma imagem selecionada
+                    </div>
+
+                </div>
+
+                <!-- Ações -->
+                <div class="feedback-actions">
+
+                    <button type="submit" class="btn-feedback">
+                        <i class="bi bi-send"></i>
+                        Enviar feedback
+                    </button>
+
+                    <a href="{{ url_for('home') }}"
+                       class="btn-voltar">
+                        Cancelar
+                    </a>
+
+                </div>
+
+                <!-- Mensagem inferior -->
+                <div class="feedback-rodape">
+                    <i class="bi bi-shield-check"></i>
+
+                    <span>
+                        Obrigado por contribuir com o PlantHealth!
+                    </span>
+                </div>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+<script>
+    const inputFoto = document.getElementById('input-foto');
+    const nomeArquivo = document.getElementById('nome-arquivo');
+
+    inputFoto.addEventListener('change', function () {
+        if (this.files && this.files.length > 0) {
+            nomeArquivo.textContent = this.files[0].name;
+            nomeArquivo.classList.add('arquivo-selecionado');
+        } else {
+            nomeArquivo.textContent = 'Nenhuma imagem selecionada';
+            nomeArquivo.classList.remove('arquivo-selecionado');
+        }
+    });
+</script>
+
 {% endblock content %}
